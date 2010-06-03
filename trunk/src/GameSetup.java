@@ -264,6 +264,20 @@ public class GameSetup extends Frame implements ActionListener {
 		middlePanel.add(fourHandedSingle, FrameUtils.gbLayoutWest(0, 1));
 		middlePanel.add(fourHandedTeams, FrameUtils.gbLayoutWest(0, 2));
 		
+		//Disable the other selections when a game has started.
+		if (Main.isThreeHanded && Main.isGameStarted) {
+			fourHandedSingle.setEnabled(false);
+			fourHandedTeams.setEnabled(false);
+		}
+		if (Main.isFourHandedSingle && Main.isGameStarted) {
+			threeHanded.setEnabled(false);
+			fourHandedTeams.setEnabled(false);
+		}
+		if (Main.isFourHandedTeams && Main.isGameStarted) {
+			threeHanded.setEnabled(false);
+			fourHandedSingle.setEnabled(false);
+		}
+		
 		//Makes the selected Game Type show if it was set already.
 		Utils.showPreviousSelectedGameType();
 
