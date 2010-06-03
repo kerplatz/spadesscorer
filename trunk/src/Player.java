@@ -18,27 +18,72 @@ public class Player {
 	public boolean set = false;
 	
 	public int round;
+	public int score = 0;
+	
+	public ArrayList<String> turn;
+	
+	/**
+	 * 
+	 * @param playerIn
+	 */
+	public Player(String playerIn) {	
+		turn = new ArrayList<String>();
+		player = playerIn;
+		round = Main.round;
+		newRound();
+	}
+
+	/**
+	 * 
+	 * @param playerIn
+	 * @param ScoreIn
+	 */
+	public Player(String playerIn, int scoreIn) {	
+		turn = new ArrayList<String>();
+		player = playerIn;
+		round = Main.round;
+		score = scoreIn;
+	}
 	
 	/**
 	 * 
 	 * @param bidIn
 	 * @param tricksIn
 	 */
-	public Player(String playerIn) {	
-		player = playerIn;
-		round = Main.round;
+	public void nextRound(String bidIn, String tricksIn) {
 		
-		nextRound("0", "0");
+		
+		
+	}
+
+	/**
+	 * 
+	 */
+	public void newRound() {
+		
+		
 	}
 	
-	public void nextRound(String bidIn, String tricksIn) {
-		ArrayList turn = new ArrayList();
-		
+	/**
+	 * 
+	 */
+	public void calculateScore() {
 		
 	}
+	
+	/**
+	 * 
+	 */
+	public void reCalculateScore() {
+		
+	}
+	
+	/**
+	 * 
+	 */
+	public String toString() {
+		String str = "";
+		
+		return str;
+	}
 }
-
-
-
-//		bid = bidIn;
-//		tricksTaken = tricksIn;
