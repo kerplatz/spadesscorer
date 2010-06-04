@@ -68,6 +68,10 @@ public class Main  extends Frame implements ActionListener,
 	public static String player2TricksTaken;
 	public static String player3TricksTaken;
 	public static String player4TricksTaken;
+	public static String player1Score;
+	public static String player2Score;
+	public static String player3Score;
+	public static String player4Score;
 	public static String curDealer;
 	public static String startDealer;
 	public static String bagValue;
@@ -81,10 +85,6 @@ public class Main  extends Frame implements ActionListener,
 	public static int player2TimesSet;
 	public static int player3TimesSet;
 	public static int player4TimesSet;
-	public static int player1Score;
-	public static int player2Score;
-	public static int player3Score;
-	public static int player4Score;
 	public static int team1Score;
 	public static int team2Score;
 	public static int bagValueNumb;
@@ -102,6 +102,11 @@ public class Main  extends Frame implements ActionListener,
 	public static Color bgLowerButtonColor;
 	public static Color fgTextHighlightedColor;
 	public static Color bgTextHighlightedColor;
+	
+	public static Player playerOne;
+	public static Player playerTwo;
+	public static Player playerThree;
+	public static Player playerFour;
 	
 	Panel upperPanel;
 	Panel middlePanel;
@@ -156,11 +161,20 @@ public class Main  extends Frame implements ActionListener,
         	//Shows the correct screens for the game being played.
         	if (isThreeHanded) {
         		ThreeHanded three = new ThreeHanded(frame);
+        		playerOne = new Player(player1);
+        		playerTwo = new Player(player2);
+        		playerThree = new Player(player3);
+        		
            		three.createPlayGameScreen();
         	}
 
         	if (isFourHandedSingle) {
         		FourHanded four = new FourHanded(frame);
+        		playerOne = new Player(player1);
+        		playerTwo = new Player(player2);
+        		playerThree = new Player(player3);
+        		playerFour = new Player(player4);
+        		
            		four.createPlayGameScreen();
         	}
 
@@ -168,6 +182,11 @@ public class Main  extends Frame implements ActionListener,
         		Utils.nameTeams();
 
         		TwoTeams teams = new TwoTeams(frame);
+        		playerOne = new Player(player1);
+        		playerTwo = new Player(player2);
+        		playerThree = new Player(player3);
+        		playerFour = new Player(player4);
+        		
            		teams.createPlayGameScreen();
         	}
         }  
