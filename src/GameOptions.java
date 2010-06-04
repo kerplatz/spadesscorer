@@ -23,6 +23,7 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.CheckboxGroup;
+import java.awt.Choice;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -42,7 +43,8 @@ public class GameOptions extends Frame implements ActionListener,
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	static TextField bagValueTextField = new TextField(5);
+	static Choice bagValue = FrameUtils.makeBagList();
+	
 	static TextField nilValueTextField = new TextField(5);
 	static TextField doubleNilValueTextField = new TextField(5);
 	static TextField winScoreTextField = new TextField(5);
@@ -253,7 +255,7 @@ public class GameOptions extends Frame implements ActionListener,
 		middlePanel.add(loseScoreLabel, FrameUtils.gbLayoutNormal(0, 4));
 		middlePanel.add(nilAllowed, FrameUtils.gbLayoutNormal(0, 5));
 		nilAllowed.addItemListener(this);
-		middlePanel.add(bagValueTextField, FrameUtils.gbLayoutNormal(1, 0));
+		middlePanel.add(bagValue, FrameUtils.gbLayoutNormal(1, 0));
 		middlePanel.add(nilValueTextField, FrameUtils.gbLayoutNormal(1, 1));
 		middlePanel.add(doubleNilValueTextField, FrameUtils.gbLayoutNormal(1, 2));
 		middlePanel.add(winScoreTextField, FrameUtils.gbLayoutNormal(1, 3));
