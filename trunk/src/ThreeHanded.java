@@ -20,6 +20,7 @@ import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Frame;
 import java.awt.GridBagLayout;
+import java.awt.Label;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,6 +31,28 @@ public class ThreeHanded extends Frame implements ActionListener {
 	 * Declare needed variables.
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	Label winner = new Label("Winner");
+	Label losers = new Label("Losers");
+	Label score = new Label("Score");
+	Label Bags = new Label("Bags");
+	Label sets = new Label("Times Set");
+	Label winnerName;
+	Label winnerScore;
+	Label winnerBags;
+	Label winnerSets;
+	Label loser1Name;
+	Label loser1Score;
+	Label loser1Bags;
+	Label loser1Sets;
+	Label loser2Name;
+	Label loser2Score;
+	Label loser2Bags;
+	Label loser2Sets;
+	Label loser3Name;
+	Label loser3Score;
+	Label loser3Bags;
+	Label loser3Sets;
 	
 	Panel upperPanel;
 	Panel middlePanel;
@@ -60,7 +83,7 @@ public class ThreeHanded extends Frame implements ActionListener {
         if (event.getActionCommand().equals("scoring")) {
         	if (Utils.processScoring()) {
        			Utils.recordGameData();
-       			Scoring.calculateScores();
+       			Utils.postScores();
        			
         		//Determines if the game is won  or lost, otherwise game play
        			//continues.
@@ -173,18 +196,38 @@ public class ThreeHanded extends Frame implements ActionListener {
 	}
 
 	/**
-	 * 
+	 * Creates the End Game Lost screen.
 	 */
 	public void createEndGameLostScreen() {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
-	 * 
+	 * Creates the End Game Won Screen.
 	 */
 	public void createEndGameWonScreen() {
-		// TODO Auto-generated method stub
+		Player theWinner = Utils.whoWonGame();
 		
+		//Create the 3 panel components of the screen.
+		upperPanel = FrameUtils.makeUpperPanel("game won");
+		middlePanel = FrameUtils.makeMiddlePanel();
+		lowerPanel = FrameUtils.makeLowerPanel();
+		
+		//Makes all the needed buttons.
+		buttonReturnMain = FrameUtils.makeButton("  Return  ", "returnMain", false);
+		buttonReturnMain.addActionListener(this);
+
+		//Add the buttons to the proper panels.
+		lowerPanel.add(buttonReturnMain);
+
+		
+
+		
+		//This adds all the panels to the frame.
+		frame.add(upperPanel, BorderLayout.NORTH);
+		frame.add(middlePanel, BorderLayout.CENTER);
+		frame.add(lowerPanel, BorderLayout.SOUTH);
+		
+		frame.setVisible(true);
 	}
 }
