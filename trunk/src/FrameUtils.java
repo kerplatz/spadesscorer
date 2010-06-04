@@ -250,6 +250,20 @@ public class FrameUtils {
 		
 		return lst;
 	}
+
+	/**
+	 * This method creates a choice box for selecting the bag value.
+	 * 
+	 * @return A choice box with all the bag values added.
+	 */
+	public static Choice makeBagList() {
+		Choice lst = new Choice();
+		
+		lst.add("1");
+		lst.add("2");
+		
+		return lst;
+	}
 	
 	/**
 	 * This method places the object on the screen at these relative positions
@@ -444,7 +458,7 @@ public class FrameUtils {
 	public static void makeLine2(Panel panel) {
 		player1Name.setText(Main.player1);
 		player1Bid = makeBidList();
-		player1Score.setText("" + Main.player1Score);
+		player1Score.setText(Main.player1Score);
 		
 		//Create the needed tricks taken choice box.
 		if (Main.player1Bid.equals("nil") || Main.player1Bid.equals("dbl")) {
@@ -493,7 +507,7 @@ public class FrameUtils {
 	public static void makeLine3(Panel panel) {
 		player2Name.setText(Main.player2);
 		player2Bid = makeBidList();
-		player2Score.setText("" + Main.player2Score);
+		player2Score.setText(Main.player2Score);
 		
 		//Create the needed tricks taken choice box.
 		if (Main.player2Bid.equals("nil") || Main.player2Bid.equals("dbl")) {
@@ -542,7 +556,7 @@ public class FrameUtils {
 	public static void makeLine4(Panel panel) {
 		player3Name.setText(Main.player3);
 		player3Bid = makeBidList();
-		player3Score.setText("" + Main.player3Score);
+		player3Score.setText(Main.player3Score);
 		
 		//Create the needed tricks taken choice box.
 		if (Main.player3Bid.equals("nil") || Main.player3Bid.equals("dbl")) {
@@ -591,7 +605,7 @@ public class FrameUtils {
 	public static void makeLine5(Panel panel) {
 		player4Name.setText(Main.player4);
 		player4Bid = makeBidList();
-		player4Score.setText("" + Main.player4Score);
+		player4Score.setText(Main.player4Score);
 		
 		//Create the needed tricks taken choice box.
 		if (Main.player4Bid.equals("nil") || Main.player4Bid.equals("dbl")) {
