@@ -61,10 +61,10 @@ public class Utils {
 		Main.player2TimesSet = 0;
 		Main.player3TimesSet = 0;
 		Main.player4TimesSet = 0;
-		Main.player1Score = 0;
-		Main.player2Score = 0;
-		Main.player3Score = 0;
-		Main.player4Score = 0;
+		Main.player1Score = "0";
+		Main.player2Score = "0";
+		Main.player3Score = "0";
+		Main.player4Score = "0";
 		Main.team1Score = 0;
 		Main.team2Score = 0;
 		
@@ -122,7 +122,7 @@ public class Utils {
 	 * Shows what the values for these variables are.
 	 */
 	public static void showPreviousOptions() {
-		GameOptions.bagValueTextField.setText(Main.bagValue);
+		GameOptions.bagValue.select(Main.bagValue);
 		GameOptions.nilValueTextField.setText(Main.nilValue);
 		GameOptions.doubleNilValueTextField.setText(Main.doubleNilValue);
 		GameOptions.winScoreTextField.setText(Main.winScore);
@@ -242,7 +242,7 @@ public class Utils {
 
 		//Use the appropriate value for bagValue when three handed.
 		if (Main.isThreeHanded){
-			GameOptions.bagValueTextField.setText("2");
+			GameOptions.bagValue.select("2");
 			GameOptions.nilValueTextField.setText("100");
 			GameOptions.nilAllowed.setState(true);
 			GameOptions.doubleNilAllowed.setState(false);
@@ -253,7 +253,7 @@ public class Utils {
 			Main.isNilAllowed = true;
 			Main.isDoubleNilAllowed = false;
 		} else if (Main.isFourHandedSingle){
-			GameOptions.bagValueTextField.setText("1");
+			GameOptions.bagValue.select("1");
 			GameOptions.nilValueTextField.setText("50");
 			GameOptions.nilAllowed.setState(true);
 			GameOptions.doubleNilAllowed.setState(false);
@@ -264,7 +264,7 @@ public class Utils {
 			Main.isNilAllowed = true;
 			Main.isDoubleNilAllowed = false;
 		} else {
-			GameOptions.bagValueTextField.setText("1");
+			GameOptions.bagValue.select("1");
 			GameOptions.nilValueTextField.setText("50");
 			GameOptions.nilAllowed.setState(true);
 			GameOptions.doubleNilAllowed.setState(true);
@@ -417,7 +417,7 @@ public class Utils {
 		
 		//Check if all the text fields are not blank or have correct data.
 		try {
-			Integer.parseInt(GameOptions.bagValueTextField.getText());
+			Integer.parseInt(GameOptions.bagValue.getSelectedItem());
 		} catch (NumberFormatException e) {
 			gameOptionsDone = false;
 		}
@@ -463,17 +463,17 @@ public class Utils {
 		boolean gameWon = false;
 		
 		if (Main.isThreeHanded){
-			if (Main.player1Score >= Main.winScoreNumb ||
-					Main.player2Score >= Main.winScoreNumb ||
-					Main.player3Score >= Main.winScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb ||
+					Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb ||
+					Utils.stringToInt(Main.player3Score) >= Main.winScoreNumb) {
 				gameWon = true;
 			}
 		}
 		if (Main.isFourHandedSingle){
-			if (Main.player1Score >= Main.winScoreNumb ||
-					Main.player2Score >= Main.winScoreNumb ||
-					Main.player3Score >= Main.winScoreNumb ||
-					Main.player4Score >= Main.winScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb ||
+					Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb ||
+					Utils.stringToInt(Main.player3Score) >= Main.winScoreNumb ||
+					Utils.stringToInt(Main.player4Score) >= Main.winScoreNumb) {
 				gameWon = true;
 			}
 		}
@@ -496,17 +496,17 @@ public class Utils {
 		boolean gameLost = false;
 		
 		if (Main.isThreeHanded){
-			if (Main.player1Score <= Main.loseScoreNumb ||
-					Main.player2Score <= Main.loseScoreNumb ||
-					Main.player3Score <= Main.loseScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb ||
+					Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb ||
+					Utils.stringToInt(Main.player3Score) <= Main.loseScoreNumb) {
 				gameLost = true;
 			}
 		}
 		if (Main.isFourHandedSingle){
-			if (Main.player1Score <= Main.loseScoreNumb ||
-					Main.player2Score <= Main.loseScoreNumb ||
-					Main.player3Score <= Main.loseScoreNumb ||
-					Main.player4Score <= Main.loseScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb ||
+					Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb ||
+					Utils.stringToInt(Main.player3Score) <= Main.loseScoreNumb ||
+					Utils.stringToInt(Main.player4Score) <= Main.loseScoreNumb) {
 				gameLost = true;
 			}
 		}
@@ -525,32 +525,35 @@ public class Utils {
 	 * 
 	 * @return The winner of the game.
 	 */
-	public static String whoWonGame() {
-		String winner = "";
+	public static Player whoWonGame() {
+		Player winner = null;
 		boolean found = false;
 		
 		//Three handed play.
 		if (Main.isThreeHanded){
-			if (Main.player1Score >= Main.winScoreNumb) {
-				winner = Main.player1;
+			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
+				winner = Main.playerOne;
 				found = true;
-			} else if (Main.player2Score >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
 				if (found) {
-					if (Main.player2Score >= Main.player1Score) {
-						winner = Main.player2;
+					if (Utils.stringToInt(Main.player2Score)
+							>= Utils.stringToInt(Main.player1Score)) {
+						winner = Main.playerTwo;
 					}
 				} else {
-					winner = Main.player2;
+					winner = Main.playerTwo;
 					found = true;
 				}
-			} else if (Main.player3Score >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player3Score) >= (Main.winScoreNumb)) {
 				if (found) {
-					if (Main.player3Score >= Main.player1Score &&
-							Main.player3Score >= Main.player2Score) {
-						winner = Main.player3;
+					if (Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player1Score) &&
+							Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player2Score)) {
+						winner = Main.playerThree;
 					}
 				} else {
-					winner = Main.player3;
+					winner = Main.playerThree;
 				}
 			}
 			
@@ -559,37 +562,43 @@ public class Utils {
 		
 		//Four handed play with no teams.
 		if (Main.isFourHandedSingle){
-			if (Main.player1Score >= Main.winScoreNumb) {
-				winner = Main.player1;
+			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
+				winner = Main.playerOne;
 				found = true;
-			} else if (Main.player2Score >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
 				if (found) {
-					if (Main.player2Score >= Main.player1Score) {
-						winner = Main.player2;
+					if (Utils.stringToInt(Main.player2Score)
+							>= Utils.stringToInt(Main.player1Score)) {
+						winner = Main.playerTwo;
 					}
 				} else {
-					winner = Main.player2;
+					winner = Main.playerTwo;
 					found = true;
 				}
-			} else if (Main.player3Score >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player3Score) >= Main.winScoreNumb) {
 				if (found) {
-					if (Main.player3Score >= Main.player1Score &&
-							Main.player3Score >= Main.player2Score) {
-						winner = Main.player3;
+					if (Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player1Score) &&
+							Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player2Score)) {
+						winner = Main.playerThree;
 					}
 				} else {
-					winner = Main.player3;
+					winner = Main.playerThree;
 					found = true;
 				}
-			} else if (Main.player4Score >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player4Score) >= Main.winScoreNumb) {
 				if (found) {
-					if (Main.player4Score >= Main.player1Score &&
-							Main.player4Score >= Main.player2Score &&
-							Main.player4Score >= Main.player3Score) {
-						winner = Main.player4;
+					if (Utils.stringToInt(Main.player4Score)
+							>= Utils.stringToInt(Main.player1Score) &&
+							Utils.stringToInt(Main.player4Score)
+							>= Utils.stringToInt(Main.player2Score) &&
+							Utils.stringToInt(Main.player4Score)
+							>= Utils.stringToInt(Main.player3Score)) {
+						winner = Main.playerFour;
 					}
 				} else {
-					winner = Main.player4;
+					winner = Main.playerFour;
 				}
 			}
 			
@@ -597,7 +606,7 @@ public class Utils {
 		}
 		
 		//Four handed play with 2 teams.
-		if (Main.isFourHandedSingle){
+		/*if (Main.isFourHandedSingle){
 			if (Main.team1Score >= Main.winScoreNumb && Main.team2Score >= Main.winScoreNumb) {
 				if (Main.team1Score > Main.team2Score) winner = Main.team1;
 				if (Main.team1Score < Main.team2Score) winner = Main.team2;
@@ -606,9 +615,109 @@ public class Utils {
 			} else if (Main.team2Score >= Main.winScoreNumb) {
 				winner = Main.team2;
 			}
-		}
+		}*/
 		
 		return winner;
+	}
+
+	/**
+	 * Determines which person or team lost the game. TIES ARE NOT FIGURED.
+	 * 
+	 * @return The loser of the game.
+	 */
+	public static String whoLostGame() {
+		String loser = "";
+		boolean found = false;
+		
+		//Three handed play.
+		if (Main.isThreeHanded){
+			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
+				loser = Main.player1;
+				found = true;
+			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
+				if (found) {
+					if (Utils.stringToInt(Main.player2Score)
+							>= Utils.stringToInt(Main.player1Score)) {
+						loser = Main.player2;
+					}
+				} else {
+					loser = Main.player2;
+					found = true;
+				}
+			} else if (Utils.stringToInt(Main.player3Score) >= (Main.winScoreNumb)) {
+				if (found) {
+					if (Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player1Score) &&
+							Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player2Score)) {
+						loser = Main.player3;
+					}
+				} else {
+					loser = Main.player3;
+				}
+			}
+			
+			return loser;
+		}
+		
+		//Four handed play with no teams.
+		if (Main.isFourHandedSingle){
+			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
+				loser = Main.player1;
+				found = true;
+			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
+				if (found) {
+					if (Utils.stringToInt(Main.player2Score)
+							>= Utils.stringToInt(Main.player1Score)) {
+						loser = Main.player2;
+					}
+				} else {
+					loser = Main.player2;
+					found = true;
+				}
+			} else if (Utils.stringToInt(Main.player3Score) >= Main.winScoreNumb) {
+				if (found) {
+					if (Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player1Score) &&
+							Utils.stringToInt(Main.player3Score)
+							>= Utils.stringToInt(Main.player2Score)) {
+						loser = Main.player3;
+					}
+				} else {
+					loser = Main.player3;
+					found = true;
+				}
+			} else if (Utils.stringToInt(Main.player4Score) >= Main.winScoreNumb) {
+				if (found) {
+					if (Utils.stringToInt(Main.player4Score)
+							>= Utils.stringToInt(Main.player1Score) &&
+							Utils.stringToInt(Main.player4Score)
+							>= Utils.stringToInt(Main.player2Score) &&
+							Utils.stringToInt(Main.player4Score)
+							>= Utils.stringToInt(Main.player3Score)) {
+						loser = Main.player4;
+					}
+				} else {
+					loser = Main.player4;
+				}
+			}
+			
+			return loser;
+		}
+		
+		//Four handed play with 2 teams.
+		if (Main.isFourHandedSingle){
+			if (Main.team1Score >= Main.winScoreNumb && Main.team2Score >= Main.winScoreNumb) {
+				if (Main.team1Score > Main.team2Score) loser = Main.team1;
+				if (Main.team1Score < Main.team2Score) loser = Main.team2;
+			} else if (Main.team1Score >= Main.winScoreNumb) {
+				loser = Main.team1;
+			} else if (Main.team2Score >= Main.winScoreNumb) {
+				loser = Main.team2;
+			}
+		}
+		
+		return loser;
 	}
 
 	/**
@@ -714,7 +823,7 @@ public class Utils {
 	 * Saves the current options entered.
 	 */
 	public static void saveOptions() {
-		Main.bagValue = GameOptions.bagValueTextField.getText();
+		Main.bagValue = GameOptions.bagValue.getSelectedItem();
 		Main.nilValue = GameOptions.nilValueTextField.getText();
 		Main.doubleNilValue = GameOptions.doubleNilValueTextField.getText();
 		Main.winScore = GameOptions.winScoreTextField.getText();
@@ -771,8 +880,30 @@ public class Utils {
 	public static void recordGameData() {
 		//Increment round.
 		Main.round ++;
+		
+		//Record the game data to the player class.
+		Main.playerOne.nextRound(Main.player1Bid, Main.player1TricksTaken);
+		Main.playerTwo.nextRound(Main.player2Bid, Main.player2TricksTaken);
+		Main.playerThree.nextRound(Main.player3Bid, Main.player3TricksTaken);
+
+		if (!Main.isThreeHanded) {
+			Main.playerFour.nextRound(Main.player4Bid, Main.player4TricksTaken);
+		}
 	}
 
+	/**
+	 * This method posts the scores from each player.
+	 */
+	public static void postScores() {
+		Main.player1Score = Main.playerOne.score;
+		Main.player2Score = Main.playerTwo.score;
+		Main.player3Score = Main.playerThree.score;
+
+		if (!Main.isThreeHanded) {
+			Main.player4Score = Main.playerFour.score;
+		}
+	}
+	
 	/**
 	 * Process the scoring info before the bidding screen is shown.
 	 * 
@@ -838,6 +969,9 @@ public class Utils {
 		//Show dialog box reminder.
 		if (!done) FrameUtils.showDialogBox("Tricks taken was entered wrong.");
 			
+		//Save tricks taken data.
+		saveTricksTakenData();
+		
 		return done;
 	}
 
