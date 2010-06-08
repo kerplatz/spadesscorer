@@ -1,4 +1,4 @@
-/**
+/**FINISHED
  * ThreeHanded.java
  * 
  * This class controls how a three handed game is played. It also shows the
@@ -32,28 +32,11 @@ public class ThreeHanded extends Frame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	Label winner = new Label("Winner");
-	Label losers = new Label("Losers");
-	Label score = new Label("Score");
-	Label Bags = new Label("Bags");
-	Label sets = new Label("Times Set");
-	Label winnerName;
-	Label winnerScore;
-	Label winnerBags;
-	Label winnerSets;
-	Label loser1Name;
-	Label loser1Score;
-	Label loser1Bags;
-	Label loser1Sets;
-	Label loser2Name;
-	Label loser2Score;
-	Label loser2Bags;
-	Label loser2Sets;
-	Label loser3Name;
-	Label loser3Score;
-	Label loser3Bags;
-	Label loser3Sets;
-	
+	static Label winner = new Label("WINNER");
+	static Label winners = new Label("WINNERS");
+	static Label loser = new Label("LOSER");
+	static Label losers = new Label("LOSERS");
+
 	Panel upperPanel;
 	Panel middlePanel;
 	Panel lowerPanel;
@@ -82,14 +65,16 @@ public class ThreeHanded extends Frame implements ActionListener {
         //Performs this action when the Scoring button is pressed.
         if (event.getActionCommand().equals("scoring")) {
         	if (Utils.processScoring()) {
-       			Utils.recordGameData();
+        		Utils.recordGameData();
        			Utils.postScores();
        			
         		//Determines if the game is won  or lost, otherwise game play
        			//continues.
         		if (Utils.isGameWon()) {
-        			createEndGameWonScreen();
+					frame.removeAll();
+					createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
+					frame.removeAll();
         			createEndGameLostScreen();
         		} else {
             		Main.doBidding = true;
@@ -181,6 +166,7 @@ public class ThreeHanded extends Frame implements ActionListener {
 		}
 		lowerPanel.add(buttonReturnMain);
 
+		//Create the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		FrameUtils.makeLine1(middlePanel);
 		FrameUtils.makeLine2(middlePanel);
@@ -199,7 +185,46 @@ public class ThreeHanded extends Frame implements ActionListener {
 	 * Creates the End Game Lost screen.
 	 */
 	public void createEndGameLostScreen() {
+		Player theLoser = Utils.whoLostGame();
+		
+		//Create the 3 panel components of the screen.
+		upperPanel = FrameUtils.makeUpperPanel("game lost");
+		middlePanel = FrameUtils.makeMiddlePanel();
+		lowerPanel = FrameUtils.makeLowerPanel();
+		
+		//Makes all the needed buttons.
+		buttonReturnMain = FrameUtils.makeButton("  Return  ", "returnMain", false);
+		buttonReturnMain.addActionListener(this);
 
+		//Add the buttons to the proper panels.
+		lowerPanel.add(buttonReturnMain);
+
+		//Create the middle panel.
+		middlePanel.setLayout(new GridBagLayout());
+		FrameUtils.makeEndGameLine1(middlePanel, loser);
+		FrameUtils.makeEndGameLine2(middlePanel, theLoser);
+		FrameUtils.makeEndGameLine3(middlePanel, winners);
+		
+		//Determine who the two winners are.
+		if (Main.playerOne.equals(theLoser)){
+			FrameUtils.makeEndGameLine4(middlePanel, Main.playerTwo);
+			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
+		}
+		if (Main.playerTwo.equals(theLoser)){
+			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
+			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
+		}
+		if (Main.playerThree.equals(theLoser)){
+			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
+			FrameUtils.makeEndGameLine5(middlePanel, Main.playerTwo);
+		}
+		
+		//This adds all the panels to the frame.
+		frame.add(upperPanel, BorderLayout.NORTH);
+		frame.add(middlePanel, BorderLayout.CENTER);
+		frame.add(lowerPanel, BorderLayout.SOUTH);
+		
+		frame.setVisible(true);
 	}
 
 	/**
@@ -220,8 +245,25 @@ public class ThreeHanded extends Frame implements ActionListener {
 		//Add the buttons to the proper panels.
 		lowerPanel.add(buttonReturnMain);
 
+		//Create the middle panel.
+		middlePanel.setLayout(new GridBagLayout());
+		FrameUtils.makeEndGameLine1(middlePanel, winner);
+		FrameUtils.makeEndGameLine2(middlePanel, theWinner);
+		FrameUtils.makeEndGameLine3(middlePanel, losers);
 		
-
+		//Determine who the two winners are.
+		if (Main.playerOne.equals(theWinner)){
+			FrameUtils.makeEndGameLine4(middlePanel, Main.playerTwo);
+			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
+		}
+		if (Main.playerTwo.equals(theWinner)){
+			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
+			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
+		}
+		if (Main.playerThree.equals(theWinner)){
+			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
+			FrameUtils.makeEndGameLine5(middlePanel, Main.playerTwo);
+		}
 		
 		//This adds all the panels to the frame.
 		frame.add(upperPanel, BorderLayout.NORTH);
