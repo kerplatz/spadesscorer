@@ -32,10 +32,10 @@ public class ThreeHanded extends Frame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	static Label winner = new Label("WINNER");
-	static Label winners = new Label("WINNERS");
-	static Label loser = new Label("LOSER");
-	static Label losers = new Label("LOSERS");
+	Label winner = new Label("WINNER");
+	Label winners = new Label("WINNERS");
+	Label loser = new Label("LOSER");
+	Label losers = new Label("LOSERS");
 
 	Panel upperPanel;
 	Panel middlePanel;
@@ -71,9 +71,11 @@ public class ThreeHanded extends Frame implements ActionListener {
         		//Determines if the game is won  or lost, otherwise game play
        			//continues.
         		if (Utils.isGameWon()) {
+        			Main.isGameStarted = false;
 					frame.removeAll();
 					createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
+        			Main.isGameStarted = false;
 					frame.removeAll();
         			createEndGameLostScreen();
         		} else {
