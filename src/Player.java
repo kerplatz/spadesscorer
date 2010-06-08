@@ -142,8 +142,8 @@ public class Player {
 	 * 
 	 * @return
 	 */
-	public int calculateTimesSet() {
-		int numb = 0;
+	public String calculateTimesSet() {
+		String numb = "0";
 		
 		
 		return numb;
