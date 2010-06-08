@@ -33,6 +33,17 @@ public class FrameUtils {
 	static Label player2Score = new Label();
 	static Label player3Score = new Label();
 	static Label player4Score = new Label();
+	static Label player1Bags = new Label();
+	static Label player2Bags = new Label();
+	static Label player3Bags = new Label();
+	static Label player4Bags = new Label();
+	static Label player1Sets = new Label();
+	static Label player2Sets = new Label();
+	static Label player3Sets = new Label();
+	static Label player4Sets = new Label();
+	static Label score = new Label("Score");
+	static Label bags = new Label("Bags");
+	static Label sets = new Label("Sets");
 
 	static Choice player1Bid;
 	static Choice player2Bid;
@@ -643,5 +654,117 @@ public class FrameUtils {
 		
 		//Set Bid Choice boxes to not editable when scoring.
 		if (Main.doScoring) player4Bid.setEnabled(false);
+	}
+	
+	/**
+	 * Creates a line for the end game screen that is a label for winner
+	 * or loser and has the column headers.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param label The label that describes what follows on the next line(s).
+	 */
+	public static void makeEndGameLine1(Panel panel, Label label) {
+		label.setFont(new Font("arial", Font.BOLD, 12));
+		label.setForeground(Main.bgTextHighlightedColor);
+		panel.add(label, gbLayoutNormal(0, 0));
+		panel.add(score, gbLayoutNormal(1, 0));
+		panel.add(bags, gbLayoutNormal(2, 0));
+		panel.add(sets, gbLayoutNormal(3, 0));
+	}
+	
+	/**
+	 * Creates the Player stats line for a given player.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param player The player that the items pertain to.
+	 */
+	public static void makeEndGameLine2(Panel panel, Player player) {
+		player1Name.setText(player.player);
+		player1Name.setForeground(Main.labelColor);
+		player1Name.setFont(new Font("arial", Font.BOLD, 12));
+		player1Score.setText(player.score);
+		player1Bags.setText(player.bags);
+		player1Sets.setText(player.calculateTimesSet());
+		
+		panel.add(player1Name, gbLayoutNormal(0, 1));
+		panel.add(player1Score, gbLayoutNormal(1, 1));
+		panel.add(player1Bags, gbLayoutNormal(2, 1));
+		panel.add(player1Sets, gbLayoutNormal(3, 1));
+	}
+	
+	/**
+	 * Creates a line for the end game screen that is a label for winner
+	 * or loser and has the column headers.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param label The label that describes what follows on the next line(s).
+	 */
+	public static void makeEndGameLine3(Panel panel, Label label) {
+		label.setFont(new Font("arial", Font.BOLD, 12));
+		label.setForeground(Main.bgTextHighlightedColor);
+		panel.add(label, gbLayoutNormal(0, 2));
+		panel.add(score, gbLayoutNormal(1, 2));
+		panel.add(bags, gbLayoutNormal(2, 2));
+		panel.add(sets, gbLayoutNormal(3, 2));
+	}
+
+	/**
+	 * Creates the Player stats line for a given player.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param player The player that the items pertain to.
+	 */
+	public static void makeEndGameLine4(Panel panel, Player player) {
+		player2Name.setText(player.player);
+		player2Name.setForeground(Main.labelColor);
+		player2Name.setFont(new Font("arial", Font.BOLD, 12));
+		player2Score.setText(player.score);
+		player2Bags.setText(player.bags);
+		player2Sets.setText(player.calculateTimesSet());
+		
+		panel.add(player2Name, gbLayoutNormal(0, 3));
+		panel.add(player2Score, gbLayoutNormal(1, 3));
+		panel.add(player2Bags, gbLayoutNormal(2, 3));
+		panel.add(player2Sets, gbLayoutNormal(3, 3));
+	}
+
+	/**
+	 * Creates the Player stats line for a given player.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param player The player that the items pertain to.
+	 */
+	public static void makeEndGameLine5(Panel panel, Player player) {
+		player3Name.setText(player.player);
+		player3Name.setForeground(Main.labelColor);
+		player3Name.setFont(new Font("arial", Font.BOLD, 12));
+		player3Score.setText(player.score);
+		player3Bags.setText(player.bags);
+		player3Sets.setText(player.calculateTimesSet());
+		
+		panel.add(player3Name, gbLayoutNormal(0, 4));
+		panel.add(player3Score, gbLayoutNormal(1, 4));
+		panel.add(player3Bags, gbLayoutNormal(2, 4));
+		panel.add(player3Sets, gbLayoutNormal(3, 4));
+	}
+
+	/**
+	 * Creates the Player stats line for a given player.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param player The player that the items pertain to.
+	 */
+	public static void makeEndGameLine6(Panel panel, Player player) {
+		player4Name.setText(player.player);
+		player4Name.setForeground(Main.labelColor);
+		player4Name.setFont(new Font("arial", Font.BOLD, 12));
+		player4Score.setText(player.score);
+		player4Bags.setText(player.bags);
+		player4Sets.setText(player.calculateTimesSet());
+		
+		panel.add(player4Name, gbLayoutNormal(0, 5));
+		panel.add(player4Score, gbLayoutNormal(1, 5));
+		panel.add(player4Bags, gbLayoutNormal(2, 5));
+		panel.add(player4Sets, gbLayoutNormal(3, 5));
 	}
 }
