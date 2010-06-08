@@ -248,6 +248,11 @@ public class Main  extends Frame implements ActionListener,
 			buttonPlay.setVisible(false);
 			buttonSetup.setVisible(true);
 			buttonEditGame.setVisible(true);
+		} else if (isGameWon || isGameLost){
+			buttonContGame.setVisible(false);
+			buttonPlay.setVisible(false);
+			buttonSetup.setVisible(true);
+			buttonEditGame.setVisible(true);
 		} else if (isSetupDone){
 			buttonContGame.setVisible(false);
 			buttonPlay.setVisible(true);
