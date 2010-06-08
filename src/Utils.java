@@ -1,4 +1,4 @@
-/**
+/**FINISHED
  * Utils.java
  * 
  * This class contains helper methods that do not process any display screens
@@ -484,6 +484,9 @@ public class Utils {
 			}
 		}
 		
+		//Set Main variable.
+		Main.isGameWon = gameWon;
+		
 		return gameWon;
 	}
 
@@ -517,11 +520,14 @@ public class Utils {
 			}
 		}
 		
+		//Set Main variable.
+		Main.isGameLost = gameLost;
+
 		return gameLost;
 	}
 	
 	/**
-	 * Determines which person or team won the game. TIES ARE NOT FIGURED.
+	 * Determines which Player or team won the game. TIES ARE NOT FIGURED.
 	 * 
 	 * @return The winner of the game.
 	 */
@@ -621,39 +627,39 @@ public class Utils {
 	}
 
 	/**
-	 * Determines which person or team lost the game. TIES ARE NOT FIGURED.
+	 * Determines which Player or team lost the game. TIES ARE NOT FIGURED.
 	 * 
 	 * @return The loser of the game.
 	 */
-	public static String whoLostGame() {
-		String loser = "";
+	public static Player whoLostGame() {
+		Player loser = null;
 		boolean found = false;
 		
 		//Three handed play.
 		if (Main.isThreeHanded){
-			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
-				loser = Main.player1;
+			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb) {
+				loser = Main.playerOne;
 				found = true;
-			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb) {
 				if (found) {
 					if (Utils.stringToInt(Main.player2Score)
-							>= Utils.stringToInt(Main.player1Score)) {
-						loser = Main.player2;
+							<= Utils.stringToInt(Main.player1Score)) {
+						loser = Main.playerTwo;
 					}
 				} else {
-					loser = Main.player2;
+					loser = Main.playerTwo;
 					found = true;
 				}
-			} else if (Utils.stringToInt(Main.player3Score) >= (Main.winScoreNumb)) {
+			} else if (Utils.stringToInt(Main.player3Score) <= (Main.loseScoreNumb)) {
 				if (found) {
 					if (Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player1Score) &&
+							<= Utils.stringToInt(Main.player1Score) &&
 							Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player2Score)) {
-						loser = Main.player3;
+							<= Utils.stringToInt(Main.player2Score)) {
+						loser = Main.playerThree;
 					}
 				} else {
-					loser = Main.player3;
+					loser = Main.playerThree;
 				}
 			}
 			
@@ -662,43 +668,43 @@ public class Utils {
 		
 		//Four handed play with no teams.
 		if (Main.isFourHandedSingle){
-			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
-				loser = Main.player1;
+			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb) {
+				loser = Main.playerOne;
 				found = true;
-			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb) {
 				if (found) {
 					if (Utils.stringToInt(Main.player2Score)
-							>= Utils.stringToInt(Main.player1Score)) {
-						loser = Main.player2;
+							<= Utils.stringToInt(Main.player1Score)) {
+						loser = Main.playerTwo;
 					}
 				} else {
-					loser = Main.player2;
+					loser = Main.playerTwo;
 					found = true;
 				}
-			} else if (Utils.stringToInt(Main.player3Score) >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player3Score) <= Main.loseScoreNumb) {
 				if (found) {
 					if (Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player1Score) &&
+							<= Utils.stringToInt(Main.player1Score) &&
 							Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player2Score)) {
-						loser = Main.player3;
+							<= Utils.stringToInt(Main.player2Score)) {
+						loser = Main.playerThree;
 					}
 				} else {
-					loser = Main.player3;
+					loser = Main.playerThree;
 					found = true;
 				}
-			} else if (Utils.stringToInt(Main.player4Score) >= Main.winScoreNumb) {
+			} else if (Utils.stringToInt(Main.player4Score) <= Main.loseScoreNumb) {
 				if (found) {
 					if (Utils.stringToInt(Main.player4Score)
-							>= Utils.stringToInt(Main.player1Score) &&
+							<= Utils.stringToInt(Main.player1Score) &&
 							Utils.stringToInt(Main.player4Score)
-							>= Utils.stringToInt(Main.player2Score) &&
+							<= Utils.stringToInt(Main.player2Score) &&
 							Utils.stringToInt(Main.player4Score)
-							>= Utils.stringToInt(Main.player3Score)) {
-						loser = Main.player4;
+							<= Utils.stringToInt(Main.player3Score)) {
+						loser = Main.playerFour;
 					}
 				} else {
-					loser = Main.player4;
+					loser = Main.playerFour;
 				}
 			}
 			
@@ -706,7 +712,7 @@ public class Utils {
 		}
 		
 		//Four handed play with 2 teams.
-		if (Main.isFourHandedSingle){
+		/*if (Main.isFourHandedSingle){
 			if (Main.team1Score >= Main.winScoreNumb && Main.team2Score >= Main.winScoreNumb) {
 				if (Main.team1Score > Main.team2Score) loser = Main.team1;
 				if (Main.team1Score < Main.team2Score) loser = Main.team2;
@@ -715,7 +721,7 @@ public class Utils {
 			} else if (Main.team2Score >= Main.winScoreNumb) {
 				loser = Main.team2;
 			}
-		}
+		}*/
 		
 		return loser;
 	}
