@@ -105,9 +105,6 @@ public class ThreeHanded extends Frame implements ActionListener {
 
         //Performs this action when the Play button is pressed.
         if (event.getActionCommand().equals("play")) {
-        	//Prints game data for the first time when the game has not yet
-        	//started. and increments the round to 1.
-   			Utils.recordGameData();
            	Main.isGameStarted = true;
            	Main.doBidding = true;
            	
