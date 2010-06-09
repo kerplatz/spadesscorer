@@ -208,22 +208,6 @@ public class FrameUtils {
 	}
 
 	/**
-	 * This method creates a choice box for entering tricks taken data
-	 * when the bid is any nil.
-	 * 
-	 * @return A choice box with all the elements added.
-	 */
-	public static Choice makeNilTricksTakenList() {
-		Choice lst = new Choice();
-		
-		lst.add("");
-		lst.add("0");
-		lst.add("Set");
-
-		return lst;
-	}
-
-	/**
 	 * This method creates a choice box for selecting which round to edit
 	 * or view.
 	 * 
@@ -472,11 +456,7 @@ public class FrameUtils {
 		player1Score.setText(Main.player1Score);
 		
 		//Create the needed tricks taken choice box.
-		if (Main.player1Bid.equals("nil") || Main.player1Bid.equals("dbl")) {
-			player1TricksTaken = makeNilTricksTakenList();
-		} else {
-			player1TricksTaken = makeTricksTakenList();
-		}
+		player1TricksTaken = makeTricksTakenList();
 		
 		//Show the values of the Choice boxes.
 		player1Bid.select(Main.player1Bid);
@@ -521,11 +501,7 @@ public class FrameUtils {
 		player2Score.setText(Main.player2Score);
 		
 		//Create the needed tricks taken choice box.
-		if (Main.player2Bid.equals("nil") || Main.player2Bid.equals("dbl")) {
-			player2TricksTaken = makeNilTricksTakenList();
-		} else {
-			player2TricksTaken = makeTricksTakenList();
-		}
+		player2TricksTaken = makeTricksTakenList();
 		
 		//Show the values of the Choice boxes.
 		player2Bid.select(Main.player2Bid);
@@ -570,11 +546,7 @@ public class FrameUtils {
 		player3Score.setText(Main.player3Score);
 		
 		//Create the needed tricks taken choice box.
-		if (Main.player3Bid.equals("nil") || Main.player3Bid.equals("dbl")) {
-			player3TricksTaken = makeNilTricksTakenList();
-		} else {
-			player3TricksTaken = makeTricksTakenList();
-		}
+		player3TricksTaken = makeTricksTakenList();
 		
 		//Show the values of the Choice boxes.
 		player3Bid.select(Main.player3Bid);
@@ -619,11 +591,7 @@ public class FrameUtils {
 		player4Score.setText(Main.player4Score);
 		
 		//Create the needed tricks taken choice box.
-		if (Main.player4Bid.equals("nil") || Main.player4Bid.equals("dbl")) {
-			player4TricksTaken = makeNilTricksTakenList();
-		} else {
-			player4TricksTaken = makeTricksTakenList();
-		}
+		player4TricksTaken = makeTricksTakenList();
 		
 		//Show the values of the Choice boxes.
 		player4Bid.select(Main.player4Bid);
