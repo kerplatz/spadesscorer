@@ -18,6 +18,7 @@
 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagLayout;
 import java.awt.Label;
@@ -36,6 +37,8 @@ public class FourHanded extends Frame implements ActionListener {
 	Label winners = new Label("WINNERS");
 	Label loser = new Label("LOSER");
 	Label losers = new Label("LOSERS");
+	Label round = new Label("ROUND");
+	Label numbRound = new Label();
 
 	Panel upperPanel;
 	Panel middlePanel;
@@ -71,9 +74,11 @@ public class FourHanded extends Frame implements ActionListener {
         		//Determines if the game is won > 500 or lost < -200,
         		//otherwise game play continues.
         		if (Utils.isGameWon()) {
+        			Main.isGameStarted = false;
 					frame.removeAll();
         			createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
+        			Main.isGameStarted = false;
 					frame.removeAll();
         			createEndGameLostScreen();
         		} else {
@@ -121,12 +126,24 @@ public class FourHanded extends Frame implements ActionListener {
     		frame.removeAll();
         	createPlayGameScreen();
         }
+        
+        //Performs this action when the Return to Main button is pressed.
+        if (event.getActionCommand().equals("endGame")) {
+    		Utils.exportGameOptions();
+    		Utils.exportPlayerFile(Main.playerOne);
+    		Utils.exportPlayerFile(Main.playerTwo);
+    		Utils.exportPlayerFile(Main.playerThree);
+       		frame.removeAll();
+
+        	Main game = new Main();
+        	game.createMainMenuScreen();
+        }
  
         //Performs this action when the ReturnMain button is pressed.
         if (event.getActionCommand().equals("returnMain")) {
-        	Utils.saveBidData();
-        	Utils.saveTricksTakenData();
-        	frame.removeAll();
+       		Utils.saveBidData();
+       		Utils.saveTricksTakenData();
+       		frame.removeAll();
 
         	Main game = new Main();
         	game.createMainMenuScreen();
@@ -168,6 +185,14 @@ public class FourHanded extends Frame implements ActionListener {
 
 		//Create the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
+		
+		//Shows which round is being played.
+		numbRound.setText(Integer.toString(Main.round));
+		numbRound.setForeground(Main.labelColor);
+		numbRound.setFont(new Font("arial", Font.BOLD, 12));
+		middlePanel.add(round, FrameUtils.gbLayoutNormal(1, 0));
+		middlePanel.add(numbRound, FrameUtils.gbLayoutNormal(2, 0));
+		
 		FrameUtils.makeLine1(middlePanel);
 		FrameUtils.makeLine2(middlePanel);
 		FrameUtils.makeLine3(middlePanel);
@@ -194,7 +219,7 @@ public class FourHanded extends Frame implements ActionListener {
 		lowerPanel = FrameUtils.makeLowerPanel();
 		
 		//Makes all the needed buttons.
-		buttonReturnMain = FrameUtils.makeButton("  Return  ", "returnMain", false);
+		buttonReturnMain = FrameUtils.makeButton("Return to Main", "endGame", false);
 		buttonReturnMain.addActionListener(this);
 
 		//Add the buttons to the proper panels.
@@ -248,7 +273,7 @@ public class FourHanded extends Frame implements ActionListener {
 		lowerPanel = FrameUtils.makeLowerPanel();
 		
 		//Makes all the needed buttons.
-		buttonReturnMain = FrameUtils.makeButton("  Return  ", "returnMain", false);
+		buttonReturnMain = FrameUtils.makeButton("Return to Main", "endGame", false);
 		buttonReturnMain.addActionListener(this);
 
 		//Add the buttons to the proper panels.
