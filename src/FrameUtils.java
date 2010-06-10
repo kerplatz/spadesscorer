@@ -438,10 +438,10 @@ public class FrameUtils {
 		tricks.setFont(new Font("arial", Font.BOLD, 12));
 		score.setFont(new Font("arial", Font.BOLD, 12));
 
-		panel.add(name, gbLayoutNormal(0, 0));
-		panel.add(bid, gbLayoutNormal(1, 0));
-		panel.add(tricks, gbLayoutNormal(2, 0));
-		panel.add(score, gbLayoutWest(3, 0));
+		panel.add(name, gbLayoutNormal(0, 1));
+		panel.add(bid, gbLayoutNormal(1, 1));
+		panel.add(tricks, gbLayoutNormal(2, 1));
+		panel.add(score, gbLayoutWest(3, 1));
 	}
 
 	/**
@@ -462,10 +462,10 @@ public class FrameUtils {
 		player1Bid.select(Main.player1Bid);
 		player1TricksTaken.select(Main.player1TricksTaken);
 		
-		panel.add(player1Name, gbLayoutNormal(0, 1));
-		panel.add(player1Bid, gbLayoutNormal(1, 1));
-		panel.add(player1TricksTaken, gbLayoutNormal(2, 1));
-		panel.add(player1Score, gbLayoutNormal(3, 1));
+		panel.add(player1Name, gbLayoutNormal(0, 2));
+		panel.add(player1Bid, gbLayoutNormal(1, 2));
+		panel.add(player1TricksTaken, gbLayoutNormal(2, 2));
+		panel.add(player1Score, gbLayoutNormal(3, 2));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -507,10 +507,10 @@ public class FrameUtils {
 		player2Bid.select(Main.player2Bid);
 		player2TricksTaken.select(Main.player2TricksTaken);
 		
-		panel.add(player2Name, gbLayoutNormal(0, 2));
-		panel.add(player2Bid, gbLayoutNormal(1, 2));
-		panel.add(player2TricksTaken, gbLayoutNormal(2, 2));
-		panel.add(player2Score, gbLayoutNormal(3, 2));
+		panel.add(player2Name, gbLayoutNormal(0, 3));
+		panel.add(player2Bid, gbLayoutNormal(1, 3));
+		panel.add(player2TricksTaken, gbLayoutNormal(2, 3));
+		panel.add(player2Score, gbLayoutNormal(3, 3));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -552,10 +552,10 @@ public class FrameUtils {
 		player3Bid.select(Main.player3Bid);
 		player3TricksTaken.select(Main.player3TricksTaken);
 		
-		panel.add(player3Name, gbLayoutNormal(0, 3));
-		panel.add(player3Bid, gbLayoutNormal(1, 3));
-		panel.add(player3TricksTaken, gbLayoutNormal(2, 3));
-		panel.add(player3Score, gbLayoutNormal(3, 3));
+		panel.add(player3Name, gbLayoutNormal(0, 4));
+		panel.add(player3Bid, gbLayoutNormal(1, 4));
+		panel.add(player3TricksTaken, gbLayoutNormal(2, 4));
+		panel.add(player3Score, gbLayoutNormal(3, 4));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -597,10 +597,10 @@ public class FrameUtils {
 		player4Bid.select(Main.player4Bid);
 		player4TricksTaken.select(Main.player4TricksTaken);
 		
-		panel.add(player4Name, gbLayoutNormal(0, 4));
-		panel.add(player4Bid, gbLayoutNormal(1, 4));
-		panel.add(player4TricksTaken, gbLayoutNormal(2, 4));
-		panel.add(player4Score, gbLayoutNormal(3, 4));
+		panel.add(player4Name, gbLayoutNormal(0, 5));
+		panel.add(player4Bid, gbLayoutNormal(1, 5));
+		panel.add(player4TricksTaken, gbLayoutNormal(2, 5));
+		panel.add(player4Score, gbLayoutNormal(3, 5));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
