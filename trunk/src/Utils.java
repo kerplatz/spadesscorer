@@ -8,6 +8,10 @@
  * @author David Hoffman
  */
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Utils {
 
 	/**
@@ -1098,5 +1102,52 @@ public class Utils {
 	public static void nameTeams() {
 		Main.team1 = Main.player1 + " & " + Main.player3;
 		Main.team2 = Main.player2 + " & " + Main.player4;
+	}
+	
+	/**
+	 * Exports a file that contains all the Player information for each
+	 * round played.
+	 * 
+	 * @param player The Player who will have their data exported to a file.
+	 */
+	public static void exportPlayerFile(Player player) {
+		File file = new File(player.player + ".csv");
+		
+		try {
+			FileWriter fw = new FileWriter(file);
+			fw.write(player.toString());
+			fw.close();
+		} catch (IOException e) {
+			FrameUtils.showDialogBox("File could not be created.");
+		}
+	}
+	
+	/**
+	 * Exports a file that contains how the game was configured.
+	 */
+	public static void exportGameOptions() {
+		File file = new File("gameoptions.csv");
+		String str = "";
+		
+		//Say what type of game it is.
+		if (Main.isFourHandedSingle) str += "Four Handed - Single Players\n";
+		if (Main.isFourHandedTeams) str += "Four Handed - Teams\n";
+		if (Main.isThreeHanded) str += "Three Handed\n";
+		
+		//Give the values for all the options.
+		str += "Bag Value - " + Main.bagValue + "\n";
+		str += "Nil Value - " + Main.nilValue + "\n";
+		str += "Double Nil Value - " + Main.doubleNilValueNumb + "\n";
+		str += "Win Score - " + Main.winScore + "\n";
+		str += "Lose Score - " + Main.loseScore + "\n";
+		str += "Start Dealer - " + Main.startDealer + "\n";
+		
+		try {
+			FileWriter fw = new FileWriter(file);
+			fw.write(str);
+			fw.close();
+		} catch (IOException e) {
+			FrameUtils.showDialogBox("File could not be created.");
+		}
 	}
 }
