@@ -184,7 +184,7 @@ public class ThreeHanded extends Frame implements ActionListener {
 		middlePanel.setLayout(new GridBagLayout());
 		
 		//Shows which round is being played.
-		numbRound.setText(Integer.toString(Main.round));
+		numbRound.setText(Integer.toString(Main.round + 1));
 		numbRound.setForeground(Main.labelColor);
 		numbRound.setFont(new Font("arial", Font.BOLD, 12));
 		middlePanel.add(round, FrameUtils.gbLayoutNormal(1, 0));
