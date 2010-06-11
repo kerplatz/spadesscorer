@@ -73,6 +73,9 @@ public class Utils {
 		Main.team2Score = 0;
 		
 		GameSetup.gameTypeHidden.setState(true);
+		GameSetup.threeHanded.setEnabled(true);
+		GameSetup.fourHandedSingle.setEnabled(true);
+		GameSetup.fourHandedTeams.setEnabled(true);
 		GameSetup.dealerHidden.setState(true);
 	}
 
@@ -249,13 +252,14 @@ public class Utils {
 			GameOptions.bagValue.select("2");
 			GameOptions.nilValueTextField.setText("100");
 			GameOptions.nilAllowed.setState(true);
-			GameOptions.doubleNilAllowed.setState(false);
+			GameOptions.doubleNilAllowed.setState(true);
 			GameOptions.nilValueTextField.setEditable(true);
-			GameOptions.doubleNilValueTextField.setEditable(false);
+			GameOptions.doubleNilValueTextField.setEditable(true);
+
 			Main.bagValue = "2";
 			Main.nilValue = "100";
 			Main.isNilAllowed = true;
-			Main.isDoubleNilAllowed = false;
+			Main.isDoubleNilAllowed = true;
 		} else if (Main.isFourHandedSingle){
 			GameOptions.bagValue.select("1");
 			GameOptions.nilValueTextField.setText("50");
@@ -263,6 +267,7 @@ public class Utils {
 			GameOptions.doubleNilAllowed.setState(false);
 			GameOptions.nilValueTextField.setEditable(true);
 			GameOptions.doubleNilValueTextField.setEditable(false);
+
 			Main.bagValue = "1";
 			Main.nilValue = "50";
 			Main.isNilAllowed = true;
@@ -274,6 +279,7 @@ public class Utils {
 			GameOptions.doubleNilAllowed.setState(true);
 			GameOptions.nilValueTextField.setEditable(true);
 			GameOptions.doubleNilValueTextField.setEditable(true);
+
 			Main.bagValue = "1";
 			Main.nilValue = "50";
 			Main.isNilAllowed = true;
@@ -738,15 +744,15 @@ public class Utils {
 	public static boolean isRoundReady() {
 		boolean ready = true;
 		
-		if (Main.round < Integer.parseInt(EditGame.choiceBox.getSelectedItem())) {
+		if (Main.round < Integer.parseInt(EditGame.choiceBox1.getSelectedItem())) {
 			ready = false;
-		} else if (Integer.parseInt(EditGame.choiceBox.getSelectedItem()) < 0) {
+		} else if (Integer.parseInt(EditGame.choiceBox1.getSelectedItem()) < 0) {
 			ready = false;
 		}
 		
 		if (!ready) FrameUtils.showDialogBox("The number you selected is wrong.");
 		
-		EditGame.roundToEdit = Integer.parseInt(EditGame.choiceBox.getSelectedItem());
+		EditGame.roundToEdit = Integer.parseInt(EditGame.choiceBox1.getSelectedItem());
 		
 		return ready;
 	}
@@ -890,7 +896,7 @@ public class Utils {
 	public static void recordGameData() {
 		//Increment round.
 		Main.round ++;
-		System.out.println("here");
+
 		//Record the game data to the player class.
 		Main.playerOne.nextRound(Main.player1Bid, Main.player1TricksTaken);
 		Main.playerTwo.nextRound(Main.player2Bid, Main.player2TricksTaken);
@@ -1112,7 +1118,7 @@ public class Utils {
 	 */
 	public static void exportPlayerFile(Player player) {
 		File file = new File(player.player + ".csv");
-		
+
 		try {
 			FileWriter fw = new FileWriter(file);
 			fw.write(player.toString());
