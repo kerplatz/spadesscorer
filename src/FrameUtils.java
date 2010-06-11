@@ -247,6 +247,29 @@ public class FrameUtils {
 	}
 
 	/**
+	 * This method creates a choice box for selecting a current player.
+	 * 
+	 * @return A choice box with all the current players added.
+	 */
+	public static Choice makeCurrentPlayerList() {
+		Choice lst = new Choice();
+		
+		//Determine the size of the list.
+		if (Main.isThreeHanded) {
+			lst.add(Main.playerOne.player);
+			lst.add(Main.playerTwo.player);
+			lst.add(Main.playerThree.player);
+		} else {
+			lst.add(Main.playerOne.player);
+			lst.add(Main.playerTwo.player);
+			lst.add(Main.playerThree.player);
+			lst.add(Main.playerFour.player);
+		}
+		
+		return lst;
+	}
+
+	/**
 	 * This method creates a choice box for selecting the bag value.
 	 * 
 	 * @return A choice box with all the bag values added.
