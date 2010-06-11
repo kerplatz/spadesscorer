@@ -23,11 +23,11 @@ public class Player {
 	public String round = "";
 	public String bags = "";
 
-	public Boolean set = false;
+	public boolean set = false;
 
 	public String[] play;
 	
-	public ArrayList<String> turn;
+	public ArrayList turn;
 	
 	/**
 	 * Constructor that creates a new player.
@@ -35,7 +35,7 @@ public class Player {
 	 * @param playerIn The name of the player.
 	 */
 	public Player(String playerIn) {	
-		turn = new ArrayList<String>();
+		turn = new ArrayList();
 		player = playerIn;
 		round = Integer.toString(Main.round);
 		score = "0";
@@ -51,7 +51,7 @@ public class Player {
 	 * @param bagsIn The bags brought in from the old player.
 	 */
 	public Player(String playerIn, String scoreIn, String bagsIn) {	
-		turn = new ArrayList<String>();
+		turn = new ArrayList();
 		player = playerIn;
 		round = Integer.toString(Main.round);
 		score = scoreIn;
@@ -209,7 +209,12 @@ public class Player {
 		turn.add(tricksTaken);
 		turn.add(score);
 		turn.add(bags);
-		turn.add(set.toString());
+
+		if (set) {
+			turn.add("true");
+		} else {
+			turn.add("false");
+		}
 	}
 	
 	/**
@@ -219,7 +224,7 @@ public class Player {
 		String str = "";
 		String temp = "";
 		boolean flag = true;
-		int start = Utils.stringToInt(turn.get(0));
+		int start = Utils.stringToInt((String) turn.get(0));
 				
 		for (int i = start; i < turn.size(); i += 6) {
 			for (int j = 0; j < 6; j++) {
@@ -227,7 +232,7 @@ public class Player {
 				if (flag) {
 					temp = "round";
 				} else {
-					temp = turn.get(i + j);
+					temp = (String) turn.get(i + j);
 				}
 				
 				//Only used for first ArrayList item.
