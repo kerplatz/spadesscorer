@@ -110,7 +110,6 @@ public class FourHanded extends Frame implements ActionListener {
         if (event.getActionCommand().equals("play")) {
         	//Prints game data for the first time when the game has not yet
         	//started. and increments the round to 1.
-   			Utils.recordGameData();
            	Main.isGameStarted = true;
            	Main.doBidding = true;
            	
@@ -187,7 +186,7 @@ public class FourHanded extends Frame implements ActionListener {
 		middlePanel.setLayout(new GridBagLayout());
 		
 		//Shows which round is being played.
-		numbRound.setText(Integer.toString(Main.round));
+		numbRound.setText(Integer.toString(Main.round + 1));
 		numbRound.setForeground(Main.labelColor);
 		numbRound.setFont(new Font("arial", Font.BOLD, 12));
 		middlePanel.add(round, FrameUtils.gbLayoutNormal(1, 0));
