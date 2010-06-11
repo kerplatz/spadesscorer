@@ -29,7 +29,7 @@ public class EditGame extends Frame implements ActionListener {
 
 	static int roundToEdit;
 	
-	Label player = new Label("Player");
+	Label player = new Label("  Player");
 	Label bid = new Label("Bid");
 	Label tricksTaken = new Label("Tricks Taken");
 	Label bags = new Label("Bags");
@@ -57,16 +57,15 @@ public class EditGame extends Frame implements ActionListener {
 	Panel middlePanel;
 	Panel lowerPanel;
 	
-	Button buttonViewRound;
-	Button buttonEditRound;
-	Button buttonEditMore;
 	Button buttonViewPlayer;
 	Button buttonEditPlayer;
+	Button buttonEditMore;
 	Button buttonCalculateScore;
 	Button buttonReturnEdit;
 	Button buttonReturnMain;
 	
-	static Choice choiceBox;
+	static Choice choiceBox1;
+	static Choice choiceBox2;
 
 	Frame frame = new Frame();
 
@@ -84,7 +83,7 @@ public class EditGame extends Frame implements ActionListener {
 	 */
     public void actionPerformed(ActionEvent event) {
         //Performs this action when the ViewRound button is pressed.
-        if (event.getActionCommand().equals("viewRound")) {
+        if (event.getActionCommand().equals("viewPlayer")) {
         	if (Utils.isRoundReady()) {
         		if (roundToEdit == 0) {
                 	frame.removeAll();
@@ -93,13 +92,12 @@ public class EditGame extends Frame implements ActionListener {
                 	options.createOptionsScreen();
         		} else {
         			frame.removeAll();
-        			createViewRoundScreen();
         		}
         	}
         }  
 
         //Performs this action when the EditRound button is pressed.
-        if (event.getActionCommand().equals("editRound")) {
+        if (event.getActionCommand().equals("editPlayer")) {
         	if (Utils.isRoundReady()) {
         		if (roundToEdit == 0) {
                 	frame.removeAll();
@@ -108,27 +106,8 @@ public class EditGame extends Frame implements ActionListener {
                 	options.createOptionsScreen();
         		} else {
         			frame.removeAll();
-        			createViewRoundScreen();
         		}
         	}
-        }  
-
-        //Performs this action when the Edit More button is pressed.
-        if (event.getActionCommand().equals("editMore")) {
-        	frame.removeAll();
-        	createEditRoundScreen();
-        }  
-
-        //Performs this action when the Edit Player button is pressed.
-        if (event.getActionCommand().equals("editPlayer")) {
-        	frame.removeAll();
-        	createEditPlayerScreen();
-        }  
-
-        //Performs this action when the View Player button is pressed.
-        if (event.getActionCommand().equals("viewPlayer")) {
-        	frame.removeAll();
-        	createViewPlayerScreen();
         }  
 
         //Performs this action when the Calculate Score button is pressed.
@@ -162,13 +141,14 @@ public class EditGame extends Frame implements ActionListener {
 		lowerPanel = FrameUtils.makeLowerPanel();
 		
 		//Create the choice box.
-		choiceBox = FrameUtils.makeRoundList();
+		choiceBox1 = FrameUtils.makeRoundList();
+		choiceBox2 = FrameUtils.makeCurrentPlayerList();
 		
 		//Make all the needed buttons.
-		buttonViewRound = FrameUtils.makeButton("View Round", "viewRound", true);
-		buttonViewRound.addActionListener(this);
-		buttonEditRound = FrameUtils.makeButton("Edit Round", "editRound", true);
-		buttonEditRound.addActionListener(this);
+		buttonViewPlayer = FrameUtils.makeButton("View Player", "viewPlayer", true);
+		buttonViewPlayer.addActionListener(this);
+		buttonEditPlayer = FrameUtils.makeButton("Edit Player", "editPlayer", true);
+		buttonEditPlayer.addActionListener(this);
 		buttonReturnMain = FrameUtils.makeButton("  Return  ", "returnMain", false);
 		buttonReturnMain.addActionListener(this);
 		
@@ -178,9 +158,12 @@ public class EditGame extends Frame implements ActionListener {
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(roundLabel, FrameUtils.gbLayoutNormal(0, 0));
 		roundLabel.setFont(new Font("arial", Font.BOLD, 16));
-		middlePanel.add(choiceBox, FrameUtils.gbLayoutPaddingBottom(0, 1));
-		middlePanel.add(buttonViewRound, FrameUtils.gbLayoutNormal(0, 2));
-		middlePanel.add(buttonEditRound, FrameUtils.gbLayoutNormal(0, 3));
+		middlePanel.add(choiceBox1, FrameUtils.gbLayoutNormal(0, 1));
+		middlePanel.add(player, FrameUtils.gbLayoutNormal(0, 2));
+		player.setFont(new Font("arial", Font.BOLD, 16));
+		middlePanel.add(choiceBox2, FrameUtils.gbLayoutNormal(0, 3));
+		middlePanel.add(buttonViewPlayer, FrameUtils.gbLayoutNormal(0, 4));
+		middlePanel.add(buttonEditPlayer, FrameUtils.gbLayoutNormal(0, 5));
 
 		//This adds all the panels to the frame.
 		frame.add(upperPanel, BorderLayout.NORTH);
@@ -191,92 +174,15 @@ public class EditGame extends Frame implements ActionListener {
     }
     
     /**
-     * Creates the Edit Round Screen.
-     */
-    public void createEditRoundScreen() {
-		//Create the 3 panel components of the screen.
-		upperPanel = FrameUtils.makeUpperPanel("edit round");
-		middlePanel = FrameUtils.makeMiddlePanel();
-		lowerPanel = FrameUtils.makeLowerPanel();
-		
-		//Make all the needed buttons.
-		buttonCalculateScore = FrameUtils.makeButton("Calculate Score", "calculateScore", false);
-		buttonCalculateScore.addActionListener(this);
-		buttonEditMore = FrameUtils.makeButton("Edit More", "editMore", false);
-		buttonEditMore.addActionListener(this);
-		buttonReturnEdit = FrameUtils.makeButton("  Return  ", "returnEdit", false);
-		buttonReturnEdit.addActionListener(this);
-		
-		//Add the buttons to the proper panels.
-		lowerPanel.add(buttonReturnEdit);
-		
-		//This adds all the panels to the frame.
-		frame.add(upperPanel, BorderLayout.NORTH);
-		frame.add(middlePanel, BorderLayout.CENTER);
-		frame.add(lowerPanel, BorderLayout.SOUTH);
-		
-		frame.setVisible(true);
-	}
-
-	/**
-	 * Creates the View Round Screen
-	 */
-    public void createViewRoundScreen() {
-		//Create the 3 panel components of the screen.
-		upperPanel = FrameUtils.makeUpperPanel("view round");
-		middlePanel = FrameUtils.makeMiddlePanel();
-		lowerPanel = FrameUtils.makeLowerPanel();
-		
-		//Make all the needed buttons.
-		buttonReturnEdit = FrameUtils.makeButton("  Return  ", "returnEdit", false);
-		buttonReturnEdit.addActionListener(this);
-		
-		//Add the buttons to the proper panels.
-		lowerPanel.add(buttonReturnEdit);
-		
-		//Add a current player list to choose from.
-		middlePanel.add(FrameUtils.makeCurrentPlayerList());
-		
-		//This adds all the panels to the frame.
-		frame.add(upperPanel, BorderLayout.NORTH);
-		frame.add(middlePanel, BorderLayout.CENTER);
-		frame.add(lowerPanel, BorderLayout.SOUTH);
-		
-		frame.setVisible(true);
-	}
-    
-    /**
      * Creates the View Player Screen.
      */
     public void createViewPlayerScreen() {
-		//Create the 3 panel components of the screen.
-		upperPanel = FrameUtils.makeUpperPanel("view round");
-		middlePanel = FrameUtils.makeMiddlePanel();
-		lowerPanel = FrameUtils.makeLowerPanel();
-		
-		//Make all the needed buttons.
-		buttonReturnEdit = FrameUtils.makeButton("  Return  ", "returnEdit", false);
-		buttonReturnEdit.addActionListener(this);
-		
-		//Add the buttons to the proper panels.
-		lowerPanel.add(buttonReturnEdit);
-		
-		//Add a current player list to choose from.
-		middlePanel.add(FrameUtils.makeCurrentPlayerList());
-		
-		//This adds all the panels to the frame.
-		frame.add(upperPanel, BorderLayout.NORTH);
-		frame.add(middlePanel, BorderLayout.CENTER);
-		frame.add(lowerPanel, BorderLayout.SOUTH);
-		
-		frame.setVisible(true);
 	}
 
 	/**
 	 * Creates the Edit Player Screen.
 	 */
     public void createEditPlayerScreen() {
-		// TODO Auto-generated method stub
-		
-	}
+
+    }
 }
