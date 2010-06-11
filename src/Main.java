@@ -33,7 +33,7 @@ public class Main  extends Frame implements ActionListener,
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static ArrayList<String> names;
+	public static ArrayList names;
 	
 	public static boolean isGameStarted = false;
 	public static boolean isSetupDone;
@@ -334,7 +334,7 @@ public class Main  extends Frame implements ActionListener,
 	private static void loadNames() throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader("names.txt"));
 		String line;
-		names = new ArrayList<String>();
+		names = new ArrayList();
 
 	    try {    
 	    	if (!in.ready());
