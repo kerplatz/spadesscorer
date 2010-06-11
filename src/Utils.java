@@ -890,7 +890,7 @@ public class Utils {
 	public static void recordGameData() {
 		//Increment round.
 		Main.round ++;
-		
+		System.out.println("here");
 		//Record the game data to the player class.
 		Main.playerOne.nextRound(Main.player1Bid, Main.player1TricksTaken);
 		Main.playerTwo.nextRound(Main.player2Bid, Main.player2TricksTaken);
