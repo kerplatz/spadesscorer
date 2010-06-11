@@ -161,9 +161,9 @@ public class FourHanded extends Frame implements ActionListener {
 		//Makes all the needed buttons.
 		buttonReturnMain = FrameUtils.makeButton("Main Menu", "returnMain", false);
 		buttonReturnMain.addActionListener(this);
-		buttonBidding = FrameUtils.makeButton(" Bidding ", "bidding", false);
+		buttonBidding = FrameUtils.makeButton("  Next  ", "bidding", false);
 		buttonBidding.addActionListener(this);
-		buttonScoring = FrameUtils.makeButton(" Scoring ", "scoring", false);
+		buttonScoring = FrameUtils.makeButton("End Round", "scoring", false);
 		buttonScoring.addActionListener(this);
 		buttonBack = FrameUtils.makeButton(" Back ", "back", false);
 		buttonBack.addActionListener(this);
