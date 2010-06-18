@@ -35,8 +35,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-public class GameOptions extends Frame implements ActionListener,
-												  ItemListener {
+public class GameOptions extends Frame implements ActionListener, ItemListener {
 
 	/**
 	 * Declare needed variables.
