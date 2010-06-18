@@ -92,6 +92,11 @@ public class Utils {
 	 * Shows the player names if they were previously entered.
 	 */
 	public static void showPreviousPlayerNames() {
+		System.out.println("player 1- " + Main.player1);
+		System.out.println("player 2- " + Main.player2);
+		System.out.println("player 3- " + Main.player3);
+		System.out.println("player 4- " + Main.player4);
+		
 		GameSetup.choiceBoxPlayer1.select(Main.player1);
 		GameSetup.choiceBoxPlayer2.select(Main.player2);
 		GameSetup.choiceBoxPlayer3.select(Main.player3);
@@ -149,18 +154,27 @@ public class Utils {
 	 * Clears the player names.
 	 */
 	public static void clearPlayerNames() {
-		GameSetup.choiceBoxPlayer1.select(0);
-		GameSetup.choiceBoxPlayer2.select(0);
-		GameSetup.choiceBoxPlayer3.select(0);
-		
-		Main.player1 = "";
-		Main.player2 = "";
-		Main.player3 = "";
+		if (GameSetup.choiceBoxPlayer1.isEnabled()) {
+			GameSetup.choiceBoxPlayer1.select(0);
+			Main.player1 = "";
+		}
+
+		if (GameSetup.choiceBoxPlayer2.isEnabled()) {
+			GameSetup.choiceBoxPlayer2.select(0);
+			Main.player2 = "";
+		}
+
+		if (GameSetup.choiceBoxPlayer3.isEnabled()) {
+			GameSetup.choiceBoxPlayer3.select(0);
+			Main.player3 = "";
+		}
 		
 		//Don't show fourth player if playing 3 handed game.
 		if (!Main.isThreeHanded) {
-			GameSetup.choiceBoxPlayer4.select(0);
-			Main.player4 = "";
+			if (GameSetup.choiceBoxPlayer4.isEnabled()) {
+				GameSetup.choiceBoxPlayer4.select(0);
+				Main.player4 = "";
+			}
 		}
 	}
 
@@ -535,6 +549,27 @@ public class Utils {
 
 		return gameLost;
 	}
+
+	/**
+	 * This method is used to determine if the choice box selection is good.
+	 * 
+	 * @return True if a valid round has been selected, otherwise false.
+	 */
+	public static boolean isRoundReady() {
+		boolean ready = true;
+		
+		if (Main.round < Integer.parseInt(EditGame.choiceBox1.getSelectedItem())) {
+			ready = false;
+		} else if (Integer.parseInt(EditGame.choiceBox1.getSelectedItem()) < 0) {
+			ready = false;
+		}
+		
+		if (!ready) FrameUtils.showDialogBox("The number you selected is wrong.");
+		
+		EditGame.roundToEdit = Integer.parseInt(EditGame.choiceBox1.getSelectedItem());
+		
+		return ready;
+	}
 	
 	/**
 	 * Determines which Player or team won the game. TIES ARE NOT FIGURED.
@@ -737,27 +772,6 @@ public class Utils {
 	}
 
 	/**
-	 * This method is used to determine if the choice box selection is good.
-	 * 
-	 * @return True if a valid round has been selected, otherwise false.
-	 */
-	public static boolean isRoundReady() {
-		boolean ready = true;
-		
-		if (Main.round < Integer.parseInt(EditGame.choiceBox1.getSelectedItem())) {
-			ready = false;
-		} else if (Integer.parseInt(EditGame.choiceBox1.getSelectedItem()) < 0) {
-			ready = false;
-		}
-		
-		if (!ready) FrameUtils.showDialogBox("The number you selected is wrong.");
-		
-		EditGame.roundToEdit = Integer.parseInt(EditGame.choiceBox1.getSelectedItem());
-		
-		return ready;
-	}
-
-	/**
 	 * Gets the GameType Selected and saves it to the appropriate variable.
 	 */
 	public static void saveGameType() {
@@ -898,12 +912,12 @@ public class Utils {
 		Main.round ++;
 
 		//Record the game data to the player class.
-		Main.playerOne.nextRound(Main.player1Bid, Main.player1TricksTaken);
-		Main.playerTwo.nextRound(Main.player2Bid, Main.player2TricksTaken);
-		Main.playerThree.nextRound(Main.player3Bid, Main.player3TricksTaken);
+		Main.playerOne.inputRound(Main.player1Bid, Main.player1TricksTaken);
+		Main.playerTwo.inputRound(Main.player2Bid, Main.player2TricksTaken);
+		Main.playerThree.inputRound(Main.player3Bid, Main.player3TricksTaken);
 
 		if (!Main.isThreeHanded) {
-			Main.playerFour.nextRound(Main.player4Bid, Main.player4TricksTaken);
+			Main.playerFour.inputRound(Main.player4Bid, Main.player4TricksTaken);
 		}
 	}
 
@@ -1155,5 +1169,47 @@ public class Utils {
 		} catch (IOException e) {
 			FrameUtils.showDialogBox("File could not be created.");
 		}
+	}
+	
+	/**
+	 * 
+	 * @param player
+	 * @param roundIn
+	 * @param scoreIn
+	 */
+	public void reCalculateScore(Player player, String roundIn, String scoreIn) {
+
+	
+	}
+
+	/**
+	 * 
+	 * @param player
+	 * @param roundIn
+	 * @param bidIn
+	 * @param tricksIn
+	 */
+	public void reCalculateScore(Player player, String roundIn, String bidIn,
+			String tricksIn) {
+
+		
+	}
+	
+	/**
+	 * This method saves and exports the player being changed and creates
+	 * the new player to take his place.
+	 * 
+	 * @param old The player to be changed.
+	 * @param addNew The new player to be added.
+	 * @param place The player number to be changed.
+	 */
+	public static void changePlayer(Player old, Player addNew, int place) {
+		exportPlayerFile(old);
+		Main.playerPrevious = old;
+		
+		if (place == 1) Main.playerOne = addNew;
+		if (place == 2) Main.playerTwo = addNew;
+		if (place == 3) Main.playerThree = addNew;
+		if (place == 4) Main.playerFour = addNew;
 	}
 }
