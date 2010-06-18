@@ -107,6 +107,7 @@ public class Main  extends Frame implements ActionListener,
 	public static Player playerTwo;
 	public static Player playerThree;
 	public static Player playerFour;
+	public static Player playerPrevious;
 	
 	Panel upperPanel;
 	Panel middlePanel;
@@ -160,33 +161,41 @@ public class Main  extends Frame implements ActionListener,
     		
         	//Shows the correct screens for the game being played.
         	if (isThreeHanded) {
-        		ThreeHanded three = new ThreeHanded(frame);
-        		playerOne = new Player(player1);
-        		playerTwo = new Player(player2);
-        		playerThree = new Player(player3);
+        		//Create player only if a new game is started.
+        		if (!isGameStarted) {
+        			playerOne = new Player(player1);
+        			playerTwo = new Player(player2);
+        			playerThree = new Player(player3);
+        		}
         		
+        		ThreeHanded three = new ThreeHanded(frame);
            		three.createPlayGameScreen();
         	}
 
         	if (isFourHandedSingle) {
-        		FourHanded four = new FourHanded(frame);
-        		playerOne = new Player(player1);
-        		playerTwo = new Player(player2);
-        		playerThree = new Player(player3);
-        		playerFour = new Player(player4);
+        		//Create player only if a new game is started.
+        		if (!isGameStarted) {
+        			playerOne = new Player(player1);
+        			playerTwo = new Player(player2);
+        			playerThree = new Player(player3);
+        			playerFour = new Player(player4);
+        		}
         		
+        		FourHanded four = new FourHanded(frame);
            		four.createPlayGameScreen();
         	}
 
         	if (isFourHandedTeams) {
-        		Utils.nameTeams();
-
-        		TwoTeams teams = new TwoTeams(frame);
-        		playerOne = new Player(player1);
-        		playerTwo = new Player(player2);
-        		playerThree = new Player(player3);
-        		playerFour = new Player(player4);
+        		//Create player only if a new game is started.
+        		if (!isGameStarted) {
+        			playerOne = new Player(player1);
+        			playerTwo = new Player(player2);
+        			playerThree = new Player(player3);
+        			playerFour = new Player(player4);
+        			Utils.nameTeams();
+        		}
         		
+        		TwoTeams teams = new TwoTeams(frame);
            		teams.createPlayGameScreen();
         	}
         }  
