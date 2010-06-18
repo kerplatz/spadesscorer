@@ -1,4 +1,4 @@
-/**
+/**FINISHED
  * Player.java
  * 
  * This class describes a player. Its main function is to record in an
@@ -20,13 +20,12 @@ public class Player {
 	public String bid = "";
 	public String tricksTaken = "";
 	public String score = "";
-	public String round = "";
 	public String bags = "";
+	
+	public int round_no;
 
 	public boolean set = false;
 
-	public String[] play;
-	
 	public ArrayList turn;
 	
 	/**
@@ -36,10 +35,12 @@ public class Player {
 	 */
 	public Player(String playerIn) {	
 		turn = new ArrayList();
+		round_no = 0;
 		player = playerIn;
-		round = Integer.toString(Main.round);
 		score = "0";
 		bags = "0";
+		
+		//Creates the first round which is just column headers.
 		beginRound();
 	}
 
@@ -52,26 +53,13 @@ public class Player {
 	 */
 	public Player(String playerIn, String scoreIn, String bagsIn) {	
 		turn = new ArrayList();
+		round_no = Main.round;
 		player = playerIn;
-		round = Integer.toString(Main.round);
 		score = scoreIn;
 		bags = bagsIn;
+
+		//Creates the first round which is just column headers.
 		beginRound();
-	}
-	
-	/**
-	 * Method is used to input the bids and tricks taken by the player.
-	 * 
-	 * @param bidIn The bid made by the player.
-	 * @param tricksIn The amount of tricks taken by the player.
-	 */
-	public void nextRound(String bidIn, String tricksIn) {
-		round = Integer.toString(Main.round);
-		bid = bidIn;
-		tricksTaken = tricksIn;
-		
-		calculateScore();
-		saveTurn();
 	}
 
 	/**
@@ -79,12 +67,45 @@ public class Player {
 	 * the header for the CSV file.
 	 */
 	public void beginRound() {
-		turn.add(round);
+		turn.add("round");
 		turn.add("bid");
 		turn.add("tricks");
 		turn.add("score");
 		turn.add("bags");
 		turn.add("set");
+	}
+	
+	/**
+	 * Method is used to input the bid and tricks taken by the player.
+	 * 
+	 * @param bidIn The bid made by the player.
+	 * @param tricksIn The amount of tricks taken by the player.
+	 */
+	public void inputRound(String bidIn, String tricksIn) {
+		round_no++;
+		bid = bidIn;
+		tricksTaken = tricksIn;
+		
+		//Computes and saves the rest of the round information.
+		calculateScore();
+		saveTurn();
+	}
+
+	/**
+	 * Saves the player turn to the ArrayList.
+	 */
+	public void saveTurn() {
+		turn.add(Integer.toString(round_no));
+		turn.add(bid);
+		turn.add(tricksTaken);
+		turn.add(score);
+		turn.add(bags);
+
+		if (set) {
+			turn.add("true");
+		} else {
+			turn.add("false");
+		}
 	}
 	
 	/**
@@ -176,13 +197,6 @@ public class Player {
 		bags = Integer.toString(bagsTotal);
 		score = Integer.toString(scoreTemp);
 	}
-	
-	/**
-	 * Recalculates the score after a change was made to the ArrayList.
-	 */
-	public void reCalculateScore() {
-		
-	}
 
 	/**
 	 * This method counts the number of times the player went set.
@@ -199,23 +213,6 @@ public class Player {
 		
 		return Integer.toString(numb);
 	}
-
-	/**
-	 * Saves the player turn to the ArrayList.
-	 */
-	public void saveTurn() {
-		turn.add(round);
-		turn.add(bid);
-		turn.add(tricksTaken);
-		turn.add(score);
-		turn.add(bags);
-
-		if (set) {
-			turn.add("true");
-		} else {
-			turn.add("false");
-		}
-	}
 	
 	/**
 	 * Convert the player object to a string.
@@ -223,20 +220,12 @@ public class Player {
 	public String toString() {
 		String str = "";
 		String temp = "";
-		boolean flag = true;
 		int start = Utils.stringToInt((String) turn.get(0));
 				
 		for (int i = start; i < turn.size(); i += 6) {
 			for (int j = 0; j < 6; j++) {
 				//Get the desired item from the ArrayList.
-				if (flag) {
-					temp = "round";
-				} else {
-					temp = (String) turn.get(i + j);
-				}
-				
-				//Only used for first ArrayList item.
-				flag = false;
+				temp = (String) turn.get(i + j);
 				
 				//Add the ArrayList item to the output String.
 				str += temp;
