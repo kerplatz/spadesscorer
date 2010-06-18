@@ -221,6 +221,8 @@ public class FrameUtils {
 			lst.add(numb.toString());
 		}
 		
+		lst.add("all");
+		
 		//Set the selection to the current round since it is the likely
 		//round to be edited.
 		lst.select(Main.round);
