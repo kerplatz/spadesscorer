@@ -80,6 +80,7 @@ public class Main  extends Frame implements ActionListener,
 	public static String winScore;
 	public static String loseScore;
 
+	public static int game = 1;
 	public static int round;
 	public static int player1TimesSet;
 	public static int player2TimesSet;
@@ -96,6 +97,7 @@ public class Main  extends Frame implements ActionListener,
 	public static Color backgroundColor;
 	public static Color labelColor;
 	public static Color textColor;
+	public static Color goDoubleColor;
 	public static Color fgMiddleButtonColor;
 	public static Color bgMiddleButtonColor;
 	public static Color fgLowerButtonColor;
@@ -108,6 +110,10 @@ public class Main  extends Frame implements ActionListener,
 	public static Player playerThree;
 	public static Player playerFour;
 	public static Player playerPrevious;
+	
+	public static Team teamOne;
+	public static Team teamTwo;
+	public static Team teamPrevious;
 	
 	Panel upperPanel;
 	Panel middlePanel;
@@ -139,6 +145,18 @@ public class Main  extends Frame implements ActionListener,
     public void actionPerformed(ActionEvent event) {
         //Performs this action when the NewGame button is pressed.
         if (event.getActionCommand().equals("newGame")) {
+        	if (isGameStarted || isGameWon || isGameLost) {
+            	Utils.exportGameOptions();
+            	Utils.exportPlayerFile(playerOne);
+            	Utils.exportPlayerFile(playerTwo);
+            	Utils.exportPlayerFile(playerThree);
+            	
+            	if (!isThreeHanded) {
+                	Utils.exportPlayerFile(playerFour);
+            	}
+            	game++;
+        	}
+        	
         	frame.removeAll();
         	Utils.resetGame();
 
@@ -192,7 +210,12 @@ public class Main  extends Frame implements ActionListener,
         			playerTwo = new Player(player2);
         			playerThree = new Player(player3);
         			playerFour = new Player(player4);
-        			Utils.nameTeams();
+        			
+        			teamOne = new Team(playerOne, playerThree);
+        			teamTwo = new Team(playerTwo, playerFour);
+        			
+        			team1 = teamOne.name;
+        			team2 = teamTwo.name;
         		}
         		
         		TwoTeams teams = new TwoTeams(frame);
