@@ -70,9 +70,6 @@ public class ThreeHanded extends Frame implements ActionListener {
         	if (Utils.processScoring()) {
         		Utils.recordGameData();
        			Utils.postScores();
-       			Utils.exportPlayerFile(Main.playerOne);
-       			Utils.exportPlayerFile(Main.playerTwo);
-       			Utils.exportPlayerFile(Main.playerThree);
 
         		//Determines if the game is won  or lost, otherwise game play
        			//continues.
