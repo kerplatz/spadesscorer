@@ -77,6 +77,11 @@ public class Utils {
 		GameSetup.fourHandedSingle.setEnabled(true);
 		GameSetup.fourHandedTeams.setEnabled(true);
 		GameSetup.dealerHidden.setState(true);
+		GameSetup.choiceBoxPlayer1.setEnabled(true);
+		GameSetup.choiceBoxPlayer2.setEnabled(true);
+		GameSetup.choiceBoxPlayer3.setEnabled(true);
+		GameSetup.choiceBoxPlayer4.setEnabled(true);
+
 	}
 
 	/**
@@ -92,11 +97,6 @@ public class Utils {
 	 * Shows the player names if they were previously entered.
 	 */
 	public static void showPreviousPlayerNames() {
-		System.out.println("player 1- " + Main.player1);
-		System.out.println("player 2- " + Main.player2);
-		System.out.println("player 3- " + Main.player3);
-		System.out.println("player 4- " + Main.player4);
-		
 		GameSetup.choiceBoxPlayer1.select(Main.player1);
 		GameSetup.choiceBoxPlayer2.select(Main.player2);
 		GameSetup.choiceBoxPlayer3.select(Main.player3);
@@ -503,7 +503,7 @@ public class Utils {
 		}
 		if (Main.isFourHandedTeams){
 			if (Main.team1Score >= Main.winScoreNumb ||
-					Main.team1Score >= Main.winScoreNumb) {
+					Main.team2Score >= Main.winScoreNumb) {
 				gameWon = true;
 			}
 		}
@@ -539,7 +539,7 @@ public class Utils {
 		}
 		if (Main.isFourHandedTeams){
 			if (Main.team1Score <= Main.loseScoreNumb ||
-					Main.team1Score <= Main.loseScoreNumb) {
+					Main.team2Score <= Main.loseScoreNumb) {
 				gameLost = true;
 			}
 		}
@@ -572,201 +572,140 @@ public class Utils {
 	}
 	
 	/**
-	 * Determines which Player or team won the game. TIES ARE NOT FIGURED.
+	 * Determines which Player won the game. TIES ARE NOT FIGURED.
 	 * 
 	 * @return The winner of the game.
 	 */
 	public static Player whoWonGame() {
+		int highest = Main.winScoreNumb;
 		Player winner = null;
-		boolean found = false;
 		
 		//Three handed play.
 		if (Main.isThreeHanded){
-			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) >= highest) {
+				highest = Utils.stringToInt(Main.player1Score);
 				winner = Main.playerOne;
-				found = true;
-			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player2Score)
-							>= Utils.stringToInt(Main.player1Score)) {
-						winner = Main.playerTwo;
-					}
-				} else {
-					winner = Main.playerTwo;
-					found = true;
-				}
-			} else if (Utils.stringToInt(Main.player3Score) >= (Main.winScoreNumb)) {
-				if (found) {
-					if (Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player1Score) &&
-							Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player2Score)) {
-						winner = Main.playerThree;
-					}
-				} else {
-					winner = Main.playerThree;
-				}
 			}
-			
-			return winner;
+			if (Utils.stringToInt(Main.player2Score) >= highest) {
+				highest = Utils.stringToInt(Main.player2Score);
+				winner = Main.playerTwo;
+			}
+			if (Utils.stringToInt(Main.player3Score) >= highest) {
+				highest = Utils.stringToInt(Main.player3Score);
+				winner = Main.playerThree;
+			}
 		}
 		
 		//Four handed play with no teams.
 		if (Main.isFourHandedSingle){
-			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) >= highest) {
+				highest = Utils.stringToInt(Main.player1Score);
 				winner = Main.playerOne;
-				found = true;
-			} else if (Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player2Score)
-							>= Utils.stringToInt(Main.player1Score)) {
-						winner = Main.playerTwo;
-					}
-				} else {
-					winner = Main.playerTwo;
-					found = true;
-				}
-			} else if (Utils.stringToInt(Main.player3Score) >= Main.winScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player1Score) &&
-							Utils.stringToInt(Main.player3Score)
-							>= Utils.stringToInt(Main.player2Score)) {
-						winner = Main.playerThree;
-					}
-				} else {
-					winner = Main.playerThree;
-					found = true;
-				}
-			} else if (Utils.stringToInt(Main.player4Score) >= Main.winScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player4Score)
-							>= Utils.stringToInt(Main.player1Score) &&
-							Utils.stringToInt(Main.player4Score)
-							>= Utils.stringToInt(Main.player2Score) &&
-							Utils.stringToInt(Main.player4Score)
-							>= Utils.stringToInt(Main.player3Score)) {
-						winner = Main.playerFour;
-					}
-				} else {
-					winner = Main.playerFour;
-				}
 			}
-			
-			return winner;
+			if (Utils.stringToInt(Main.player2Score) >= highest) {
+				highest = Utils.stringToInt(Main.player2Score);
+				winner = Main.playerTwo;
+			}
+			if (Utils.stringToInt(Main.player3Score) >= highest) {
+				highest = Utils.stringToInt(Main.player3Score);
+				winner = Main.playerThree;
+			}
+			if (Utils.stringToInt(Main.player4Score) >= highest) {
+				highest = Utils.stringToInt(Main.player4Score);
+				winner = Main.playerFour;
+			}
 		}
-		
-		//Four handed play with 2 teams.
-		/*if (Main.isFourHandedSingle){
-			if (Main.team1Score >= Main.winScoreNumb && Main.team2Score >= Main.winScoreNumb) {
-				if (Main.team1Score > Main.team2Score) winner = Main.team1;
-				if (Main.team1Score < Main.team2Score) winner = Main.team2;
-			} else if (Main.team1Score >= Main.winScoreNumb) {
-				winner = Main.team1;
-			} else if (Main.team2Score >= Main.winScoreNumb) {
-				winner = Main.team2;
-			}
-		}*/
 		
 		return winner;
 	}
 
 	/**
-	 * Determines which Player or team lost the game. TIES ARE NOT FIGURED.
+	 * Determines which Team won the game. TIES ARE NOT FIGURED.
+	 * 
+	 * @return The winner of the game.
+	 */
+	public static Team whoWonGameTeam() {
+		int highest = Main.winScoreNumb;
+		Team winner = null;
+		
+		if (Main.team1Score >= highest) {
+			highest = Main.team1Score;
+			winner = Main.teamOne;
+		}
+		if (Main.team2Score >= highest) {
+			highest = Main.team2Score;
+			winner = Main.teamTwo;
+		}
+		
+		return winner;
+	}
+	
+	/**
+	 * Determines which Player lost the game. TIES ARE NOT FIGURED.
 	 * 
 	 * @return The loser of the game.
 	 */
 	public static Player whoLostGame() {
+		int lowest = Main.loseScoreNumb;
 		Player loser = null;
-		boolean found = false;
+		
 		
 		//Three handed play.
 		if (Main.isThreeHanded){
-			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) <= lowest) {
+				lowest = Utils.stringToInt(Main.player1Score);
 				loser = Main.playerOne;
-				found = true;
-			} else if (Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player2Score)
-							<= Utils.stringToInt(Main.player1Score)) {
-						loser = Main.playerTwo;
-					}
-				} else {
-					loser = Main.playerTwo;
-					found = true;
-				}
-			} else if (Utils.stringToInt(Main.player3Score) <= (Main.loseScoreNumb)) {
-				if (found) {
-					if (Utils.stringToInt(Main.player3Score)
-							<= Utils.stringToInt(Main.player1Score) &&
-							Utils.stringToInt(Main.player3Score)
-							<= Utils.stringToInt(Main.player2Score)) {
-						loser = Main.playerThree;
-					}
-				} else {
-					loser = Main.playerThree;
-				}
 			}
-			
-			return loser;
+			if (Utils.stringToInt(Main.player2Score) <= lowest) {
+				lowest = Utils.stringToInt(Main.player2Score);
+				loser = Main.playerTwo;
+			}
+			if (Utils.stringToInt(Main.player3Score) <= lowest) {
+				lowest = Utils.stringToInt(Main.player3Score);
+				loser = Main.playerThree;
+			}
 		}
 		
 		//Four handed play with no teams.
 		if (Main.isFourHandedSingle){
-			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb) {
+			if (Utils.stringToInt(Main.player1Score) <= lowest) {
+				lowest = Utils.stringToInt(Main.player1Score);
 				loser = Main.playerOne;
-				found = true;
-			} else if (Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player2Score)
-							<= Utils.stringToInt(Main.player1Score)) {
-						loser = Main.playerTwo;
-					}
-				} else {
-					loser = Main.playerTwo;
-					found = true;
-				}
-			} else if (Utils.stringToInt(Main.player3Score) <= Main.loseScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player3Score)
-							<= Utils.stringToInt(Main.player1Score) &&
-							Utils.stringToInt(Main.player3Score)
-							<= Utils.stringToInt(Main.player2Score)) {
-						loser = Main.playerThree;
-					}
-				} else {
-					loser = Main.playerThree;
-					found = true;
-				}
-			} else if (Utils.stringToInt(Main.player4Score) <= Main.loseScoreNumb) {
-				if (found) {
-					if (Utils.stringToInt(Main.player4Score)
-							<= Utils.stringToInt(Main.player1Score) &&
-							Utils.stringToInt(Main.player4Score)
-							<= Utils.stringToInt(Main.player2Score) &&
-							Utils.stringToInt(Main.player4Score)
-							<= Utils.stringToInt(Main.player3Score)) {
-						loser = Main.playerFour;
-					}
-				} else {
-					loser = Main.playerFour;
-				}
 			}
-			
-			return loser;
+			if (Utils.stringToInt(Main.player2Score) <= lowest) {
+				lowest = Utils.stringToInt(Main.player2Score);
+				loser = Main.playerTwo;
+			}
+			if (Utils.stringToInt(Main.player3Score) <= lowest) {
+				lowest = Utils.stringToInt(Main.player3Score);
+				loser = Main.playerThree;
+			}
+			if (Utils.stringToInt(Main.player4Score) <= lowest) {
+				lowest = Utils.stringToInt(Main.player4Score);
+				loser = Main.playerFour;
+			}
 		}
 		
-		//Four handed play with 2 teams.
-		/*if (Main.isFourHandedSingle){
-			if (Main.team1Score >= Main.winScoreNumb && Main.team2Score >= Main.winScoreNumb) {
-				if (Main.team1Score > Main.team2Score) loser = Main.team1;
-				if (Main.team1Score < Main.team2Score) loser = Main.team2;
-			} else if (Main.team1Score >= Main.winScoreNumb) {
-				loser = Main.team1;
-			} else if (Main.team2Score >= Main.winScoreNumb) {
-				loser = Main.team2;
-			}
-		}*/
+		return loser;
+	}
+	
+	/**
+	 * Determines which Team lost the game. TIES ARE NOT FIGURED.
+	 * 
+	 * @return The loser of the game.
+	 */
+	public static Team whoLostGameTeam() {
+		int lowest = Main.loseScoreNumb;
+		Team loser = null;
+		
+		if (Main.team1Score >= lowest) {
+			lowest = Main.team1Score;
+			loser = Main.teamOne;
+		}
+		if (Main.team2Score >= lowest) {
+			lowest = Main.team2Score;
+			loser = Main.teamTwo;
+		}
 		
 		return loser;
 	}
@@ -1117,21 +1056,13 @@ public class Utils {
 	}
 	
 	/**
-	 * Names the teams when the game is four handed teams.
-	 */
-	public static void nameTeams() {
-		Main.team1 = Main.player1 + " & " + Main.player3;
-		Main.team2 = Main.player2 + " & " + Main.player4;
-	}
-	
-	/**
 	 * Exports a file that contains all the Player information for each
 	 * round played.
 	 * 
 	 * @param player The Player who will have their data exported to a file.
 	 */
 	public static void exportPlayerFile(Player player) {
-		File file = new File(player.player + ".csv");
+		File file = new File(player.player + "_game" + Main.game + ".csv");
 
 		try {
 			FileWriter fw = new FileWriter(file);
@@ -1146,7 +1077,7 @@ public class Utils {
 	 * Exports a file that contains how the game was configured.
 	 */
 	public static void exportGameOptions() {
-		File file = new File("gameoptions.csv");
+		File file = new File("game" + Main.game + "_options.csv");
 		String str = "";
 		
 		//Say what type of game it is.
@@ -1197,7 +1128,8 @@ public class Utils {
 	
 	/**
 	 * This method saves and exports the player being changed and creates
-	 * the new player to take his place.
+	 * the new player to take his place. Also transfers bags and score from
+	 * the previous player to the new player.
 	 * 
 	 * @param old The player to be changed.
 	 * @param addNew The new player to be added.
@@ -1205,11 +1137,85 @@ public class Utils {
 	 */
 	public static void changePlayer(Player old, Player addNew, int place) {
 		exportPlayerFile(old);
-		Main.playerPrevious = old;
+		Main.playerPrevious = new Player(old.player);
+		Main.playerPrevious.equals(old);
 		
-		if (place == 1) Main.playerOne = addNew;
-		if (place == 2) Main.playerTwo = addNew;
-		if (place == 3) Main.playerThree = addNew;
-		if (place == 4) Main.playerFour = addNew;
+		//Copy the players from temp to the correct player.
+		if (place == 1) {
+			Main.playerOne.equals(addNew);
+		}
+		if (place == 2) {
+			Main.playerTwo.equals(addNew);
+		}
+		if (place == 3) {
+			Main.playerThree.equals(addNew);
+		}
+		if (place == 4) {
+			Main.playerFour.equals(addNew);
+		}
+	}
+	
+	/**
+	 * Provides an indication that the player can go double.
+	 * 
+	 * @param The player that wants to go double.
+	 */
+	public static boolean goDoublePlayer(Player player) {
+		int highest= -100;
+		boolean allowed = false;
+		
+		//Find the highest score, three handed.
+		if (Main.isThreeHanded) {
+			if(Utils.stringToInt(Main.playerOne.score) > highest)
+				highest = Utils.stringToInt(Main.playerOne.score);
+			if(Utils.stringToInt(Main.playerTwo.score) > highest)
+				highest = Utils.stringToInt(Main.playerTwo.score);
+			if(Utils.stringToInt(Main.playerThree.score) > highest)
+				highest = Utils.stringToInt(Main.playerThree.score);
+			
+			//Compare highest with player to see if difference exceeds 200.
+			if (Utils.stringToInt(player.score) + 200 <= highest)
+				allowed = true;
+		}
+		
+		//Find the highest score, four handed.
+		if (Main.isFourHandedSingle) {
+			if(Utils.stringToInt(Main.playerOne.score) > highest)
+				highest = Utils.stringToInt(Main.playerOne.score);
+			if(Utils.stringToInt(Main.playerTwo.score) > highest)
+				highest = Utils.stringToInt(Main.playerTwo.score);
+			if(Utils.stringToInt(Main.playerThree.score) > highest)
+				highest = Utils.stringToInt(Main.playerThree.score);
+			if(Utils.stringToInt(Main.playerFour.score) > highest)
+				highest = Utils.stringToInt(Main.playerFour.score);
+			
+			//Compare highest with player to see if difference exceeds 200.
+			if (Utils.stringToInt(player.score) + 200 <= highest)
+				allowed = true;
+		}
+		
+		return allowed;
+	}
+	
+	/**
+	 * Provides an indication that the team can go double.
+	 * 
+	 * @param The team that wants to go double.
+	 */
+	public static boolean goDoubleTeam(Team team) {
+		int highest = -100;
+		boolean allowed = false;
+		
+		//Find the highest score.
+		if (Utils.stringToInt(Main.teamOne.score) > highest) 
+			highest = Utils.stringToInt(Main.teamOne.score);
+		if (Utils.stringToInt(Main.teamTwo.score) > highest) 
+			highest = Utils.stringToInt(Main.teamTwo.score);
+		
+		//Compare highest with team to see if difference exceeds 200.
+		if (Utils.stringToInt(team.score) + 200 <= highest)
+			allowed = true;
+	
+		return allowed;
 	}
 }
