@@ -132,7 +132,8 @@ public class FourHanded extends Frame implements ActionListener {
     		Utils.exportPlayerFile(Main.playerOne);
     		Utils.exportPlayerFile(Main.playerTwo);
     		Utils.exportPlayerFile(Main.playerThree);
-       		frame.removeAll();
+    		Utils.exportPlayerFile(Main.playerFour);
+      		frame.removeAll();
 
         	Main game = new Main();
         	game.createMainMenuScreen();
