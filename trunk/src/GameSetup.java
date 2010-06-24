@@ -44,10 +44,10 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 	
 	boolean hasPlayerChanged = false;
 
-	static Choice choiceBoxPlayer1;
-	static Choice choiceBoxPlayer2;
-	static Choice choiceBoxPlayer3;
-	static Choice choiceBoxPlayer4;
+	static Choice choiceBoxPlayer1 = new Choice();
+	static Choice choiceBoxPlayer2 = new Choice();
+	static Choice choiceBoxPlayer3 = new Choice();
+	static Choice choiceBoxPlayer4 = new Choice();
 	
 	static CheckboxGroup gameTypeGroup = new CheckboxGroup();
 	static Checkbox gameTypeHidden = new Checkbox("Hidden", gameTypeGroup, false);
@@ -153,19 +153,23 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
             	if (hasPlayerChanged) {
             		//Determine which player was changed.
             		if (player1Checkbox.getState()) {
-            			Player temp = new Player(Main.player1);
+            			Player temp = new Player(Main.player1,
+            					Main.playerOne.score, Main.playerOne.bags);
             			Utils.changePlayer(Main.playerOne, temp, 1);
             		}
             		if (player2Checkbox.getState()) {
-            			Player temp = new Player(Main.player2);
+            			Player temp = new Player(Main.player2,
+            					Main.playerTwo.score, Main.playerTwo.bags);
             			Utils.changePlayer(Main.playerTwo, temp, 2);
             		}
             		if (player3Checkbox.getState()) {
-            			Player temp = new Player(Main.player3);
+            			Player temp = new Player(Main.player3,
+            					Main.playerThree.score, Main.playerThree.bags);
             			Utils.changePlayer(Main.playerThree, temp, 3);
             		}
             		if (player4Checkbox.getState()) {
-            			Player temp = new Player(Main.player4);
+            			Player temp = new Player(Main.player4,
+            					Main.playerFour.score, Main.playerFour.bags);
             			Utils.changePlayer(Main.playerFour, temp, 4);
             		}
             	}
