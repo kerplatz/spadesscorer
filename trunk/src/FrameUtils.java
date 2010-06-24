@@ -409,6 +409,7 @@ public class FrameUtils {
 		Main.bgLowerButtonColor = new Color(255, 0 ,0);
 		Main.fgTextHighlightedColor = new Color(255, 255, 255);
 		Main.bgTextHighlightedColor = new Color(0, 0, 255);
+		Main.goDoubleColor = new Color(127, 255, 0);
 	}
 
 	/**
@@ -424,6 +425,8 @@ public class FrameUtils {
 		Main.bgLowerButtonColor = new Color(0, 0, 0); 
 		Main.fgTextHighlightedColor = new Color(255, 255, 255);
 		Main.bgTextHighlightedColor = new Color(0, 0, 255);
+		Main.bgTextHighlightedColor = new Color(0, 0, 255);
+		Main.goDoubleColor = new Color(127, 255, 0);
 	}
 
 	/**
@@ -439,6 +442,8 @@ public class FrameUtils {
 		Main.bgLowerButtonColor = new Color(160, 32, 240);
 		Main.fgTextHighlightedColor = new Color(255, 255, 255);
 		Main.bgTextHighlightedColor = new Color(0, 0, 255);
+		Main.bgTextHighlightedColor = new Color(0, 0, 255);
+		Main.goDoubleColor = new Color(127, 255, 0);
 	}
 
 	/**
@@ -506,6 +511,11 @@ public class FrameUtils {
 			player1Name.setForeground(Main.textColor);
 			player1Name.setFont(new Font("arial", Font.PLAIN, 12));
 		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerOne)) {
+			player1Name.setBackground(Main.goDoubleColor);
+		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
 		if (Main.doBidding) player1TricksTaken.setEnabled(false);
@@ -550,6 +560,11 @@ public class FrameUtils {
 		} else {
 			player2Name.setForeground(Main.textColor);
 			player2Name.setFont(new Font("arial", Font.PLAIN, 12));
+		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerTwo)) {
+			player2Name.setBackground(Main.goDoubleColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -596,6 +611,11 @@ public class FrameUtils {
 			player3Name.setForeground(Main.textColor);
 			player3Name.setFont(new Font("arial", Font.PLAIN, 12));
 		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerThree)) {
+			player3Name.setBackground(Main.goDoubleColor);
+		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
 		if (Main.doBidding) player3TricksTaken.setEnabled(false);
@@ -640,6 +660,11 @@ public class FrameUtils {
 		} else {
 			player4Name.setForeground(Main.textColor);
 			player4Name.setFont(new Font("arial", Font.PLAIN, 12));
+		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerFour)) {
+			player4Name.setBackground(Main.goDoubleColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
