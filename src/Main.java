@@ -72,6 +72,8 @@ public class Main  extends Frame implements ActionListener,
 	public static String player2Score;
 	public static String player3Score;
 	public static String player4Score;
+	public static String team1Score;
+	public static String team2Score;
 	public static String curDealer;
 	public static String startDealer;
 	public static String bagValue;
@@ -86,8 +88,6 @@ public class Main  extends Frame implements ActionListener,
 	public static int player2TimesSet;
 	public static int player3TimesSet;
 	public static int player4TimesSet;
-	public static int team1Score;
-	public static int team2Score;
 	public static int bagValueNumb;
 	public static int nilValueNumb;
 	public static int doubleNilValueNumb;
@@ -214,8 +214,7 @@ public class Main  extends Frame implements ActionListener,
         			teamOne = new Team(playerOne, playerThree);
         			teamTwo = new Team(playerTwo, playerFour);
         			
-        			team1 = teamOne.name;
-        			team2 = teamTwo.name;
+        			Utils.saveTeamNames();
         		}
         		
         		TwoTeams teams = new TwoTeams(frame);
