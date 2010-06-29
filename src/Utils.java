@@ -69,8 +69,8 @@ public class Utils {
 		Main.player2Score = "0";
 		Main.player3Score = "0";
 		Main.player4Score = "0";
-		Main.team1Score = 0;
-		Main.team2Score = 0;
+		Main.team1Score = "0";
+		Main.team2Score = "0";
 		
 		GameSetup.gameTypeHidden.setState(true);
 		GameSetup.threeHanded.setEnabled(true);
@@ -502,8 +502,8 @@ public class Utils {
 			}
 		}
 		if (Main.isFourHandedTeams){
-			if (Main.team1Score >= Main.winScoreNumb ||
-					Main.team2Score >= Main.winScoreNumb) {
+			if (Utils.stringToInt(Main.team1Score) >= Main.winScoreNumb ||
+					Utils.stringToInt(Main.team2Score) >= Main.winScoreNumb) {
 				gameWon = true;
 			}
 		}
@@ -538,8 +538,8 @@ public class Utils {
 			}
 		}
 		if (Main.isFourHandedTeams){
-			if (Main.team1Score <= Main.loseScoreNumb ||
-					Main.team2Score <= Main.loseScoreNumb) {
+			if (Utils.stringToInt(Main.team1Score) <= Main.loseScoreNumb ||
+					Utils.stringToInt(Main.team2Score) <= Main.loseScoreNumb) {
 				gameLost = true;
 			}
 		}
@@ -628,12 +628,12 @@ public class Utils {
 		int highest = Main.winScoreNumb;
 		Team winner = null;
 		
-		if (Main.team1Score >= highest) {
-			highest = Main.team1Score;
+		if (Utils.stringToInt(Main.team1Score) >= highest) {
+			highest = Utils.stringToInt(Main.team1Score);
 			winner = Main.teamOne;
 		}
-		if (Main.team2Score >= highest) {
-			highest = Main.team2Score;
+		if (Utils.stringToInt(Main.team2Score) >= highest) {
+			highest = Utils.stringToInt(Main.team2Score);
 			winner = Main.teamTwo;
 		}
 		
@@ -698,12 +698,12 @@ public class Utils {
 		int lowest = Main.loseScoreNumb;
 		Team loser = null;
 		
-		if (Main.team1Score >= lowest) {
-			lowest = Main.team1Score;
+		if (Utils.stringToInt(Main.team1Score) >= lowest) {
+			lowest = Utils.stringToInt(Main.team1Score);
 			loser = Main.teamOne;
 		}
-		if (Main.team2Score >= lowest) {
-			lowest = Main.team2Score;
+		if (Utils.stringToInt(Main.team2Score) >= lowest) {
+			lowest = Utils.stringToInt(Main.team2Score);
 			loser = Main.teamTwo;
 		}
 		
@@ -739,6 +739,14 @@ public class Utils {
 		if (!Main.isThreeHanded) {
 			Main.player4 = GameSetup.choiceBoxPlayer4.getSelectedItem();
 		}
+	}
+
+	/**
+	 * Gets the team names and copies them to their assigned names.
+	 */
+	public static void saveTeamNames() {
+		Main.team1 = Main.teamOne.name;
+		Main.team2 = Main.teamTwo.name;
 	}
 
 	/**
@@ -851,12 +859,16 @@ public class Utils {
 		Main.round ++;
 
 		//Record the game data to the player class.
-		Main.playerOne.inputRound(Main.player1Bid, Main.player1TricksTaken);
-		Main.playerTwo.inputRound(Main.player2Bid, Main.player2TricksTaken);
-		Main.playerThree.inputRound(Main.player3Bid, Main.player3TricksTaken);
+		if (Main.isFourHandedTeams) {
+			
+		} else {
+			Main.playerOne.inputRound(Main.player1Bid, Main.player1TricksTaken);
+			Main.playerTwo.inputRound(Main.player2Bid, Main.player2TricksTaken);
+			Main.playerThree.inputRound(Main.player3Bid, Main.player3TricksTaken);
 
-		if (!Main.isThreeHanded) {
-			Main.playerFour.inputRound(Main.player4Bid, Main.player4TricksTaken);
+			if (!Main.isThreeHanded) {
+				Main.playerFour.inputRound(Main.player4Bid, Main.player4TricksTaken);
+			}
 		}
 	}
 
@@ -864,12 +876,16 @@ public class Utils {
 	 * This method posts the scores from each player.
 	 */
 	public static void postScores() {
-		Main.player1Score = Main.playerOne.score;
-		Main.player2Score = Main.playerTwo.score;
-		Main.player3Score = Main.playerThree.score;
+		if (Main.isFourHandedTeams) {
+			
+		} else {
+			Main.player1Score = Main.playerOne.score;
+			Main.player2Score = Main.playerTwo.score;
+			Main.player3Score = Main.playerThree.score;
 
-		if (!Main.isThreeHanded) {
-			Main.player4Score = Main.playerFour.score;
+			if (!Main.isThreeHanded) {
+				Main.player4Score = Main.playerFour.score;
+			}
 		}
 	}
 	
@@ -935,6 +951,65 @@ public class Utils {
 			}
 		}
 		
+		//Show dialog box reminder.
+		if (!done) FrameUtils.showDialogBox("Tricks taken was entered wrong.");
+			
+		//Save tricks taken data.
+		saveTricksTakenData();
+		
+		return done;
+	}
+	
+	/**
+	 * Process the scoring info before the bidding screen is shown.
+	 * 
+	 * @return True if scoring is complete, false otherwise.
+	 */
+	public static boolean processScoringTeams() {
+		boolean done = true;
+		int player1Tricks = 0;
+		int player2Tricks = 0;
+		int player3Tricks = 0;
+		int player4Tricks = 0;
+		
+		player1Tricks = FrameUtils.player1TricksTaken.getSelectedIndex();
+		player2Tricks = FrameUtils.player2TricksTaken.getSelectedIndex();
+		player3Tricks = FrameUtils.player3TricksTaken.getSelectedIndex();
+		player4Tricks = FrameUtils.player4TricksTaken.getSelectedIndex();
+		
+		//Check if all the choice boxes have been selected.
+		if (player1Tricks == -1 || player1Tricks == 0) {
+			done = false;
+		}
+		if (player2Tricks == -1 || player2Tricks == 0) {
+			done = false;
+		}
+		if (player3Tricks == -1 || player3Tricks == 0) {
+			done = false;
+			if (FrameUtils.player3Bid.getSelectedItem() != "nil" ||
+					FrameUtils.player3Bid.getSelectedItem() != "dbl") {
+				done = true;
+			}
+		}
+		if (player4Tricks == -1 || player4Tricks == 0) {
+			done = false;
+			if (FrameUtils.player4Bid.getSelectedItem() != "nil" ||
+					FrameUtils.player4Bid.getSelectedItem() != "dbl") {
+				done = true;
+			}
+		}
+
+		//Get the value of all the players tricks taken.
+		player1Tricks = stringToInt(FrameUtils.player1TricksTaken.getSelectedItem());
+		player2Tricks = stringToInt(FrameUtils.player2TricksTaken.getSelectedItem());
+		player3Tricks = stringToInt(FrameUtils.player3TricksTaken.getSelectedItem());
+		player4Tricks = stringToInt(FrameUtils.player4TricksTaken.getSelectedItem());
+		
+		//Check if tricks taken in a game equals 13.
+		if (player1Tricks + player2Tricks + player3Tricks + player4Tricks != 13) {
+			done = false;
+		}
+	
 		//Show dialog box reminder.
 		if (!done) FrameUtils.showDialogBox("Tricks taken was entered wrong.");
 			
@@ -1067,6 +1142,24 @@ public class Utils {
 		try {
 			FileWriter fw = new FileWriter(file);
 			fw.write(player.toString());
+			fw.close();
+		} catch (IOException e) {
+			FrameUtils.showDialogBox("File could not be created.");
+		}
+	}
+
+	/**
+	 * Exports a file that contains all the Team information for each
+	 * round played.
+	 * 
+	 * @param player The Team who will have their data exported to a file.
+	 */
+	public static void exportTeamFile(Team team) {
+		File file = new File(team.name + "_game" + Main.game + ".csv");
+
+		try {
+			FileWriter fw = new FileWriter(file);
+			fw.write(team.toString());
 			fw.close();
 		} catch (IOException e) {
 			FrameUtils.showDialogBox("File could not be created.");
