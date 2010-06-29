@@ -41,9 +41,15 @@ public class FrameUtils {
 	static Label player2Sets = new Label();
 	static Label player3Sets = new Label();
 	static Label player4Sets = new Label();
+	static Label team1 = new Label("Team1");
+	static Label team2 = new Label("Team2");
 	static Label score = new Label("Score");
 	static Label bags = new Label("Bags");
 	static Label sets = new Label("Sets");
+	static Label team1Name = new Label();
+	static Label team2Name = new Label();
+	static Label team1Score = new Label();
+	static Label team2Score = new Label();
 
 	static Choice player1Bid;
 	static Choice player2Bid;
@@ -302,6 +308,62 @@ public class FrameUtils {
 	    
 	    return gridBagConstraints;
 	}
+	
+	/**
+	 * This method places the object on the screen at these relative positions
+	 * with a 0 pixel padding around it.
+	 * 
+	 * @param gridx The relative column.
+	 * @param gridy The relative row.
+	 * 
+	 * @return The GridBagConstraints Object that describes this relative location.
+	 */
+	public static GridBagConstraints gbLayoutDouble(int gridx, int gridy) {
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+	    gridBagConstraints.gridx = gridx;
+	    gridBagConstraints.gridy = gridy;
+	    gridBagConstraints.gridwidth = 2;    
+	    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+	    
+	    return gridBagConstraints;
+	}
+	
+	/**
+	 * This method places the object on the screen at these relative positions
+	 * with a 0 pixel padding around it.
+	 * 
+	 * @param gridx The relative column.
+	 * @param gridy The relative row.
+	 * 
+	 * @return The GridBagConstraints Object that describes this relative location.
+	 */
+	public static GridBagConstraints gbLayoutTight(int gridx, int gridy) {
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+	    gridBagConstraints.gridx = gridx;
+	    gridBagConstraints.gridy = gridy;
+	    gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+	    
+	    return gridBagConstraints;
+	}
+	
+	/**
+	 * This method places the object on the screen at these relative positions
+	 * with a 0 pixel padding around it.
+	 * 
+	 * @param gridx The relative column.
+	 * @param gridy The relative row.
+	 * 
+	 * @return The GridBagConstraints Object that describes this relative location.
+	 */
+	public static GridBagConstraints gbLayoutTightDouble(int gridx, int gridy) {
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();
+	    gridBagConstraints.gridx = gridx;
+	    gridBagConstraints.gridy = gridy;
+	    gridBagConstraints.gridwidth = 2;    
+	    gridBagConstraints.insets = new Insets(0, 0, 0, 0);
+	    
+	    return gridBagConstraints;
+	}
 
 	/**
 	 * This method places the object on the screen at these relative positions
@@ -444,6 +506,281 @@ public class FrameUtils {
 		Main.bgTextHighlightedColor = new Color(0, 0, 255);
 		Main.bgTextHighlightedColor = new Color(0, 0, 255);
 		Main.goDoubleColor = new Color(127, 255, 0);
+	}
+
+	/**
+	 * This method creates the first line displayed in the middle panel,
+	 * it contains the Team 1 names and their score.
+	 * 
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine1(Panel panel) {
+		team1Name.setText(Main.team1);
+		team1Score.setText(Main.team1Score);
+		
+		team1Name.setFont(new Font("arial", Font.BOLD, 12));
+		team1Score.setFont(new Font("arial", Font.BOLD, 12));
+
+		panel.add(team1, gbLayoutTight(0, 1));
+		panel.add(team1Name, gbLayoutTightDouble(1, 1));
+		panel.add(team1Score, gbLayoutTight(3, 1));
+	}
+
+	/**
+	 * This method creates the second line displayed in the middle panel.
+	 * it contains the Player1 information.
+	 * 
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine2(Panel panel) {
+		player1Name.setText(Main.player1);
+		player1Bid = makeBidList();
+		
+		//Create the needed tricks taken choice box.
+		player1TricksTaken = makeTricksTakenList();
+		
+		//Show the values of the Choice boxes.
+		player1Bid.select(Main.player1Bid);
+		player1TricksTaken.select(Main.player1TricksTaken);
+		
+		panel.add(player1Name, gbLayoutNormal(0, 2));
+		panel.add(player1Bid, gbLayoutNormal(1, 2));
+		panel.add(player1TricksTaken, gbLayoutNormal(2, 2));
+		
+		//Set Choice boxes to not editable when game has not started.
+		if (!Main.isGameStarted) {
+			player1Bid.setEnabled(false);
+			player1TricksTaken.setEnabled(false);
+		}
+		
+		//Show if player is the dealer.
+		if (Main.dealerIsPlayer1) {
+			player1Name.setForeground(Main.bgTextHighlightedColor);
+			player1Name.setFont(new Font("arial", Font.BOLD, 12));
+		} else {
+			player1Name.setForeground(Main.textColor);
+			player1Name.setFont(new Font("arial", Font.PLAIN, 12));
+		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerOne)) {
+			player1Name.setBackground(Main.goDoubleColor);
+		}
+		
+		//Set TricksTaken Choice boxes to not editable when bidding.
+		if (Main.doBidding) player1TricksTaken.setEnabled(false);
+		
+		//Set Bid Choice boxes to not editable when scoring.
+		if (Main.doScoring) player1Bid.setEnabled(false);
+	}
+
+	/**
+	 * This method creates the third line displayed in the middle panel.
+	 * it contains the Player3 information.
+	 *
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine3(Panel panel) {
+		player3Name.setText(Main.player3);
+		player3Bid = makeBidList();
+		
+		//Create the needed tricks taken choice box.
+		player3TricksTaken = makeTricksTakenList();
+		
+		//Show the values of the Choice boxes.
+		player3Bid.select(Main.player3Bid);
+		player3TricksTaken.select(Main.player3TricksTaken);
+		
+		panel.add(player3Name, gbLayoutTight(0, 3));
+		panel.add(player3Bid, gbLayoutTight(1, 3));
+		panel.add(player3TricksTaken, gbLayoutTight(2, 3));
+		
+		//Set Choice boxes to not editable when game has not started.
+		if (!Main.isGameStarted) {
+			player3Bid.setEnabled(false);
+			player3TricksTaken.setEnabled(false);
+		}
+		
+		//Show if player is the dealer.
+		if (Main.dealerIsPlayer3) {
+			player3Name.setForeground(Main.bgTextHighlightedColor);
+			player3Name.setFont(new Font("arial", Font.BOLD, 12));
+		} else {
+			player3Name.setForeground(Main.textColor);
+			player3Name.setFont(new Font("arial", Font.PLAIN, 12));
+		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerThree)) {
+			player3Name.setBackground(Main.goDoubleColor);
+		}
+		
+		//Set TricksTaken Choice boxes to not editable when bidding.
+		if (Main.doBidding) player3TricksTaken.setEnabled(false);
+		
+		//Set Bid Choice boxes to not editable when scoring.
+		if (Main.doScoring) player3Bid.setEnabled(false);
+
+		if (player3Bid.getSelectedItem() == "nil" ||
+				player3Bid.getSelectedItem() == "dbl" ||
+				player1Bid.getSelectedItem() == "nil" ||
+				player1Bid.getSelectedItem() == "dbl") {
+			player3TricksTaken.setVisible(true);
+		} else {
+			player3TricksTaken.setVisible(false);
+
+		}
+	}
+
+	/**
+	 * This method creates the forth line displayed in the middle panel.
+	 * it contains the screen layout information.
+	 *
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine4(Panel panel) {
+		Label name = new Label("Name");
+		Label bid = new Label("Bid");
+		Label tricks = new Label("Tricks");
+		Label score = new Label("Score");
+		
+		name.setForeground(Main.labelColor);
+		bid.setForeground(Main.labelColor);
+		tricks.setForeground(Main.labelColor);
+		score.setForeground(Main.labelColor);
+		
+		name.setFont(new Font("arial", Font.BOLD, 12));
+		bid.setFont(new Font("arial", Font.BOLD, 12));
+		tricks.setFont(new Font("arial", Font.BOLD, 12));
+		score.setFont(new Font("arial", Font.BOLD, 12));
+
+		panel.add(name, gbLayoutTight(0, 4));
+		panel.add(bid, gbLayoutTight(1, 4));
+		panel.add(tricks, gbLayoutTight(2, 4));
+		panel.add(score, gbLayoutTight(3, 4));
+	}
+
+	/**
+	 * This method creates the fifth line displayed in the middle panel.
+	 * it contains the Player2 information.
+	 *
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine5(Panel panel) {
+		player2Name.setText(Main.player2);
+		player2Bid = makeBidList();
+		
+		//Create the needed tricks taken choice box.
+		player2TricksTaken = makeTricksTakenList();
+		
+		//Show the values of the Choice boxes.
+		player2Bid.select(Main.player2Bid);
+		player2TricksTaken.select(Main.player2TricksTaken);
+		
+		panel.add(player2Name, gbLayoutNormal(0, 5));
+		panel.add(player2Bid, gbLayoutNormal(1, 5));
+		panel.add(player2TricksTaken, gbLayoutNormal(2, 5));
+		
+		//Set Choice boxes to not editable when game has not started.
+		if (!Main.isGameStarted) {
+			player2Bid.setEnabled(false);
+			player2TricksTaken.setEnabled(false);
+		}
+		
+		//Show if player is the dealer.
+		if (Main.dealerIsPlayer2) {
+			player2Name.setForeground(Main.bgTextHighlightedColor);
+			player2Name.setFont(new Font("arial", Font.BOLD, 12));
+		} else {
+			player2Name.setForeground(Main.textColor);
+			player2Name.setFont(new Font("arial", Font.PLAIN, 12));
+		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerTwo)) {
+			player2Name.setBackground(Main.goDoubleColor);
+		}
+		
+		//Set TricksTaken Choice boxes to not editable when bidding.
+		if (Main.doBidding) player2TricksTaken.setEnabled(false);
+		
+		//Set Bid Choice boxes to not editable when scoring.
+		if (Main.doScoring) player2Bid.setEnabled(false);
+	}
+
+	/**
+	 * This method creates the sixth line displayed in the middle panel.
+	 * it contains the Player4 information.
+	 *
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine6(Panel panel) {
+		player4Name.setText(Main.player4);
+		player4Bid = makeBidList();
+		
+		//Create the needed tricks taken choice box.
+		player4TricksTaken = makeTricksTakenList();
+		
+		//Show the values of the Choice boxes.
+		player4Bid.select(Main.player4Bid);
+		player4TricksTaken.select(Main.player4TricksTaken);
+		
+		panel.add(player4Name, gbLayoutTight(0, 6));
+		panel.add(player4Bid, gbLayoutTight(1, 6));
+		panel.add(player4TricksTaken, gbLayoutTight(2, 6));
+		
+		//Set Choice boxes to not editable when game has not started.
+		if (!Main.isGameStarted) {
+			player4Bid.setEnabled(false);
+			player4TricksTaken.setEnabled(false);
+		}
+		
+		//Show if player is the dealer.
+		if (Main.dealerIsPlayer4) {
+			player4Name.setForeground(Main.bgTextHighlightedColor);
+			player4Name.setFont(new Font("arial", Font.BOLD, 12));
+		} else {
+			player4Name.setForeground(Main.textColor);
+			player4Name.setFont(new Font("arial", Font.PLAIN, 12));
+		}
+
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerFour)) {
+			player4Name.setBackground(Main.goDoubleColor);
+		}
+		
+		//Set TricksTaken Choice boxes to not editable when bidding.
+		if (Main.doBidding) player4TricksTaken.setEnabled(false);
+		
+		//Set Bid Choice boxes to not editable when scoring.
+		if (Main.doScoring) player4Bid.setEnabled(false);
+
+		if (player4Bid.getSelectedItem() == "nil" ||
+				player4Bid.getSelectedItem() == "dbl" ||
+				player2Bid.getSelectedItem() == "nil" ||
+				player2Bid.getSelectedItem() == "dbl") {
+			player4TricksTaken.setVisible(true);
+		} else {
+			player4TricksTaken.setVisible(false);
+		}
+	}
+
+	/**
+	 * This method creates the seventh line displayed in the middle panel.
+	 * it contains the Team 2 names and their score.
+	 *
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine7(Panel panel) {
+		team2Name.setText(Main.team2);
+		team2Score.setText(Main.team2Score);
+		
+		team2Name.setFont(new Font("arial", Font.BOLD, 12));
+		team2Score.setFont(new Font("arial", Font.BOLD, 12));
+
+		panel.add(team2, gbLayoutNormal(0, 7));
+		panel.add(team2Name, gbLayoutDouble(1, 7));
+		panel.add(team2Score, gbLayoutNormal(3, 7));
 	}
 
 	/**
