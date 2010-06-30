@@ -528,11 +528,29 @@ public class FrameUtils {
 
 	/**
 	 * This method creates the second line displayed in the middle panel.
+	 * it contains the Team 2 names and their score.
+	 *
+	 * @param panel The panel that the items are added to.
+	 */
+	public static void makeTeamsLine2(Panel panel) {
+		team2Name.setText(Main.team2);
+		team2Score.setText(Main.team2Score);
+		
+		team2Name.setFont(new Font("arial", Font.BOLD, 12));
+		team2Score.setFont(new Font("arial", Font.BOLD, 12));
+
+		panel.add(team2, gbLayoutTight(0, 2));
+		panel.add(team2Name, gbLayoutTightDouble(1, 2));
+		panel.add(team2Score, gbLayoutTight(3, 2));
+	}
+
+	/**
+	 * This method creates the third line displayed in the middle panel.
 	 * it contains the Player1 information.
 	 * 
 	 * @param panel The panel that the items are added to.
 	 */
-	public static void makeTeamsLine2(Panel panel) {
+	public static void makeTeamsLine3(Panel panel) {
 		player1Name.setText(Main.player1);
 		player1Bid = makeBidList();
 		
@@ -543,9 +561,9 @@ public class FrameUtils {
 		player1Bid.select(Main.player1Bid);
 		player1TricksTaken.select(Main.player1TricksTaken);
 		
-		panel.add(player1Name, gbLayoutNormal(0, 2));
-		panel.add(player1Bid, gbLayoutNormal(1, 2));
-		panel.add(player1TricksTaken, gbLayoutNormal(2, 2));
+		panel.add(player1Name, gbLayoutNormal(0, 3));
+		panel.add(player1Bid, gbLayoutNormal(1, 3));
+		panel.add(player1TricksTaken, gbLayoutNormal(2, 3));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -575,12 +593,12 @@ public class FrameUtils {
 	}
 
 	/**
-	 * This method creates the third line displayed in the middle panel.
+	 * This method creates the forth line displayed in the middle panel.
 	 * it contains the Player3 information.
 	 *
 	 * @param panel The panel that the items are added to.
 	 */
-	public static void makeTeamsLine3(Panel panel) {
+	public static void makeTeamsLine4(Panel panel) {
 		player3Name.setText(Main.player3);
 		player3Bid = makeBidList();
 		
@@ -591,9 +609,9 @@ public class FrameUtils {
 		player3Bid.select(Main.player3Bid);
 		player3TricksTaken.select(Main.player3TricksTaken);
 		
-		panel.add(player3Name, gbLayoutTight(0, 3));
-		panel.add(player3Bid, gbLayoutTight(1, 3));
-		panel.add(player3TricksTaken, gbLayoutTight(2, 3));
+		panel.add(player3Name, gbLayoutTight(0, 4));
+		panel.add(player3Bid, gbLayoutTight(1, 4));
+		panel.add(player3TricksTaken, gbLayoutTight(2, 4));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -621,10 +639,7 @@ public class FrameUtils {
 		//Set Bid Choice boxes to not editable when scoring.
 		if (Main.doScoring) player3Bid.setEnabled(false);
 
-		if (player3Bid.getSelectedItem() == "nil" ||
-				player3Bid.getSelectedItem() == "dbl" ||
-				player1Bid.getSelectedItem() == "nil" ||
-				player1Bid.getSelectedItem() == "dbl") {
+		if (TwoTeams.nilBidTeam1) {
 			player3TricksTaken.setVisible(true);
 		} else {
 			player3TricksTaken.setVisible(false);
@@ -633,12 +648,12 @@ public class FrameUtils {
 	}
 
 	/**
-	 * This method creates the forth line displayed in the middle panel.
+	 * This method creates the fifth line displayed in the middle panel.
 	 * it contains the screen layout information.
 	 *
 	 * @param panel The panel that the items are added to.
 	 */
-	public static void makeTeamsLine4(Panel panel) {
+	public static void makeTeamsLine5(Panel panel) {
 		Label name = new Label("Name");
 		Label bid = new Label("Bid");
 		Label tricks = new Label("Tricks");
@@ -654,19 +669,19 @@ public class FrameUtils {
 		tricks.setFont(new Font("arial", Font.BOLD, 12));
 		score.setFont(new Font("arial", Font.BOLD, 12));
 
-		panel.add(name, gbLayoutTight(0, 4));
-		panel.add(bid, gbLayoutTight(1, 4));
-		panel.add(tricks, gbLayoutTight(2, 4));
-		panel.add(score, gbLayoutTight(3, 4));
+		panel.add(name, gbLayoutTight(0, 5));
+		panel.add(bid, gbLayoutTight(1, 5));
+		panel.add(tricks, gbLayoutTight(2, 5));
+		panel.add(score, gbLayoutTight(3, 5));
 	}
 
 	/**
-	 * This method creates the fifth line displayed in the middle panel.
+	 * This method creates the sixth line displayed in the middle panel.
 	 * it contains the Player2 information.
 	 *
 	 * @param panel The panel that the items are added to.
 	 */
-	public static void makeTeamsLine5(Panel panel) {
+	public static void makeTeamsLine6(Panel panel) {
 		player2Name.setText(Main.player2);
 		player2Bid = makeBidList();
 		
@@ -677,9 +692,9 @@ public class FrameUtils {
 		player2Bid.select(Main.player2Bid);
 		player2TricksTaken.select(Main.player2TricksTaken);
 		
-		panel.add(player2Name, gbLayoutNormal(0, 5));
-		panel.add(player2Bid, gbLayoutNormal(1, 5));
-		panel.add(player2TricksTaken, gbLayoutNormal(2, 5));
+		panel.add(player2Name, gbLayoutNormal(0, 6));
+		panel.add(player2Bid, gbLayoutNormal(1, 6));
+		panel.add(player2TricksTaken, gbLayoutNormal(2, 6));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -709,12 +724,12 @@ public class FrameUtils {
 	}
 
 	/**
-	 * This method creates the sixth line displayed in the middle panel.
+	 * This method creates the seventh line displayed in the middle panel.
 	 * it contains the Player4 information.
 	 *
 	 * @param panel The panel that the items are added to.
 	 */
-	public static void makeTeamsLine6(Panel panel) {
+	public static void makeTeamsLine7(Panel panel) {
 		player4Name.setText(Main.player4);
 		player4Bid = makeBidList();
 		
@@ -725,9 +740,9 @@ public class FrameUtils {
 		player4Bid.select(Main.player4Bid);
 		player4TricksTaken.select(Main.player4TricksTaken);
 		
-		panel.add(player4Name, gbLayoutTight(0, 6));
-		panel.add(player4Bid, gbLayoutTight(1, 6));
-		panel.add(player4TricksTaken, gbLayoutTight(2, 6));
+		panel.add(player4Name, gbLayoutTight(0, 7));
+		panel.add(player4Bid, gbLayoutTight(1, 7));
+		panel.add(player4TricksTaken, gbLayoutTight(2, 7));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -755,32 +770,11 @@ public class FrameUtils {
 		//Set Bid Choice boxes to not editable when scoring.
 		if (Main.doScoring) player4Bid.setEnabled(false);
 
-		if (player4Bid.getSelectedItem() == "nil" ||
-				player4Bid.getSelectedItem() == "dbl" ||
-				player2Bid.getSelectedItem() == "nil" ||
-				player2Bid.getSelectedItem() == "dbl") {
+		if (TwoTeams.nilBidTeam2) {
 			player4TricksTaken.setVisible(true);
 		} else {
 			player4TricksTaken.setVisible(false);
 		}
-	}
-
-	/**
-	 * This method creates the seventh line displayed in the middle panel.
-	 * it contains the Team 2 names and their score.
-	 *
-	 * @param panel The panel that the items are added to.
-	 */
-	public static void makeTeamsLine7(Panel panel) {
-		team2Name.setText(Main.team2);
-		team2Score.setText(Main.team2Score);
-		
-		team2Name.setFont(new Font("arial", Font.BOLD, 12));
-		team2Score.setFont(new Font("arial", Font.BOLD, 12));
-
-		panel.add(team2, gbLayoutNormal(0, 7));
-		panel.add(team2Name, gbLayoutDouble(1, 7));
-		panel.add(team2Score, gbLayoutNormal(3, 7));
 	}
 
 	/**
