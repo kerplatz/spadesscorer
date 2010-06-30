@@ -73,8 +73,15 @@ public class FrameUtils {
 		
 		//Set the look of the panel.
 		title.setAlignment(Label.CENTER);
-		title.setFont(new Font("arial", Font.BOLD, 20));
 		title.setForeground(Main.labelColor);
+		
+		//Set font size for label.
+		if (!Main.isFourHandedTeams) {
+			title.setFont(new Font("arial", Font.BOLD, 20));
+		} else {
+			title.setFont(new Font("arial", Font.BOLD, 18));
+		}
+		
 		upper.setBackground(Main.backgroundColor);
 		upper.add(title);
 		
@@ -428,7 +435,7 @@ public class FrameUtils {
 		
 		//Create a modal dialog.
 		dialog = new Dialog(window, "ATTENTION: Please do this.", true);
-		dialog.setLocation(5, 100);
+		dialog.setLocation(0, 100);
 		
 		//Use a flow layout.
 		dialog.setLayout(new FlowLayout());
@@ -521,6 +528,13 @@ public class FrameUtils {
 		team1Name.setFont(new Font("arial", Font.BOLD, 12));
 		team1Score.setFont(new Font("arial", Font.BOLD, 12));
 
+		//Show if team can go double.
+		if (Utils.goDoubleTeam(Main.teamOne)) {
+			team1.setBackground(Main.goDoubleColor);
+		} else {
+			team1.setBackground(Main.backgroundColor);
+		}
+
 		panel.add(team1, gbLayoutTight(0, 1));
 		panel.add(team1Name, gbLayoutTightDouble(1, 1));
 		panel.add(team1Score, gbLayoutTight(3, 1));
@@ -538,6 +552,13 @@ public class FrameUtils {
 		
 		team2Name.setFont(new Font("arial", Font.BOLD, 12));
 		team2Score.setFont(new Font("arial", Font.BOLD, 12));
+
+		//Show if team can go double.
+		if (Utils.goDoubleTeam(Main.teamTwo)) {
+			team2.setBackground(Main.goDoubleColor);
+		} else {
+			team2.setBackground(Main.backgroundColor);
+		}
 
 		panel.add(team2, gbLayoutTight(0, 2));
 		panel.add(team2Name, gbLayoutTightDouble(1, 2));
@@ -561,9 +582,9 @@ public class FrameUtils {
 		player1Bid.select(Main.player1Bid);
 		player1TricksTaken.select(Main.player1TricksTaken);
 		
-		panel.add(player1Name, gbLayoutNormal(0, 3));
-		panel.add(player1Bid, gbLayoutNormal(1, 3));
-		panel.add(player1TricksTaken, gbLayoutNormal(2, 3));
+		panel.add(player1Name, gbLayoutTight(0, 3));
+		panel.add(player1Bid, gbLayoutTight(1, 3));
+		panel.add(player1TricksTaken, gbLayoutTight(2, 3));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -578,11 +599,6 @@ public class FrameUtils {
 		} else {
 			player1Name.setForeground(Main.textColor);
 			player1Name.setFont(new Font("arial", Font.PLAIN, 12));
-		}
-
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerOne)) {
-			player1Name.setBackground(Main.goDoubleColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -626,11 +642,6 @@ public class FrameUtils {
 		} else {
 			player3Name.setForeground(Main.textColor);
 			player3Name.setFont(new Font("arial", Font.PLAIN, 12));
-		}
-
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerThree)) {
-			player3Name.setBackground(Main.goDoubleColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -692,9 +703,9 @@ public class FrameUtils {
 		player2Bid.select(Main.player2Bid);
 		player2TricksTaken.select(Main.player2TricksTaken);
 		
-		panel.add(player2Name, gbLayoutNormal(0, 6));
-		panel.add(player2Bid, gbLayoutNormal(1, 6));
-		panel.add(player2TricksTaken, gbLayoutNormal(2, 6));
+		panel.add(player2Name, gbLayoutTight(0, 6));
+		panel.add(player2Bid, gbLayoutTight(1, 6));
+		panel.add(player2TricksTaken, gbLayoutTight(2, 6));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
@@ -709,11 +720,6 @@ public class FrameUtils {
 		} else {
 			player2Name.setForeground(Main.textColor);
 			player2Name.setFont(new Font("arial", Font.PLAIN, 12));
-		}
-
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerTwo)) {
-			player2Name.setBackground(Main.goDoubleColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -757,11 +763,6 @@ public class FrameUtils {
 		} else {
 			player4Name.setForeground(Main.textColor);
 			player4Name.setFont(new Font("arial", Font.PLAIN, 12));
-		}
-
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerFour)) {
-			player4Name.setBackground(Main.goDoubleColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -846,6 +847,8 @@ public class FrameUtils {
 		//Show if player can go double.
 		if (Utils.goDoublePlayer(Main.playerOne)) {
 			player1Name.setBackground(Main.goDoubleColor);
+		} else {
+			player1Name.setBackground(Main.backgroundColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -896,6 +899,8 @@ public class FrameUtils {
 		//Show if player can go double.
 		if (Utils.goDoublePlayer(Main.playerTwo)) {
 			player2Name.setBackground(Main.goDoubleColor);
+		} else {
+			player2Name.setBackground(Main.backgroundColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -946,6 +951,8 @@ public class FrameUtils {
 		//Show if player can go double.
 		if (Utils.goDoublePlayer(Main.playerThree)) {
 			player3Name.setBackground(Main.goDoubleColor);
+		} else {
+			player3Name.setBackground(Main.backgroundColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -996,6 +1003,8 @@ public class FrameUtils {
 		//Show if player can go double.
 		if (Utils.goDoublePlayer(Main.playerFour)) {
 			player4Name.setBackground(Main.goDoubleColor);
+		} else {
+			player4Name.setBackground(Main.backgroundColor);
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
@@ -1030,6 +1039,7 @@ public class FrameUtils {
 	public static void makeEndGameLine2(Panel panel, Player player) {
 		player1Name.setText(player.player);
 		player1Name.setForeground(Main.labelColor);
+		player1Name.setBackground(Main.backgroundColor);
 		player1Name.setFont(new Font("arial", Font.BOLD, 12));
 		player1Score.setText(player.score);
 		player1Bags.setText(player.bags);
@@ -1066,6 +1076,7 @@ public class FrameUtils {
 	public static void makeEndGameLine4(Panel panel, Player player) {
 		player2Name.setText(player.player);
 		player2Name.setForeground(Main.labelColor);
+		player2Name.setBackground(Main.backgroundColor);
 		player2Name.setFont(new Font("arial", Font.BOLD, 12));
 		player2Score.setText(player.score);
 		player2Bags.setText(player.bags);
@@ -1086,6 +1097,7 @@ public class FrameUtils {
 	public static void makeEndGameLine5(Panel panel, Player player) {
 		player3Name.setText(player.player);
 		player3Name.setForeground(Main.labelColor);
+		player3Name.setBackground(Main.backgroundColor);
 		player3Name.setFont(new Font("arial", Font.BOLD, 12));
 		player3Score.setText(player.score);
 		player3Bags.setText(player.bags);
@@ -1106,6 +1118,7 @@ public class FrameUtils {
 	public static void makeEndGameLine6(Panel panel, Player player) {
 		player4Name.setText(player.player);
 		player4Name.setForeground(Main.labelColor);
+		player4Name.setBackground(Main.backgroundColor);
 		player4Name.setFont(new Font("arial", Font.BOLD, 12));
 		player4Score.setText(player.score);
 		player4Bags.setText(player.bags);
