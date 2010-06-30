@@ -133,7 +133,7 @@ public class Player {
 					scoreTemp -= Main.doubleNilValueNumb;
 				}
 				
-				//The player was not set.
+				//The player was set.
 				set = true;
 			}
 			//When not a nil or double nil bid.	
@@ -219,16 +219,11 @@ public class Player {
 	 */
 	public String toString() {
 		String str = "";
-		String temp = "";
-		int start = Utils.stringToInt((String) turn.get(0));
 				
-		for (int i = start; i < turn.size(); i += 6) {
+		for (int i = 0; i < turn.size(); i += 6) {
 			for (int j = 0; j < 6; j++) {
 				//Get the desired item from the ArrayList.
-				temp = (String) turn.get(i + j);
-				
-				//Add the ArrayList item to the output String.
-				str += temp;
+				str += (String) turn.get(i + j);
 				
 				//Add a comma on all items except the last one.
 				if (j != 5) {
