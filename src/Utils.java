@@ -81,7 +81,10 @@ public class Utils {
 		GameSetup.choiceBoxPlayer2.setEnabled(true);
 		GameSetup.choiceBoxPlayer3.setEnabled(true);
 		GameSetup.choiceBoxPlayer4.setEnabled(true);
-
+		GameSetup.hasPlayerChanged = false;
+		
+		TwoTeams.nilBidTeam1 = false;
+		TwoTeams.nilBidTeam2 = false;
 	}
 
 	/**
