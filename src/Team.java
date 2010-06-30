@@ -18,8 +18,6 @@ public class Team {
 	public int round_no;
 
 	public boolean set = false;
-	public boolean nil = false;
-	public boolean dbl = false;
 
 	public ArrayList turn;
 
@@ -53,7 +51,7 @@ public class Team {
 	 * @return The name of the team.
 	 */
 	public void nameTeam() {
-		name = one.player + " & " + two.player;
+		name = one.player + " and " + two.player;
 	}
 
 	/**
