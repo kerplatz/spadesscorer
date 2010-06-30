@@ -860,7 +860,20 @@ public class Utils {
 
 		//Record the game data to the player class.
 		if (Main.isFourHandedTeams) {
-			
+			if (TwoTeams.nilBidTeam1) {
+				Main.teamOne.inputRound(Main.player1Bid, Main.player3Bid,
+						Main.player1TricksTaken, Main.player3TricksTaken);
+			} else {
+				Main.teamOne.inputRound(Main.player1Bid, Main.player3Bid,
+						Main.player1TricksTaken);
+			}
+			if (TwoTeams.nilBidTeam2) {
+				Main.teamTwo.inputRound(Main.player2Bid, Main.player4Bid,
+						Main.player2TricksTaken, Main.player4TricksTaken);
+			} else {
+				Main.teamTwo.inputRound(Main.player2Bid, Main.player4Bid,
+						Main.player2TricksTaken);
+			}
 		} else {
 			Main.playerOne.inputRound(Main.player1Bid, Main.player1TricksTaken);
 			Main.playerTwo.inputRound(Main.player2Bid, Main.player2TricksTaken);
@@ -877,7 +890,8 @@ public class Utils {
 	 */
 	public static void postScores() {
 		if (Main.isFourHandedTeams) {
-			
+			Main.team1Score = Main.teamOne.score;
+			Main.team2Score = Main.teamTwo.score;
 		} else {
 			Main.player1Score = Main.playerOne.score;
 			Main.player2Score = Main.playerTwo.score;
@@ -1201,7 +1215,7 @@ public class Utils {
 	 * @param roundIn
 	 * @param scoreIn
 	 */
-	public void reCalculateScore(Player player, String roundIn, String scoreIn) {
+	public static void reCalculateScore(Player player, String roundIn, String scoreIn) {
 
 	
 	}
@@ -1213,7 +1227,7 @@ public class Utils {
 	 * @param bidIn
 	 * @param tricksIn
 	 */
-	public void reCalculateScore(Player player, String roundIn, String bidIn,
+	public static void reCalculateScore(Player player, String roundIn, String bidIn,
 			String tricksIn) {
 
 		
