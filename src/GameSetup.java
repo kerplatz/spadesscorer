@@ -42,7 +42,7 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	boolean hasPlayerChanged = false;
+	static boolean hasPlayerChanged = false;
 
 	static Choice choiceBoxPlayer1 = new Choice();
 	static Choice choiceBoxPlayer2 = new Choice();
