@@ -33,6 +33,9 @@ public class TwoTeams extends Frame implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	static boolean nilBidTeam1 = false;
+	static boolean nilBidTeam2 = false;
+	
 	Label winner = new Label("WINNER");
 	Label winners = new Label("WINNERS");
 	Label loser = new Label("LOSER");
@@ -89,6 +92,10 @@ public class TwoTeams extends Frame implements ActionListener {
            			Utils.clearTricksTaken();
            			Utils.advanceDealer();
            			
+           			//Reset nil bid.
+           			nilBidTeam1 = false;
+           			nilBidTeam2 = false;
+           			
             		frame.removeAll();
                 	createPlayGameScreen();
         		}
@@ -100,6 +107,19 @@ public class TwoTeams extends Frame implements ActionListener {
         	if (Utils.processBidding()) {
         		Main.doBidding = false;
         		Main.doScoring = true;
+        		
+        		if (FrameUtils.player1Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player1Bid.getSelectedItem() == "dbl" ||
+        				FrameUtils.player3Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player3Bid.getSelectedItem() == "dbl") {
+        			nilBidTeam1 = true;
+        		}
+        		if (FrameUtils.player2Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player2Bid.getSelectedItem() == "dbl" ||
+        				FrameUtils.player4Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player4Bid.getSelectedItem() == "dbl") {
+        			nilBidTeam2 = true;
+        		}
         		
         		frame.removeAll();
             	createPlayGameScreen();
@@ -153,7 +173,7 @@ public class TwoTeams extends Frame implements ActionListener {
      */
 	public void createPlayGameScreen() {
 		//Create the 3 panel components of the screen.
-		upperPanel = FrameUtils.makeUpperPanel("four handed");
+		upperPanel = FrameUtils.makeUpperPanel("four handed teams");
 		middlePanel = FrameUtils.makeMiddlePanel();
 		lowerPanel = FrameUtils.makeLowerPanel();
 		
@@ -188,8 +208,8 @@ public class TwoTeams extends Frame implements ActionListener {
 		numbRound.setText(Integer.toString(Main.round + 1));
 		numbRound.setForeground(Main.labelColor);
 		numbRound.setFont(new Font("arial", Font.BOLD, 12));
-		middlePanel.add(round, FrameUtils.gbLayoutNormal(1, 0));
-		middlePanel.add(numbRound, FrameUtils.gbLayoutNormal(2, 0));
+		middlePanel.add(round, FrameUtils.gbLayoutTight(1, 0));
+		middlePanel.add(numbRound, FrameUtils.gbLayoutTight(2, 0));
 		
 		FrameUtils.makeTeamsLine1(middlePanel);
 		FrameUtils.makeTeamsLine2(middlePanel);
