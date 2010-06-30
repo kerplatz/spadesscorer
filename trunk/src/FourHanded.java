@@ -155,7 +155,7 @@ public class FourHanded extends Frame implements ActionListener {
      */
 	public void createPlayGameScreen() {
 		//Create the 3 panel components of the screen.
-		upperPanel = FrameUtils.makeUpperPanel("four handed");
+		upperPanel = FrameUtils.makeUpperPanel("four handed single");
 		middlePanel = FrameUtils.makeMiddlePanel();
 		lowerPanel = FrameUtils.makeLowerPanel();
 		
