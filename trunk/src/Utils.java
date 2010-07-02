@@ -1243,7 +1243,7 @@ public class Utils {
 	}
 	
 	/**
-	 * This method saves and exports the player being changed and creates
+	 * This method saves the player being changed and creates
 	 * the new player to take his place. Also transfers bags and score from
 	 * the previous player to the new player.
 	 * 
@@ -1252,7 +1252,6 @@ public class Utils {
 	 * @param place The player number to be changed.
 	 */
 	public static void changePlayer(Player old, Player addNew, int place) {
-		exportPlayerFile(old);
 		Main.playerPrevious = new Player(old.player);
 		Main.playerPrevious.equals(old);
 		
@@ -1269,6 +1268,36 @@ public class Utils {
 		if (place == 4) {
 			Main.playerFour.equals(addNew);
 		}
+	}
+	
+	/**
+	 * This method saves the player being changed and creates
+	 * the new player to take his place. Also transfers bags and score from
+	 * the previous player to the new player.
+	 * 
+	 * @param old The player to be changed.
+	 * @param addNew The new player to be added.
+	 * @param team
+	 * @param place The player number to be changed.
+	 */
+	public static void changePlayerTeam(Player old, Player addNew,
+			Team team, int place) {
+		/*Main.playerPrevious = new Player(old.player);
+		Main.playerPrevious.equals(old);
+		
+		//Copy the players from temp to the correct player.
+		if (place == 1) {
+			Main.playerOne.equals(addNew);
+		}
+		if (place == 2) {
+			Main.playerTwo.equals(addNew);
+		}
+		if (place == 3) {
+			Main.playerThree.equals(addNew);
+		}
+		if (place == 4) {
+			Main.playerFour.equals(addNew);
+		}*/
 	}
 	
 	/**
