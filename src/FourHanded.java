@@ -74,11 +74,9 @@ public class FourHanded extends Frame implements ActionListener {
         		//Determines if the game is won > 500 or lost < -200,
         		//otherwise game play continues.
         		if (Utils.isGameWon()) {
-        			Main.isGameStarted = false;
 					frame.removeAll();
         			createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
-        			Main.isGameStarted = false;
 					frame.removeAll();
         			createEndGameLostScreen();
         		} else {
@@ -128,15 +126,10 @@ public class FourHanded extends Frame implements ActionListener {
         
         //Performs this action when the Return to Main button is pressed.
         if (event.getActionCommand().equals("endGame")) {
-    		Utils.exportGameOptions();
-    		Utils.exportPlayerFile(Main.playerOne);
-    		Utils.exportPlayerFile(Main.playerTwo);
-    		Utils.exportPlayerFile(Main.playerThree);
-    		Utils.exportPlayerFile(Main.playerFour);
       		frame.removeAll();
 
         	Main game = new Main();
-        	game.createMainMenuScreen();
+        	game.createExitScreen();
         }
  
         //Performs this action when the ReturnMain button is pressed.
@@ -231,7 +224,7 @@ public class FourHanded extends Frame implements ActionListener {
 		FrameUtils.makeEndGameLine2(middlePanel, theLoser);
 		FrameUtils.makeEndGameLine3(middlePanel, winners);
 		
-		//Determine who the two winners are.
+		//Determine who the winners are.
 		if (Main.playerOne.equals(theLoser)){
 			FrameUtils.makeEndGameLine4(middlePanel, Main.playerTwo);
 			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
@@ -285,7 +278,7 @@ public class FourHanded extends Frame implements ActionListener {
 		FrameUtils.makeEndGameLine2(middlePanel, theWinner);
 		FrameUtils.makeEndGameLine3(middlePanel, losers);
 		
-		//Determine who the two winners are.
+		//Determine who the losers are.
 		if (Main.playerOne.equals(theWinner)){
 			FrameUtils.makeEndGameLine4(middlePanel, Main.playerTwo);
 			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
