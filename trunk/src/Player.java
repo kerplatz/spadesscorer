@@ -23,6 +23,7 @@ public class Player {
 	public String bags = "";
 	
 	public int round_no;
+	public int bagsMultiplier = 0;
 
 	public boolean set = false;
 
@@ -67,12 +68,12 @@ public class Player {
 	 * the header for the CSV file.
 	 */
 	public void beginRound() {
-		turn.add("round");
-		turn.add("bid");
-		turn.add("tricks");
-		turn.add("score");
-		turn.add("bags");
-		turn.add("set");
+		turn.add("Round");
+		turn.add("Bid");
+		turn.add("Tricks");
+		turn.add("Score");
+		turn.add("Bags");
+		turn.add("Set");
 	}
 	
 	/**
@@ -118,6 +119,9 @@ public class Player {
 		int bagsTemp = Utils.stringToInt(bags);
 		int bagsRecvd = 0;
 		int bagsTotal = 0;
+		int bagsMultiTemp = 0;
+		int bagsTotalTemp = 0;
+		int bagsScored = 0;
 
 		//Calculate the preliminary score when tricks taken exceeds bid.
 		if (tricksTemp > bidTemp) {
@@ -189,9 +193,21 @@ public class Player {
 			//Player was set.
 			set = true;
 		}
+
+		bagsMultiTemp = bagsMultiplier;
+		bagsTotalTemp = bagsTotal;
+		
+		//Reduce the number of bags.
+		for(int i = 0; i < bagsMultiTemp; i++) {
+			bagsTotalTemp -=10;
+		}
+
+		//Calculate if the bags hav =e reached 10 or more.
+		bagsScored = (Main.bagValueNumb * bagsTotal / 10);
+		bagsMultiplier += bagsScored;
 		
 		//Remove points for bags of multiple of 10.
-		scoreTemp -= (Main.bagValueNumb * bagsTotal / 10) * 100;
+		scoreTemp -= bagsScored * 100;
 				
 		//Update all the variables.
 		bags = Integer.toString(bagsTotal);
