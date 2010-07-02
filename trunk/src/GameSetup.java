@@ -219,8 +219,10 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 	}
 
 	/**
+	 * This method sets various choice and check boxes to specific states
+	 * depending upon whether a different check box was selected.
 	 * 
-	 * @param event
+	 * @param event The triggering event.
 	 */
     public void itemStateChanged(ItemEvent event) {
     	if (event.getItemSelectable().equals(player1Checkbox)) {
@@ -447,10 +449,10 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 
 		//Hide the check boxes if the game has not been started.
 		if (Main.isGameStarted) {
-			middlePanel.add(player2Checkbox, FrameUtils.gbLayoutNormal(2, 1));
-			player2Checkbox.addItemListener(this);
 			middlePanel.add(player1Checkbox, FrameUtils.gbLayoutNormal(2, 0));
 			player1Checkbox.addItemListener(this);
+			middlePanel.add(player2Checkbox, FrameUtils.gbLayoutNormal(2, 1));
+			player2Checkbox.addItemListener(this);
 			middlePanel.add(player3Checkbox, FrameUtils.gbLayoutNormal(2, 2));
 			player3Checkbox.addItemListener(this);
 			
