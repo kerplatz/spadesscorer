@@ -154,8 +154,6 @@ public class Team {
 				
 				//Deal with bags.
 				bagsRecvd += tricksTemp1 - bidTemp1;
-				scoreTemp += bagsRecvd * Main.bagValueNumb;
-				bagsTotal = bagsTemp + bagsRecvd;
 			}
 			
 			//Calculate the preliminary score when tricks taken equals bid.
@@ -177,9 +175,6 @@ public class Team {
 					//Deal with the score.
 					scoreTemp += bidTemp1 * 10;
 				}
-				
-				//Save the bags.
-				bagsTotal = bagsTemp;
 
 				//The player was not set.
 				set = false;
@@ -189,9 +184,6 @@ public class Team {
 			if (tricksTemp1 < bidTemp1) {
 				//Deal with score.
 				scoreTemp -= bidTemp1 * 10;
-				
-				//Save the bags.
-				bagsTotal = bagsTemp;
 				
 				//Player was set.
 				set = true;
@@ -226,8 +218,6 @@ public class Team {
 				
 				//Deal with bags.
 				bagsRecvd += tricksTemp2 - bidTemp2;
-				scoreTemp += bagsRecvd * Main.bagValueNumb;
-				bagsTotal = bagsTemp + bagsRecvd;
 			}
 			
 			//Calculate the preliminary score when tricks taken equals bid.
@@ -249,9 +239,6 @@ public class Team {
 					//Deal with the score.
 					scoreTemp += bidTemp2 * 10;
 				}
-				
-				//Save the bags.
-				bagsTotal = bagsTemp;
 
 				//The player was not set.
 				set = false;
@@ -262,13 +249,13 @@ public class Team {
 				//Deal with score.
 				scoreTemp -= bidTemp2 * 10;
 				
-				//Save the bags.
-				bagsTotal = bagsTemp;
-				
 				//Player was set.
 				set = true;
 			}
-
+			
+			//Save the bags.
+			scoreTemp += bagsRecvd * Main.bagValueNumb;
+			bagsTotal = bagsTemp + bagsRecvd;
 		} else {
 			//Calculate the preliminary score when tricks taken exceeds bid.
 			if (tricksTemp1 > bidTemp1 + bidTemp2) {
