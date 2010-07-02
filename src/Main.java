@@ -13,12 +13,17 @@
 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridBagLayout;
+import java.awt.Label;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedReader;
@@ -27,7 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main  extends Frame implements ActionListener,
-											WindowListener {
+											WindowListener, ItemListener {
 	/**
 	 * Declare needed variables.
 	 */
@@ -35,6 +40,9 @@ public class Main  extends Frame implements ActionListener,
 	
 	public static ArrayList names;
 	
+	public static boolean nilBidTeam1 = false;
+	public static boolean nilBidTeam2 = false;
+	public static boolean isExitAllowed = false;
 	public static boolean isGameStarted = false;
 	public static boolean isSetupDone;
 	public static boolean isGameWon;
@@ -53,6 +61,12 @@ public class Main  extends Frame implements ActionListener,
 	public static boolean skinIsNorthernIowa;
 	public static boolean isNilAllowed;
 	public static boolean isDoubleNilAllowed;
+	public static boolean doubleIsAllowedPlayer1;
+	public static boolean doubleIsAllowedPlayer2;
+	public static boolean doubleIsAllowedPlayer3;
+	public static boolean doubleIsAllowedPlayer4;
+	public static boolean doubleIsAllowedTeam1;
+	public static boolean doubleIsAllowedTeam2;
 	
 	public static String player1;
 	public static String player2;
@@ -114,12 +128,37 @@ public class Main  extends Frame implements ActionListener,
 	public static Team teamOne;
 	public static Team teamTwo;
 	public static Team teamPrevious;
-	
+
+	Checkbox optionsCheckbox = new Checkbox("Save", true);
+	Checkbox player1Checkbox = new Checkbox("Save", true);
+	Checkbox player2Checkbox = new Checkbox("Save", true);
+	Checkbox player3Checkbox = new Checkbox("Save", true);
+	Checkbox player4Checkbox = new Checkbox("Save", true);
+	Checkbox playerPreviousCheckbox = new Checkbox("Save", false);
+	Checkbox team1Checkbox = new Checkbox("Save", true);
+	Checkbox team2Checkbox = new Checkbox("Save", true);
+	Checkbox teamPreviousCheckbox = new Checkbox("Save", false);
+
+	Label optionsLabel = new Label("  Options   ");
+	Label player1Label = new Label("  Player 1  ");
+	Label player2Label = new Label("  Player 2  ");
+	Label player3Label = new Label("  Player 3  ");
+	Label player4Label = new Label("  Player 4  ");
+	Label playerPreviousLabel = new Label("  Player 5  ");
+	Label team1Label = new Label("  Team 1  ");
+	Label team2Label = new Label("  Team 2  ");
+	Label teamPreviousLabel = new Label("  Team 3  ");
+	Label message1 = new Label();
+	Label message2 = new Label();
+
 	Panel upperPanel;
 	Panel middlePanel;
 	Panel lowerPanel;
 	
 	Button buttonExit;
+	Button buttonExitMain;
+	Button buttonSave;
+	Button buttonReturn;
 	Button buttonPlay;
 	Button buttonSetup;
 	Button buttonNewGame;
@@ -145,23 +184,18 @@ public class Main  extends Frame implements ActionListener,
     public void actionPerformed(ActionEvent event) {
         //Performs this action when the NewGame button is pressed.
         if (event.getActionCommand().equals("newGame")) {
-        	if (isGameStarted || isGameWon || isGameLost) {
-            	Utils.exportGameOptions();
-            	Utils.exportPlayerFile(playerOne);
-            	Utils.exportPlayerFile(playerTwo);
-            	Utils.exportPlayerFile(playerThree);
-            	
-            	if (!isThreeHanded) {
-                	Utils.exportPlayerFile(playerFour);
-            	}
+            if(isGameStarted) {
+            	frame.removeAll();
+            	createExitScreen();
+            } else {
             	game++;
-        	}
         	
-        	frame.removeAll();
-        	Utils.resetGame();
+            	frame.removeAll();
+            	Utils.resetGame();
 
-        	GameSetup setup = new GameSetup(frame);
-    		setup.createSetupScreen();
+            	GameSetup setup = new GameSetup(frame);
+            	setup.createSetupScreen();
+            }
         }
         
         //Performs this action when the EditGame button is pressed.
@@ -230,6 +264,34 @@ public class Main  extends Frame implements ActionListener,
     		setup.createSetupScreen();
         }  
 
+        //Performs this action when the Save button is pressed.
+        if (event.getActionCommand().equals("save")) {
+        	saveStats();
+        	
+        	//Display the files saved message.
+        	FrameUtils.showDialogBox("All selected files were saved.");
+        }  
+
+        //Performs this action when the MainMenu button is pressed.
+        if (event.getActionCommand().equals("mainMenu")) {
+        	frame.removeAll();
+        	
+        	//Reset some of the variables.
+        	isGameStarted = false;
+        	isSetupDone = false;
+        	isGameWon = false;
+        	isGameLost = false;
+        	
+    		Main game = new Main();
+    		game.createMainMenuScreen();
+        }  
+
+        //Performs this action when the ExitMain button is pressed.
+        if (event.getActionCommand().equals("exitMain")) {
+        	frame.removeAll();
+        	createExitScreen();
+        }  
+
         //Performs this action when the Exit button is pressed.
         if (event.getActionCommand().equals("exit")) {
         	exit();
@@ -259,11 +321,11 @@ public class Main  extends Frame implements ActionListener,
 		buttonSetup.addActionListener(this);
 		buttonEditGame = FrameUtils.makeButton("Edit Game", "editGame", true);
 		buttonEditGame.addActionListener(this);
-		buttonExit = FrameUtils.makeButton("   Exit  ", "exit", false);
-		buttonExit.addActionListener(this);
+		buttonExitMain = FrameUtils.makeButton("   Exit  ", "exitMain", false);
+		buttonExitMain.addActionListener(this);
 
 		//Add the buttons to the proper panels.
-		lowerPanel.add(buttonExit);
+		lowerPanel.add(buttonExitMain);
 
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(buttonNewGame, FrameUtils.gbLayoutNormal(0, 0));
@@ -303,6 +365,136 @@ public class Main  extends Frame implements ActionListener,
 		
 		frame.setVisible(true);
 	}
+
+	/**
+	 * Creates an exit screen.
+	 */
+	public void createExitScreen() {
+		//Create the 3 panel components of the screen.
+		upperPanel = FrameUtils.makeUpperPanel("save menu");
+		middlePanel = FrameUtils.makeMiddlePanel();
+		lowerPanel = FrameUtils.makeLowerPanel();
+		
+		//Makes all the needed buttons.
+		buttonSave = FrameUtils.makeButton(" Save ", "save", false);
+		buttonSave.addActionListener(this);
+		buttonExit = FrameUtils.makeButton(" Exit ", "exit", false);
+		buttonExit.addActionListener(this);
+		buttonReturn = FrameUtils.makeButton("Main Menu", "mainMenu", false);
+		buttonReturn.addActionListener(this);
+		
+		//Add buttons to the screen.
+		lowerPanel.add(buttonExit);
+		lowerPanel.add(buttonReturn);
+		
+		//Add the content to be saved.
+		middlePanel.setLayout(new GridBagLayout());
+		
+		//Add wording
+		if(!isGameStarted) {
+			message1.setText("There is nothing to save.");
+			message1.setForeground(Main.labelColor);
+			message1.setFont(new Font("arial", Font.BOLD, 12));
+			middlePanel.add(message1, FrameUtils.gbLayoutNormal(0, 0));
+
+			message2.setText("Press the Exit or Return button.");
+			message2.setForeground(Main.labelColor);
+			message2.setFont(new Font("arial", Font.BOLD, 12));
+			middlePanel.add(message2, FrameUtils.gbLayoutNormal(0, 1));
+		}
+		
+		//Display only if the game has started.
+		if(isGameStarted) {
+			message1.setText("Check the items you wish");
+			message1.setForeground(Main.labelColor);
+			message1.setFont(new Font("arial", Font.BOLD, 12));
+			middlePanel.add(message1, FrameUtils.gbLayoutTightDouble(0, 0));
+
+			message2.setText("to save to separate files.");
+			message2.setForeground(Main.labelColor);
+			message2.setFont(new Font("arial", Font.BOLD, 12));
+			middlePanel.add(message2, FrameUtils.gbLayoutTightDouble(0, 1));
+
+			middlePanel.add(optionsLabel, FrameUtils.gbLayoutTight(0, 2));
+			middlePanel.add(optionsCheckbox, FrameUtils.gbLayoutTight(2, 2));
+			team1Checkbox.addItemListener(this);
+
+			//Add the save button if the game has started.
+			lowerPanel.add(buttonSave);
+
+			//Show when four handed team based game.
+			if (isFourHandedTeams){
+				Label team1 = new Label(Main.team1);
+				Label team2 = new Label(Main.team2);
+
+				middlePanel.add(team1Label, FrameUtils.gbLayoutTight(0, 3));
+				middlePanel.add(team1, FrameUtils.gbLayoutTight(1, 3));
+				middlePanel.add(team1Checkbox, FrameUtils.gbLayoutTight(2, 3));
+				team1Checkbox.addItemListener(this);
+
+				middlePanel.add(team2Label, FrameUtils.gbLayoutTight(0, 4));
+				middlePanel.add(team2, FrameUtils.gbLayoutTight(1, 4));
+				middlePanel.add(team2Checkbox, FrameUtils.gbLayoutTight(2, 4));
+				team2Checkbox.addItemListener(this);
+				
+				//Add the previous team if there was one.
+				if(teamPrevious != null) {
+					Label teamPrevious = new Label(Main.teamPrevious.name);
+
+					middlePanel.add(teamPreviousLabel, FrameUtils.gbLayoutTight(0, 5));
+					middlePanel.add(teamPrevious, FrameUtils.gbLayoutTight(1, 5));
+					middlePanel.add(teamPreviousCheckbox, FrameUtils.gbLayoutTight(2, 5));
+					teamPreviousCheckbox.addItemListener(this);
+				}
+			} else {
+				Label player1 = new Label(Main.player1);
+				Label player2 = new Label(Main.player2);
+				Label player3 = new Label(Main.player3);
+
+				middlePanel.add(player1Label, FrameUtils.gbLayoutTight(0, 3));
+				middlePanel.add(player1, FrameUtils.gbLayoutTight(1, 3));
+				middlePanel.add(player1Checkbox, FrameUtils.gbLayoutTight(2, 3));
+				player1Checkbox.addItemListener(this);
+
+				middlePanel.add(player2Label, FrameUtils.gbLayoutTight(0, 4));
+				middlePanel.add(player2, FrameUtils.gbLayoutTight(1, 4));
+				middlePanel.add(player2Checkbox, FrameUtils.gbLayoutTight(2, 4));
+				player2Checkbox.addItemListener(this);
+			
+				middlePanel.add(player3Label, FrameUtils.gbLayoutTight(0, 5));
+				middlePanel.add(player3, FrameUtils.gbLayoutTight(1, 5));
+				middlePanel.add(player3Checkbox, FrameUtils.gbLayoutTight(2, 5));
+				player3Checkbox.addItemListener(this);
+
+				//Add the four player if there is one.
+				if(isFourHandedSingle) {
+					Label player4 = new Label(Main.player4);
+
+					middlePanel.add(player4Label, FrameUtils.gbLayoutTight(0, 6));
+					middlePanel.add(player4, FrameUtils.gbLayoutTight(1, 6));
+					middlePanel.add(player4Checkbox, FrameUtils.gbLayoutTight(2, 6));
+					player4Checkbox.addItemListener(this);
+				}
+
+				//Add the previous player if there was one.
+				if(playerPrevious != null) {
+					Label playerPrevious = new Label(Main.playerPrevious.player);
+
+					middlePanel.add(playerPreviousLabel, FrameUtils.gbLayoutTight(0, 7));
+					middlePanel.add(playerPrevious, FrameUtils.gbLayoutTight(1, 7));
+					middlePanel.add(playerPreviousCheckbox, FrameUtils.gbLayoutTight(2, 7));
+					playerPreviousCheckbox.addItemListener(this);
+				}
+			}
+		}
+
+		//This adds all the panels to the frame.
+		frame.add(upperPanel, BorderLayout.NORTH);
+		frame.add(middlePanel, BorderLayout.CENTER);
+		frame.add(lowerPanel, BorderLayout.SOUTH);
+		
+		frame.setVisible(true);
+	}
 	
 	/**
 	 * Exits the application.
@@ -313,11 +505,20 @@ public class Main  extends Frame implements ActionListener,
 	}
 
 	/**
+	 * This method is not implemented in this version.
+	 * 
+	 * @param event The triggering event.
+	 */
+	public void itemStateChanged(ItemEvent event) {
+		//This is blank by design.
+	}
+
+	/**
 	 * WindowListener for when the Window Close button is pressed. Will not
 	 * work when a game has been started to prevent accidental closure.
 	 */
 	public void windowClosing(WindowEvent event) {
-		if (!isGameStarted) exit();
+		if (isExitAllowed) exit();
 	}
 
 	public void windowActivated(WindowEvent event) {
@@ -379,5 +580,34 @@ public class Main  extends Frame implements ActionListener,
 	    }
         
     	in.close();
+	}
+
+	/**
+	 * This method saves the players or team statistics to a file on the
+	 * device.
+	 */
+	private void saveStats() {
+		if(optionsCheckbox.getState()) Utils.exportGameOptions();
+		
+		if(isFourHandedTeams) {
+			if(team1Checkbox.getState()) Utils.exportTeamFile(teamOne);
+			if(team2Checkbox.getState()) Utils.exportTeamFile(teamTwo);
+			if(teamPreviousCheckbox.getState()) Utils.exportTeamFile(teamPrevious);
+		}
+		
+		if(isFourHandedSingle) {
+			if(player1Checkbox.getState()) Utils.exportPlayerFile(playerOne);
+			if(player2Checkbox.getState()) Utils.exportPlayerFile(playerTwo);
+			if(player3Checkbox.getState()) Utils.exportPlayerFile(playerThree);
+			if(player4Checkbox.getState()) Utils.exportPlayerFile(playerFour);
+			if(playerPreviousCheckbox.getState()) Utils.exportPlayerFile(playerPrevious);
+		}
+		
+		if(isThreeHanded) {
+			if(player1Checkbox.getState()) Utils.exportPlayerFile(playerOne);
+			if(player2Checkbox.getState()) Utils.exportPlayerFile(playerTwo);
+			if(player3Checkbox.getState()) Utils.exportPlayerFile(playerThree);
+			if(playerPreviousCheckbox.getState()) Utils.exportPlayerFile(playerPrevious);
+		}
 	}
 }
