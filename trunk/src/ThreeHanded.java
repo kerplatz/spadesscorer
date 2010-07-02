@@ -74,12 +74,10 @@ public class ThreeHanded extends Frame implements ActionListener {
         		//Determines if the game is won  or lost, otherwise game play
        			//continues.
         		if (Utils.isGameWon()) {
-        			Main.isGameStarted = false;
 					frame.removeAll();
 					createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
-        			Main.isGameStarted = false;
-					frame.removeAll();
+ 					frame.removeAll();
         			createEndGameLostScreen();
         		} else {
             		Main.doBidding = true;
@@ -126,14 +124,10 @@ public class ThreeHanded extends Frame implements ActionListener {
  
         //Performs this action when the Return to Main button is pressed.
         if (event.getActionCommand().equals("endGame")) {
-    		Utils.exportGameOptions();
-    		Utils.exportPlayerFile(Main.playerOne);
-    		Utils.exportPlayerFile(Main.playerTwo);
-    		Utils.exportPlayerFile(Main.playerThree);
        		frame.removeAll();
 
         	Main game = new Main();
-        	game.createMainMenuScreen();
+        	game.createExitScreen();
         }
  
         //Performs this action when the ReturnMain button is pressed.
