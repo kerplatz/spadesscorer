@@ -37,6 +37,15 @@ public class Utils {
 		Main.skinIsNorthernIowa = false;
 		Main.isNilAllowed = true;
 		Main.isDoubleNilAllowed = true;
+		Main.nilBidTeam1 = false;
+		Main.nilBidTeam2 = false;
+		Main.doubleIsAllowedPlayer1 = false;
+		Main.doubleIsAllowedPlayer2 = false;
+		Main.doubleIsAllowedPlayer3 = false;
+		Main.doubleIsAllowedPlayer4 = false;
+		Main.doubleIsAllowedTeam1 = false;
+		Main.doubleIsAllowedTeam2 = false;
+
 		
 		Main.player1 = "";
 		Main.player2 = "";
@@ -82,9 +91,6 @@ public class Utils {
 		GameSetup.choiceBoxPlayer3.setEnabled(true);
 		GameSetup.choiceBoxPlayer4.setEnabled(true);
 		GameSetup.hasPlayerChanged = false;
-		
-		TwoTeams.nilBidTeam1 = false;
-		TwoTeams.nilBidTeam2 = false;
 	}
 
 	/**
@@ -863,14 +869,14 @@ public class Utils {
 
 		//Record the game data to the player class.
 		if (Main.isFourHandedTeams) {
-			if (TwoTeams.nilBidTeam1) {
+			if (Main.nilBidTeam1) {
 				Main.teamOne.inputRound(Main.player1Bid, Main.player3Bid,
 						Main.player1TricksTaken, Main.player3TricksTaken);
 			} else {
 				Main.teamOne.inputRound(Main.player1Bid, Main.player3Bid,
 						Main.player1TricksTaken);
 			}
-			if (TwoTeams.nilBidTeam2) {
+			if (Main.nilBidTeam2) {
 				Main.teamTwo.inputRound(Main.player2Bid, Main.player4Bid,
 						Main.player2TricksTaken, Main.player4TricksTaken);
 			} else {
