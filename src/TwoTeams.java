@@ -1,4 +1,4 @@
-/**
+/**FINISHED
  * TwoTeams.java
  * 
  * This class controls how a four handed game using 2 teams is played. It also
@@ -32,9 +32,6 @@ public class TwoTeams extends Frame implements ActionListener {
 	 * Declare needed variables.
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	static boolean nilBidTeam1 = false;
-	static boolean nilBidTeam2 = false;
 	
 	Label winner = new Label("WINNER");
 	Label winners = new Label("WINNERS");
@@ -77,12 +74,10 @@ public class TwoTeams extends Frame implements ActionListener {
         		//Determines if the game is won > 500 or lost < -200,
         		//otherwise game play continues.
         		if (Utils.isGameWon()) {
-        			Main.isGameStarted = false;
-					frame.removeAll();
+ 					frame.removeAll();
         			createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
-        			Main.isGameStarted = false;
-					frame.removeAll();
+ 					frame.removeAll();
         			createEndGameLostScreen();
         		} else {
             		Main.doBidding = true;
@@ -93,8 +88,8 @@ public class TwoTeams extends Frame implements ActionListener {
            			Utils.advanceDealer();
            			
            			//Reset nil bid.
-           			nilBidTeam1 = false;
-           			nilBidTeam2 = false;
+           			Main.nilBidTeam1 = false;
+           			Main.nilBidTeam2 = false;
            			
             		frame.removeAll();
                 	createPlayGameScreen();
@@ -112,13 +107,13 @@ public class TwoTeams extends Frame implements ActionListener {
         				FrameUtils.player1Bid.getSelectedItem() == "dbl" ||
         				FrameUtils.player3Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player3Bid.getSelectedItem() == "dbl") {
-        			nilBidTeam1 = true;
+        			Main.nilBidTeam1 = true;
         		}
         		if (FrameUtils.player2Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player2Bid.getSelectedItem() == "dbl" ||
         				FrameUtils.player4Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player4Bid.getSelectedItem() == "dbl") {
-        			nilBidTeam2 = true;
+        			Main.nilBidTeam2 = true;
         		}
         		
         		frame.removeAll();
@@ -148,13 +143,10 @@ public class TwoTeams extends Frame implements ActionListener {
 
         //Performs this action when the Return to Main button is pressed.
         if (event.getActionCommand().equals("endGame")) {
-    		Utils.exportGameOptions();
-    		Utils.exportTeamFile(Main.teamOne);
-    		Utils.exportTeamFile(Main.teamTwo);
       		frame.removeAll();
 
         	Main game = new Main();
-        	game.createMainMenuScreen();
+        	game.createExitScreen();
         }
  
         //Performs this action when the ReturnMain button is pressed.
@@ -231,7 +223,7 @@ public class TwoTeams extends Frame implements ActionListener {
 	 * Creates the End Game Lost screen.
 	 */
 	public void createEndGameLostScreen() {
-		Player theLoser = Utils.whoLostGame();
+		Team theLoser = Utils.whoLostGameTeam();
 		
 		//Create the 3 panel components of the screen.
 		upperPanel = FrameUtils.makeUpperPanel("game lost");
@@ -247,30 +239,16 @@ public class TwoTeams extends Frame implements ActionListener {
 
 		//Create the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
-		FrameUtils.makeEndGameLine1(middlePanel, loser);
-		FrameUtils.makeEndGameLine2(middlePanel, theLoser);
-		FrameUtils.makeEndGameLine3(middlePanel, winners);
+		FrameUtils.makeEndGameTeamsLine1(middlePanel, loser);
+		FrameUtils.makeEndGameTeamsLine2(middlePanel, theLoser);
+		FrameUtils.makeEndGameTeamsLine3(middlePanel, winners);
 		
 		//Determine who the two winners are.
-		if (Main.playerOne.equals(theLoser)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerTwo);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerFour);
+		if (Main.teamOne.equals(theLoser)){
+			FrameUtils.makeEndGameTeamsLine4(middlePanel, Main.teamTwo);
 		}
-		if (Main.playerTwo.equals(theLoser)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerFour);
-		}
-		if (Main.playerThree.equals(theLoser)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerTwo);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerFour);
-		}
-		if (Main.playerFour.equals(theLoser)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerTwo);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerThree);
+		if (Main.teamTwo.equals(theLoser)){
+			FrameUtils.makeEndGameTeamsLine4(middlePanel, Main.teamOne);
 		}
 		
 		//This adds all the panels to the frame.
@@ -285,7 +263,7 @@ public class TwoTeams extends Frame implements ActionListener {
 	 * Creates the End Game Won Screen.
 	 */
 	public void createEndGameWonScreen() {
-		Player theWinner = Utils.whoWonGame();
+		Team theWinner = Utils.whoWonGameTeam();
 		
 		//Create the 3 panel components of the screen.
 		upperPanel = FrameUtils.makeUpperPanel("game won");
@@ -301,30 +279,16 @@ public class TwoTeams extends Frame implements ActionListener {
 
 		//Create the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
-		FrameUtils.makeEndGameLine1(middlePanel, winner);
-		FrameUtils.makeEndGameLine2(middlePanel, theWinner);
-		FrameUtils.makeEndGameLine3(middlePanel, losers);
+		FrameUtils.makeEndGameTeamsLine1(middlePanel, winner);
+		FrameUtils.makeEndGameTeamsLine2(middlePanel, theWinner);
+		FrameUtils.makeEndGameTeamsLine3(middlePanel, losers);
 		
 		//Determine who the two winners are.
-		if (Main.playerOne.equals(theWinner)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerTwo);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerFour);
+		if (Main.teamOne.equals(theWinner)){
+			FrameUtils.makeEndGameTeamsLine4(middlePanel, Main.teamTwo);
 		}
-		if (Main.playerTwo.equals(theWinner)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerThree);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerFour);
-		}
-		if (Main.playerThree.equals(theWinner)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerTwo);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerFour);
-		}
-		if (Main.playerFour.equals(theWinner)){
-			FrameUtils.makeEndGameLine4(middlePanel, Main.playerOne);
-			FrameUtils.makeEndGameLine5(middlePanel, Main.playerTwo);
-			FrameUtils.makeEndGameLine6(middlePanel, Main.playerThree);
+		if (Main.teamTwo.equals(theWinner)){
+			FrameUtils.makeEndGameTeamsLine4(middlePanel, Main.teamOne);
 		}
 				
 		//This adds all the panels to the frame.
