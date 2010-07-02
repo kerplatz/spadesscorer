@@ -150,7 +150,7 @@ public class FrameUtils {
 	 * 
 	 * @return A choice box with all the elements added.
 	 */
-	public static Choice makeBidList() {
+	public static Choice makeBidList(boolean doubleAllowed) {
 		Choice lst = new Choice();
 		
 		lst.add("");
@@ -180,7 +180,7 @@ public class FrameUtils {
 		if (Main.isNilAllowed) lst.add("nil");
 		
 		//Show if a double nil is allowed.
-		if (Main.isDoubleNilAllowed) lst.add("dbl");
+		if (Main.isDoubleNilAllowed && doubleAllowed) lst.add("dbl");
 		
 		return lst;
 	}
@@ -494,7 +494,6 @@ public class FrameUtils {
 		Main.bgLowerButtonColor = new Color(0, 0, 0); 
 		Main.fgTextHighlightedColor = new Color(255, 255, 255);
 		Main.bgTextHighlightedColor = new Color(0, 0, 255);
-		Main.bgTextHighlightedColor = new Color(0, 0, 255);
 		Main.goDoubleColor = new Color(127, 255, 0);
 	}
 
@@ -510,7 +509,6 @@ public class FrameUtils {
 		Main.fgLowerButtonColor = new Color(255, 255, 255);
 		Main.bgLowerButtonColor = new Color(160, 32, 240);
 		Main.fgTextHighlightedColor = new Color(255, 255, 255);
-		Main.bgTextHighlightedColor = new Color(0, 0, 255);
 		Main.bgTextHighlightedColor = new Color(0, 0, 255);
 		Main.goDoubleColor = new Color(127, 255, 0);
 	}
@@ -531,8 +529,10 @@ public class FrameUtils {
 		//Show if team can go double.
 		if (Utils.goDoubleTeam(Main.teamOne)) {
 			team1.setBackground(Main.goDoubleColor);
+			Main.doubleIsAllowedTeam1 = true;
 		} else {
 			team1.setBackground(Main.backgroundColor);
+			Main.doubleIsAllowedTeam1 = false;
 		}
 
 		panel.add(team1, gbLayoutTight(0, 1));
@@ -556,8 +556,10 @@ public class FrameUtils {
 		//Show if team can go double.
 		if (Utils.goDoubleTeam(Main.teamTwo)) {
 			team2.setBackground(Main.goDoubleColor);
+			Main.doubleIsAllowedTeam1 = true;
 		} else {
 			team2.setBackground(Main.backgroundColor);
+			Main.doubleIsAllowedTeam1 = false;
 		}
 
 		panel.add(team2, gbLayoutTight(0, 2));
@@ -573,7 +575,7 @@ public class FrameUtils {
 	 */
 	public static void makeTeamsLine3(Panel panel) {
 		player1Name.setText(Main.player1);
-		player1Bid = makeBidList();
+		player1Bid = makeBidList(Main.doubleIsAllowedTeam1);
 		
 		//Create the needed tricks taken choice box.
 		player1TricksTaken = makeTricksTakenList();
@@ -616,7 +618,7 @@ public class FrameUtils {
 	 */
 	public static void makeTeamsLine4(Panel panel) {
 		player3Name.setText(Main.player3);
-		player3Bid = makeBidList();
+		player3Bid = makeBidList(Main.doubleIsAllowedTeam1);
 		
 		//Create the needed tricks taken choice box.
 		player3TricksTaken = makeTricksTakenList();
@@ -650,7 +652,7 @@ public class FrameUtils {
 		//Set Bid Choice boxes to not editable when scoring.
 		if (Main.doScoring) player3Bid.setEnabled(false);
 
-		if (TwoTeams.nilBidTeam1) {
+		if (Main.nilBidTeam1) {
 			player3TricksTaken.setVisible(true);
 		} else {
 			player3TricksTaken.setVisible(false);
@@ -694,7 +696,7 @@ public class FrameUtils {
 	 */
 	public static void makeTeamsLine6(Panel panel) {
 		player2Name.setText(Main.player2);
-		player2Bid = makeBidList();
+		player2Bid = makeBidList(Main.doubleIsAllowedTeam2);
 		
 		//Create the needed tricks taken choice box.
 		player2TricksTaken = makeTricksTakenList();
@@ -737,7 +739,7 @@ public class FrameUtils {
 	 */
 	public static void makeTeamsLine7(Panel panel) {
 		player4Name.setText(Main.player4);
-		player4Bid = makeBidList();
+		player4Bid = makeBidList(Main.doubleIsAllowedTeam2);
 		
 		//Create the needed tricks taken choice box.
 		player4TricksTaken = makeTricksTakenList();
@@ -771,7 +773,7 @@ public class FrameUtils {
 		//Set Bid Choice boxes to not editable when scoring.
 		if (Main.doScoring) player4Bid.setEnabled(false);
 
-		if (TwoTeams.nilBidTeam2) {
+		if (Main.nilBidTeam2) {
 			player4TricksTaken.setVisible(true);
 		} else {
 			player4TricksTaken.setVisible(false);
@@ -813,8 +815,18 @@ public class FrameUtils {
 	 * @param panel The panel that the items are added to.
 	 */
 	public static void makeLine2(Panel panel) {
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerOne)) {
+			player1Name.setBackground(Main.goDoubleColor);
+			Main.doubleIsAllowedPlayer1 = true;
+		} else {
+			player1Name.setBackground(Main.backgroundColor);
+			Main.doubleIsAllowedPlayer1 = false;
+		}
+
+		//Make player.
 		player1Name.setText(Main.player1);
-		player1Bid = makeBidList();
+		player1Bid = makeBidList(Main.doubleIsAllowedPlayer1);
 		player1Score.setText(Main.player1Score);
 		
 		//Create the needed tricks taken choice box.
@@ -843,13 +855,6 @@ public class FrameUtils {
 			player1Name.setForeground(Main.textColor);
 			player1Name.setFont(new Font("arial", Font.PLAIN, 12));
 		}
-
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerOne)) {
-			player1Name.setBackground(Main.goDoubleColor);
-		} else {
-			player1Name.setBackground(Main.backgroundColor);
-		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
 		if (Main.doBidding) player1TricksTaken.setEnabled(false);
@@ -865,8 +870,18 @@ public class FrameUtils {
 	 * @param panel The panel that the items are added to.
 	 */
 	public static void makeLine3(Panel panel) {
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerTwo)) {
+			player2Name.setBackground(Main.goDoubleColor);
+			Main.doubleIsAllowedPlayer2 = true;
+		} else {
+			player2Name.setBackground(Main.backgroundColor);
+			Main.doubleIsAllowedPlayer2 = false;
+		}
+		
+		//Make Player.
 		player2Name.setText(Main.player2);
-		player2Bid = makeBidList();
+		player2Bid = makeBidList(Main.doubleIsAllowedPlayer2);
 		player2Score.setText(Main.player2Score);
 		
 		//Create the needed tricks taken choice box.
@@ -896,13 +911,6 @@ public class FrameUtils {
 			player2Name.setFont(new Font("arial", Font.PLAIN, 12));
 		}
 
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerTwo)) {
-			player2Name.setBackground(Main.goDoubleColor);
-		} else {
-			player2Name.setBackground(Main.backgroundColor);
-		}
-		
 		//Set TricksTaken Choice boxes to not editable when bidding.
 		if (Main.doBidding) player2TricksTaken.setEnabled(false);
 		
@@ -917,8 +925,18 @@ public class FrameUtils {
 	 * @param panel The panel that the items are added to.
 	 */
 	public static void makeLine4(Panel panel) {
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerThree)) {
+			player3Name.setBackground(Main.goDoubleColor);
+			Main.doubleIsAllowedPlayer3 = true;
+		} else {
+			player3Name.setBackground(Main.backgroundColor);
+			Main.doubleIsAllowedPlayer3 = false;
+		}
+		
+		//Make player.
 		player3Name.setText(Main.player3);
-		player3Bid = makeBidList();
+		player3Bid = makeBidList(Main.doubleIsAllowedPlayer3);
 		player3Score.setText(Main.player3Score);
 		
 		//Create the needed tricks taken choice box.
@@ -948,13 +966,6 @@ public class FrameUtils {
 			player3Name.setFont(new Font("arial", Font.PLAIN, 12));
 		}
 
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerThree)) {
-			player3Name.setBackground(Main.goDoubleColor);
-		} else {
-			player3Name.setBackground(Main.backgroundColor);
-		}
-		
 		//Set TricksTaken Choice boxes to not editable when bidding.
 		if (Main.doBidding) player3TricksTaken.setEnabled(false);
 		
@@ -969,8 +980,18 @@ public class FrameUtils {
 	 * @param panel The panel that the items are added to.
 	 */
 	public static void makeLine5(Panel panel) {
+		//Show if player can go double.
+		if (Utils.goDoublePlayer(Main.playerFour)) {
+			player4Name.setBackground(Main.goDoubleColor);
+			Main.doubleIsAllowedPlayer4 = true;
+		} else {
+			player4Name.setBackground(Main.backgroundColor);
+			Main.doubleIsAllowedPlayer4 = false;
+		}
+		
+		//Make player.
 		player4Name.setText(Main.player4);
-		player4Bid = makeBidList();
+		player4Bid = makeBidList(Main.doubleIsAllowedPlayer4);
 		player4Score.setText(Main.player4Score);
 		
 		//Create the needed tricks taken choice box.
@@ -1000,18 +1021,85 @@ public class FrameUtils {
 			player4Name.setFont(new Font("arial", Font.PLAIN, 12));
 		}
 
-		//Show if player can go double.
-		if (Utils.goDoublePlayer(Main.playerFour)) {
-			player4Name.setBackground(Main.goDoubleColor);
-		} else {
-			player4Name.setBackground(Main.backgroundColor);
-		}
-		
 		//Set TricksTaken Choice boxes to not editable when bidding.
 		if (Main.doBidding) player4TricksTaken.setEnabled(false);
 		
 		//Set Bid Choice boxes to not editable when scoring.
 		if (Main.doScoring) player4Bid.setEnabled(false);
+	}
+	
+	/**
+	 * Creates a line for the end game screen that is a label for winner
+	 * or loser and has the column headers.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param label The label that describes what follows on the next line(s).
+	 */
+	public static void makeEndGameTeamsLine1(Panel panel, Label label) {
+		label.setFont(new Font("arial", Font.BOLD, 12));
+		label.setForeground(Main.bgTextHighlightedColor);
+		panel.add(label, gbLayoutNormal(0, 0));
+		panel.add(score, gbLayoutNormal(1, 0));
+		panel.add(bags, gbLayoutNormal(2, 0));
+		panel.add(sets, gbLayoutNormal(3, 0));
+	}
+	
+	/**
+	 * Creates the Player stats line for a given team.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param player The player that the items pertain to.
+	 */
+	public static void makeEndGameTeamsLine2(Panel panel, Team team) {
+		player1Name.setText(team.name);
+		player1Name.setForeground(Main.labelColor);
+		player1Name.setBackground(Main.backgroundColor);
+		player1Name.setFont(new Font("arial", Font.BOLD, 12));
+		player1Score.setText(team.score);
+		player1Bags.setText(team.bags);
+		player1Sets.setText(team.calculateTimesSet());
+		
+		panel.add(player1Name, gbLayoutTight(0, 1));
+		panel.add(player1Score, gbLayoutTight(1, 1));
+		panel.add(player1Bags, gbLayoutTight(2, 1));
+		panel.add(player1Sets, gbLayoutTight(3, 1));
+	}
+	
+	/**
+	 * Creates a line for the end game screen that is a label for winner
+	 * or loser and has the column headers.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param label The label that describes what follows on the next line(s).
+	 */
+	public static void makeEndGameTeamsLine3(Panel panel, Label label) {
+		label.setFont(new Font("arial", Font.BOLD, 12));
+		label.setForeground(Main.bgTextHighlightedColor);
+		panel.add(label, gbLayoutNormal(0, 2));
+		panel.add(score, gbLayoutNormal(1, 2));
+		panel.add(bags, gbLayoutNormal(2, 2));
+		panel.add(sets, gbLayoutNormal(3, 2));
+	}
+
+	/**
+	 * Creates the Player stats line for a given team.
+	 *
+	 * @param panel The panel that the items are added to.
+	 * @param player The player that the items pertain to.
+	 */
+	public static void makeEndGameTeamsLine4(Panel panel, Team team) {
+		player2Name.setText(team.name);
+		player2Name.setForeground(Main.labelColor);
+		player2Name.setBackground(Main.backgroundColor);
+		player2Name.setFont(new Font("arial", Font.BOLD, 12));
+		player2Score.setText(team.score);
+		player2Bags.setText(team.bags);
+		player2Sets.setText(team.calculateTimesSet());
+		
+		panel.add(player2Name, gbLayoutTight(0, 3));
+		panel.add(player2Score, gbLayoutTight(1, 3));
+		panel.add(player2Bags, gbLayoutTight(2, 3));
+		panel.add(player2Sets, gbLayoutTight(3, 3));
 	}
 	
 	/**
