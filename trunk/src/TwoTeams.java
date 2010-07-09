@@ -102,6 +102,8 @@ public class TwoTeams extends Frame implements ActionListener {
         	if (Utils.processBidding()) {
         		Main.doBidding = false;
         		Main.doScoring = true;
+        		Main.nilBidTeam1 = false;
+        		Main.nilBidTeam2 = false;
         		
         		if (FrameUtils.player1Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player1Bid.getSelectedItem() == "dbl" ||
@@ -134,11 +136,28 @@ public class TwoTeams extends Frame implements ActionListener {
 
         //Performs this action when the Back button is pressed.
         if (event.getActionCommand().equals("back")) {
-    		Main.doBidding = true;
-    		Main.doScoring = false;
+        	if (Utils.processBidding()) {
+        		Main.doBidding = true;
+        		Main.doScoring = false;
+        		Main.nilBidTeam1 = false;
+        		Main.nilBidTeam2 = false;
     		
-    		frame.removeAll();
-        	createPlayGameScreen();
+        		if (FrameUtils.player1Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player1Bid.getSelectedItem() == "dbl" ||
+        				FrameUtils.player3Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player3Bid.getSelectedItem() == "dbl") {
+        			Main.nilBidTeam1 = true;
+        		}
+        		if (FrameUtils.player2Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player2Bid.getSelectedItem() == "dbl" ||
+        				FrameUtils.player4Bid.getSelectedItem() == "nil" ||
+        				FrameUtils.player4Bid.getSelectedItem() == "dbl") {
+        			Main.nilBidTeam2 = true;
+        		}
+    		
+        		frame.removeAll();
+        		createPlayGameScreen();
+        	}
         }
 
         //Performs this action when the Return to Main button is pressed.
