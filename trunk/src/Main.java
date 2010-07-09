@@ -164,6 +164,7 @@ public class Main  extends Frame implements ActionListener,
 	Button buttonNewGame;
 	Button buttonContGame;
 	Button buttonEditGame;
+	Button buttonEndGame;
 	
 	static Main frame = new Main();
 
@@ -184,17 +185,48 @@ public class Main  extends Frame implements ActionListener,
     public void actionPerformed(ActionEvent event) {
         //Performs this action when the NewGame button is pressed.
         if (event.getActionCommand().equals("newGame")) {
-            if(isGameStarted) {
-            	frame.removeAll();
-            	createExitScreen();
-            } else {
-            	game++;
+           	game++;
         	
-            	frame.removeAll();
-            	Utils.resetGame();
+           	frame.removeAll();
+           	Utils.resetGame();
+           	GameSetup setup = new GameSetup(frame);
+           	setup.createSetupScreen();
+        }
 
-            	GameSetup setup = new GameSetup(frame);
-            	setup.createSetupScreen();
+        //Performs this action when the EndGame button is pressed.
+        if (event.getActionCommand().equals("endGame")) {
+            if(Main.doScoring) {
+            	FrameUtils.showDialogBox("You have not finished scoring.");
+            } else {
+            	//Save winScore and set a new winScore to a low number.
+            	int saveWinScore = Main.winScoreNumb;
+            	Main.winScore = "1";
+            	Main.winScoreNumb = 1;
+            	
+        		//Game should now be won by someone.
+            	if (Utils.isGameWon()) {
+					if (Main.isThreeHanded) {
+	            		frame.removeAll();
+	            		ThreeHanded end = new ThreeHanded(frame);
+	        			end.createEndGameWonScreen();
+					}
+					if (Main.isFourHandedSingle) {
+	            		frame.removeAll();
+	            		FourHanded end = new FourHanded(frame);
+	        			end.createEndGameWonScreen();
+					}
+					if (Main.isFourHandedTeams) {
+	            		frame.removeAll();
+	            		TwoTeams end = new TwoTeams(frame);
+	        			end.createEndGameWonScreen();
+					}
+        		} else {
+        			FrameUtils.showDialogBox("Something went wrong. Try again.");
+        		}
+            	
+            	//Restore the winScore value.
+            	Main.winScore = Integer.toString(saveWinScore);
+            	Main.winScoreNumb = saveWinScore;
             }
         }
         
@@ -321,6 +353,8 @@ public class Main  extends Frame implements ActionListener,
 		buttonSetup.addActionListener(this);
 		buttonEditGame = FrameUtils.makeButton("Edit Game", "editGame", true);
 		buttonEditGame.addActionListener(this);
+		buttonEndGame = FrameUtils.makeButton("End Game", "endGame", true);
+		buttonEndGame.addActionListener(this);
 		buttonExitMain = FrameUtils.makeButton("   Exit  ", "exitMain", false);
 		buttonExitMain.addActionListener(this);
 
@@ -329,6 +363,7 @@ public class Main  extends Frame implements ActionListener,
 
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(buttonNewGame, FrameUtils.gbLayoutNormal(0, 0));
+		middlePanel.add(buttonEndGame, FrameUtils.gbLayoutNormal(0, 0));
 		middlePanel.add(buttonSetup, FrameUtils.gbLayoutNormal(0, 1));
 		middlePanel.add(buttonEditGame, FrameUtils.gbLayoutNormal(0, 2));
 		middlePanel.add(buttonContGame, FrameUtils.gbLayoutNormal(0, 3));
@@ -337,21 +372,19 @@ public class Main  extends Frame implements ActionListener,
 			
 		//Adds these buttons to the middle panel when the game is in various modes.
 		if (isGameStarted) {
-			buttonContGame.setVisible(true);
+			buttonNewGame.setVisible(false);
 			buttonPlay.setVisible(false);
-			buttonSetup.setVisible(true);
-			buttonEditGame.setVisible(true);
 		} else if (isGameWon || isGameLost){
+			buttonEndGame.setVisible(false);
 			buttonContGame.setVisible(false);
 			buttonPlay.setVisible(false);
-			buttonSetup.setVisible(true);
-			buttonEditGame.setVisible(true);
+			buttonSetup.setVisible(false);
 		} else if (isSetupDone){
+			buttonEndGame.setVisible(false);
 			buttonContGame.setVisible(false);
-			buttonPlay.setVisible(true);
-			buttonSetup.setVisible(true);
 			buttonEditGame.setVisible(false);
 		} else {
+			buttonEndGame.setVisible(false);
 			buttonContGame.setVisible(false);
 			buttonPlay.setVisible(false);
 			buttonSetup.setVisible(false);
