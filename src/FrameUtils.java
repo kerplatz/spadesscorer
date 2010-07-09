@@ -29,6 +29,10 @@ public class FrameUtils {
 	static Label player2Name = new Label();
 	static Label player3Name = new Label();
 	static Label player4Name = new Label();
+	static Label player1BidLabel = new Label();
+	static Label player2BidLabel = new Label();
+	static Label player3BidLabel = new Label();
+	static Label player4BidLabel = new Label();
 	static Label player1Score = new Label();
 	static Label player2Score = new Label();
 	static Label player3Score = new Label();
@@ -585,11 +589,11 @@ public class FrameUtils {
 		player1TricksTaken.select(Main.player1TricksTaken);
 		
 		panel.add(player1Name, gbLayoutTight(0, 3));
-		panel.add(player1Bid, gbLayoutTight(1, 3));
 		panel.add(player1TricksTaken, gbLayoutTight(2, 3));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player1Bid, gbLayoutTight(1, 3));
 			player1Bid.setEnabled(false);
 			player1TricksTaken.setEnabled(false);
 		}
@@ -604,10 +608,18 @@ public class FrameUtils {
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player1TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player1Bid, gbLayoutTight(1, 3));
+			player1TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player1Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player1BidLabel.setText(Main.player1Bid);
+			player1BidLabel.setForeground(Main.labelColor);
+			player1BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player1BidLabel, gbLayoutTight(1, 3));
+		}
 	}
 
 	/**
@@ -628,11 +640,11 @@ public class FrameUtils {
 		player3TricksTaken.select(Main.player3TricksTaken);
 		
 		panel.add(player3Name, gbLayoutTight(0, 4));
-		panel.add(player3Bid, gbLayoutTight(1, 4));
 		panel.add(player3TricksTaken, gbLayoutTight(2, 4));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player3Bid, gbLayoutTight(1, 4));
 			player3Bid.setEnabled(false);
 			player3TricksTaken.setEnabled(false);
 		}
@@ -647,10 +659,18 @@ public class FrameUtils {
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player3TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player3Bid, gbLayoutTight(1, 4));
+			player3TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player3Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player3BidLabel.setText(Main.player3Bid);
+			player3BidLabel.setForeground(Main.labelColor);
+			player3BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player3BidLabel, gbLayoutTight(1, 4));
+		}
 
 		if (Main.nilBidTeam1) {
 			player3TricksTaken.setVisible(true);
@@ -706,11 +726,11 @@ public class FrameUtils {
 		player2TricksTaken.select(Main.player2TricksTaken);
 		
 		panel.add(player2Name, gbLayoutTight(0, 6));
-		panel.add(player2Bid, gbLayoutTight(1, 6));
 		panel.add(player2TricksTaken, gbLayoutTight(2, 6));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player2Bid, gbLayoutTight(1, 6));
 			player2Bid.setEnabled(false);
 			player2TricksTaken.setEnabled(false);
 		}
@@ -725,10 +745,18 @@ public class FrameUtils {
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player2TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player2Bid, gbLayoutTight(1, 6));
+			player2TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player2Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player2BidLabel.setText(Main.player2Bid);
+			player2BidLabel.setForeground(Main.labelColor);
+			player2BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player2BidLabel, gbLayoutTight(1, 6));
+		}
 	}
 
 	/**
@@ -749,11 +777,11 @@ public class FrameUtils {
 		player4TricksTaken.select(Main.player4TricksTaken);
 		
 		panel.add(player4Name, gbLayoutTight(0, 7));
-		panel.add(player4Bid, gbLayoutTight(1, 7));
 		panel.add(player4TricksTaken, gbLayoutTight(2, 7));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player4Bid, gbLayoutTight(1, 7));
 			player4Bid.setEnabled(false);
 			player4TricksTaken.setEnabled(false);
 		}
@@ -768,10 +796,18 @@ public class FrameUtils {
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player4TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player4Bid, gbLayoutTight(1, 7));
+			player4TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player4Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player4BidLabel.setText(Main.player4Bid);
+			player4BidLabel.setForeground(Main.labelColor);
+			player4BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player4BidLabel, gbLayoutTight(1, 7));
+		}
 
 		if (Main.nilBidTeam2) {
 			player4TricksTaken.setVisible(true);
@@ -837,12 +873,12 @@ public class FrameUtils {
 		player1TricksTaken.select(Main.player1TricksTaken);
 		
 		panel.add(player1Name, gbLayoutNormal(0, 2));
-		panel.add(player1Bid, gbLayoutNormal(1, 2));
 		panel.add(player1TricksTaken, gbLayoutNormal(2, 2));
 		panel.add(player1Score, gbLayoutNormal(3, 2));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player1Bid, gbLayoutNormal(1, 2));
 			player1Bid.setEnabled(false);
 			player1TricksTaken.setEnabled(false);
 		}
@@ -857,10 +893,18 @@ public class FrameUtils {
 		}
 		
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player1TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player1Bid, gbLayoutNormal(1, 2));
+			player1TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player1Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player1BidLabel.setText(Main.player1Bid);
+			player1BidLabel.setForeground(Main.labelColor);
+			player1BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player1BidLabel, gbLayoutNormal(1, 2));
+		}
 	}
 
 	/**
@@ -892,12 +936,12 @@ public class FrameUtils {
 		player2TricksTaken.select(Main.player2TricksTaken);
 		
 		panel.add(player2Name, gbLayoutNormal(0, 3));
-		panel.add(player2Bid, gbLayoutNormal(1, 3));
 		panel.add(player2TricksTaken, gbLayoutNormal(2, 3));
 		panel.add(player2Score, gbLayoutNormal(3, 3));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player2Bid, gbLayoutNormal(1, 3));
 			player2Bid.setEnabled(false);
 			player2TricksTaken.setEnabled(false);
 		}
@@ -912,10 +956,18 @@ public class FrameUtils {
 		}
 
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player2TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player2Bid, gbLayoutNormal(1, 3));
+			player2TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player2Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player2BidLabel.setText(Main.player2Bid);
+			player2BidLabel.setForeground(Main.labelColor);
+			player2BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player2BidLabel, gbLayoutNormal(1, 3));
+		}
 	}
 
 	/**
@@ -947,12 +999,12 @@ public class FrameUtils {
 		player3TricksTaken.select(Main.player3TricksTaken);
 		
 		panel.add(player3Name, gbLayoutNormal(0, 4));
-		panel.add(player3Bid, gbLayoutNormal(1, 4));
 		panel.add(player3TricksTaken, gbLayoutNormal(2, 4));
 		panel.add(player3Score, gbLayoutNormal(3, 4));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player3Bid, gbLayoutNormal(1, 4));
 			player3Bid.setEnabled(false);
 			player3TricksTaken.setEnabled(false);
 		}
@@ -967,10 +1019,18 @@ public class FrameUtils {
 		}
 
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player3TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player3Bid, gbLayoutNormal(1, 4));
+			player3TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player3Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player3BidLabel.setText(Main.player3Bid);
+			player3BidLabel.setForeground(Main.labelColor);
+			player3BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player3BidLabel, gbLayoutNormal(1, 4));
+		}
 	}
 
 	/**
@@ -1002,12 +1062,12 @@ public class FrameUtils {
 		player4TricksTaken.select(Main.player4TricksTaken);
 		
 		panel.add(player4Name, gbLayoutNormal(0, 5));
-		panel.add(player4Bid, gbLayoutNormal(1, 5));
 		panel.add(player4TricksTaken, gbLayoutNormal(2, 5));
 		panel.add(player4Score, gbLayoutNormal(3, 5));
 		
 		//Set Choice boxes to not editable when game has not started.
 		if (!Main.isGameStarted) {
+			panel.add(player4Bid, gbLayoutNormal(1, 5));
 			player4Bid.setEnabled(false);
 			player4TricksTaken.setEnabled(false);
 		}
@@ -1022,10 +1082,18 @@ public class FrameUtils {
 		}
 
 		//Set TricksTaken Choice boxes to not editable when bidding.
-		if (Main.doBidding) player4TricksTaken.setEnabled(false);
+		if (Main.doBidding) {
+			panel.add(player4Bid, gbLayoutNormal(1, 5));
+			player4TricksTaken.setEnabled(false);
+		}
 		
 		//Set Bid Choice boxes to not editable when scoring.
-		if (Main.doScoring) player4Bid.setEnabled(false);
+		if (Main.doScoring) {
+			player4BidLabel.setText(Main.player4Bid);
+			player4BidLabel.setForeground(Main.labelColor);
+			player4BidLabel.setFont(new Font("arial", Font.BOLD, 14));
+			panel.add(player4BidLabel, gbLayoutNormal(1, 5));
+		}
 	}
 	
 	/**
