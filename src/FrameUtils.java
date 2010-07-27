@@ -228,17 +228,17 @@ public class FrameUtils {
 	 * This method creates a choice box for selecting which round to edit
 	 * or view.
 	 * 
-	 * @return A choice box with all the rounds added.
+	 * @return A choice box with all the rounds added or null.
 	 */
 	public static Choice makeRoundList() {
 		Choice lst = new Choice();
 		
-		for (int i = 0; i < Main.round + 1; i++) {
+		if (Main.round == 0) return null;
+		
+		for (int i = 1; i <= Main.round; i++) {
 			Integer numb = new Integer(i);
 			lst.add(numb.toString());
 		}
-		
-		lst.add("all");
 		
 		//Set the selection to the current round since it is the likely
 		//round to be edited.
@@ -322,7 +322,7 @@ public class FrameUtils {
 	
 	/**
 	 * This method places the object on the screen at these relative positions
-	 * with a 0 pixel padding around it.
+	 * with a 5 pixel padding around it.
 	 * 
 	 * @param gridx The relative column.
 	 * @param gridy The relative row.
@@ -470,7 +470,7 @@ public class FrameUtils {
 	}
 
 	/**
-	 * This method sets the display colors to ISU.
+	 * This method sets the display colors to the ISU skin.
 	 */
 	public static void setISUColors() {
 		Main.backgroundColor = new Color(255, 255, 0);
@@ -486,7 +486,7 @@ public class FrameUtils {
 	}
 
 	/**
-	 * This method sets the display colors to U of Iowa.
+	 * This method sets the display colors to the U of Iowa skin.
 	 */
 	public static void setIowaColors() {
 		Main.backgroundColor = new Color(255, 255, 0);
@@ -502,7 +502,7 @@ public class FrameUtils {
 	}
 
 	/**
-	 * This method sets the display colors to UNI.
+	 * This method sets the display colors to the UNI skin.
 	 */
 	public static void setUNIColors() {
 		Main.backgroundColor = new Color(255, 255, 0);
@@ -560,10 +560,10 @@ public class FrameUtils {
 		//Show if team can go double.
 		if (Utils.goDoubleTeam(Main.teamTwo)) {
 			team2.setBackground(Main.goDoubleColor);
-			Main.doubleIsAllowedTeam1 = true;
+			Main.doubleIsAllowedTeam2 = true;
 		} else {
 			team2.setBackground(Main.backgroundColor);
-			Main.doubleIsAllowedTeam1 = false;
+			Main.doubleIsAllowedTeam2 = false;
 		}
 
 		panel.add(team2, gbLayoutTight(0, 2));
@@ -828,16 +828,19 @@ public class FrameUtils {
 		Label tricks = new Label("Tricks");
 		Label score = new Label("Score");
 		
+		//Set the foreground colors on the labels.
 		name.setForeground(Main.labelColor);
 		bid.setForeground(Main.labelColor);
 		tricks.setForeground(Main.labelColor);
 		score.setForeground(Main.labelColor);
 		
+		//Change all the fonts on the labels.
 		name.setFont(new Font("arial", Font.BOLD, 12));
 		bid.setFont(new Font("arial", Font.BOLD, 12));
 		tricks.setFont(new Font("arial", Font.BOLD, 12));
 		score.setFont(new Font("arial", Font.BOLD, 12));
 
+		//Add all the labels to the panel.
 		panel.add(name, gbLayoutNormal(0, 1));
 		panel.add(bid, gbLayoutNormal(1, 1));
 		panel.add(tricks, gbLayoutNormal(2, 1));
@@ -1106,6 +1109,8 @@ public class FrameUtils {
 	public static void makeEndGameTeamsLine1(Panel panel, Label label) {
 		label.setFont(new Font("arial", Font.BOLD, 12));
 		label.setForeground(Main.bgTextHighlightedColor);
+		
+		//Add items to the panel.
 		panel.add(label, gbLayoutNormal(0, 0));
 		panel.add(score, gbLayoutNormal(1, 0));
 		panel.add(bags, gbLayoutNormal(2, 0));
@@ -1119,14 +1124,18 @@ public class FrameUtils {
 	 * @param player The player that the items pertain to.
 	 */
 	public static void makeEndGameTeamsLine2(Panel panel, Team team) {
+		//Change the way the player4 name appears.
 		player1Name.setText(team.name);
 		player1Name.setForeground(Main.labelColor);
 		player1Name.setBackground(Main.backgroundColor);
 		player1Name.setFont(new Font("arial", Font.BOLD, 12));
+
+		//Set the values for these items.
 		player1Score.setText(team.score);
 		player1Bags.setText(team.bags);
 		player1Sets.setText(team.calculateTimesSet());
 		
+		//Add items to the panel.
 		panel.add(player1Name, gbLayoutTight(0, 1));
 		panel.add(player1Score, gbLayoutTight(1, 1));
 		panel.add(player1Bags, gbLayoutTight(2, 1));
@@ -1143,6 +1152,8 @@ public class FrameUtils {
 	public static void makeEndGameTeamsLine3(Panel panel, Label label) {
 		label.setFont(new Font("arial", Font.BOLD, 12));
 		label.setForeground(Main.bgTextHighlightedColor);
+
+		//Add items to the panel.
 		panel.add(label, gbLayoutNormal(0, 2));
 		panel.add(score, gbLayoutNormal(1, 2));
 		panel.add(bags, gbLayoutNormal(2, 2));
@@ -1156,14 +1167,18 @@ public class FrameUtils {
 	 * @param player The player that the items pertain to.
 	 */
 	public static void makeEndGameTeamsLine4(Panel panel, Team team) {
+		//Change the way the player4 name appears.
 		player2Name.setText(team.name);
 		player2Name.setForeground(Main.labelColor);
 		player2Name.setBackground(Main.backgroundColor);
 		player2Name.setFont(new Font("arial", Font.BOLD, 12));
+
+		//Set the values for these items.
 		player2Score.setText(team.score);
 		player2Bags.setText(team.bags);
 		player2Sets.setText(team.calculateTimesSet());
 		
+		//Add items to the panel.
 		panel.add(player2Name, gbLayoutTight(0, 3));
 		panel.add(player2Score, gbLayoutTight(1, 3));
 		panel.add(player2Bags, gbLayoutTight(2, 3));
@@ -1180,6 +1195,8 @@ public class FrameUtils {
 	public static void makeEndGameLine1(Panel panel, Label label) {
 		label.setFont(new Font("arial", Font.BOLD, 12));
 		label.setForeground(Main.bgTextHighlightedColor);
+
+		//Add items to the panel.
 		panel.add(label, gbLayoutNormal(0, 0));
 		panel.add(score, gbLayoutNormal(1, 0));
 		panel.add(bags, gbLayoutNormal(2, 0));
@@ -1193,14 +1210,18 @@ public class FrameUtils {
 	 * @param player The player that the items pertain to.
 	 */
 	public static void makeEndGameLine2(Panel panel, Player player) {
+		//Change the way the player1 name appears.
 		player1Name.setText(player.player);
 		player1Name.setForeground(Main.labelColor);
 		player1Name.setBackground(Main.backgroundColor);
 		player1Name.setFont(new Font("arial", Font.BOLD, 12));
+
+		//Set the values for these items.
 		player1Score.setText(player.score);
 		player1Bags.setText(player.bags);
 		player1Sets.setText(player.calculateTimesSet());
 		
+		//Add items to the panel.
 		panel.add(player1Name, gbLayoutNormal(0, 1));
 		panel.add(player1Score, gbLayoutNormal(1, 1));
 		panel.add(player1Bags, gbLayoutNormal(2, 1));
@@ -1217,6 +1238,8 @@ public class FrameUtils {
 	public static void makeEndGameLine3(Panel panel, Label label) {
 		label.setFont(new Font("arial", Font.BOLD, 12));
 		label.setForeground(Main.bgTextHighlightedColor);
+
+		//Add items to the panel.
 		panel.add(label, gbLayoutNormal(0, 2));
 		panel.add(score, gbLayoutNormal(1, 2));
 		panel.add(bags, gbLayoutNormal(2, 2));
@@ -1230,14 +1253,18 @@ public class FrameUtils {
 	 * @param player The player that the items pertain to.
 	 */
 	public static void makeEndGameLine4(Panel panel, Player player) {
+		//Change the way the player2 name appears.
 		player2Name.setText(player.player);
 		player2Name.setForeground(Main.labelColor);
 		player2Name.setBackground(Main.backgroundColor);
 		player2Name.setFont(new Font("arial", Font.BOLD, 12));
+
+		//Set the values for these items.
 		player2Score.setText(player.score);
 		player2Bags.setText(player.bags);
 		player2Sets.setText(player.calculateTimesSet());
 		
+		//Add items to the panel.
 		panel.add(player2Name, gbLayoutNormal(0, 3));
 		panel.add(player2Score, gbLayoutNormal(1, 3));
 		panel.add(player2Bags, gbLayoutNormal(2, 3));
@@ -1251,14 +1278,18 @@ public class FrameUtils {
 	 * @param player The player that the items pertain to.
 	 */
 	public static void makeEndGameLine5(Panel panel, Player player) {
+		//Change the way the player3 name appears.
 		player3Name.setText(player.player);
 		player3Name.setForeground(Main.labelColor);
 		player3Name.setBackground(Main.backgroundColor);
 		player3Name.setFont(new Font("arial", Font.BOLD, 12));
+
+		//Set the values for these items.
 		player3Score.setText(player.score);
 		player3Bags.setText(player.bags);
 		player3Sets.setText(player.calculateTimesSet());
 		
+		//Add items to the panel.
 		panel.add(player3Name, gbLayoutNormal(0, 4));
 		panel.add(player3Score, gbLayoutNormal(1, 4));
 		panel.add(player3Bags, gbLayoutNormal(2, 4));
@@ -1272,14 +1303,18 @@ public class FrameUtils {
 	 * @param player The player that the items pertain to.
 	 */
 	public static void makeEndGameLine6(Panel panel, Player player) {
+		//Change the way the player4 name appears.
 		player4Name.setText(player.player);
 		player4Name.setForeground(Main.labelColor);
 		player4Name.setBackground(Main.backgroundColor);
 		player4Name.setFont(new Font("arial", Font.BOLD, 12));
+
+		//Set the values for these items.
 		player4Score.setText(player.score);
 		player4Bags.setText(player.bags);
 		player4Sets.setText(player.calculateTimesSet());
 		
+		//Add items to the panel.
 		panel.add(player4Name, gbLayoutNormal(0, 5));
 		panel.add(player4Score, gbLayoutNormal(1, 5));
 		panel.add(player4Bags, gbLayoutNormal(2, 5));
