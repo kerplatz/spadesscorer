@@ -6,7 +6,7 @@
  * and recalculate score methods. It also includes a toString() method to
  * facilitate the creation a CSV file when the game has ended.
  *
- * @author dhoffman
+ * @author David Hoffman
  */
  
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ public class Player {
 	/**
 	 * Declare needed variables.
 	 */
+	private static final boolean DEBUG = Main.DEBUG;
+
 	public String player = "";
 	public String bid = "";
 	public String tricksTaken = "";
@@ -69,8 +71,8 @@ public class Player {
 	 */
 	public void beginRound() {
 		turn.add("Round");
-		turn.add("Bid");
-		turn.add("Tricks");
+		turn.add(player + " Bid");
+		turn.add(player + " Tricks");
 		turn.add("Score");
 		turn.add("Bags");
 		turn.add("Set");
@@ -81,8 +83,9 @@ public class Player {
 	 * 
 	 * @param bidIn The bid made by the player.
 	 * @param tricksIn The amount of tricks taken by the player.
+	 * @throws AudioException 
 	 */
-	public void inputRound(String bidIn, String tricksIn) {
+	public void inputRound(String bidIn, String tricksIn) throws AudioException {
 		round_no++;
 		bid = bidIn;
 		tricksTaken = tricksIn;
@@ -111,6 +114,8 @@ public class Player {
 	
 	/**
 	 * Calculates the score.
+	 * 
+	 * @throws AudioException 
 	 */
 	public void calculateScore() {
 		int bidTemp = Utils.stringToInt(bid);
@@ -119,7 +124,6 @@ public class Player {
 		int bagsTemp = Utils.stringToInt(bags);
 		int bagsRecvd = 0;
 		int bagsTotal = 0;
-		int bagsMultiTemp = 0;
 		int bagsTotalTemp = 0;
 		int bagsScored = 0;
 
@@ -194,17 +198,38 @@ public class Player {
 			set = true;
 		}
 
-		bagsMultiTemp = bagsMultiplier;
 		bagsTotalTemp = bagsTotal;
 		
 		//Reduce the number of bags.
-		for(int i = 0; i < bagsMultiTemp; i++) {
+		for(int i = 0; i < bagsMultiplier; i++) {
 			bagsTotalTemp -=10;
 		}
 
-		//Calculate if the bags hav =e reached 10 or more.
-		bagsScored = (Main.bagValueNumb * bagsTotal / 10);
+		//Calculate if the bags have reached 10 or more.
+		bagsScored = (Main.bagValueNumb * bagsTotalTemp / 10);
 		bagsMultiplier += bagsScored;
+		
+		//Don't play any sound files if debug mode.
+		if (!DEBUG) {
+			//Play sound file if 10 or more bags has been reached.
+			AudioPlayer ap = new AudioPlayer();
+			if (bagsScored > 0) {
+				try {
+					ap.playAudio(Main.soundBags);
+				} catch (AudioException e) {
+					FrameUtils.showDialogBox("Audio file did not play.");
+				}
+			}
+
+			//Play sound file if player was set.
+			if (set) {
+				try {
+					ap.playAudio(Main.soundSet);
+				} catch (AudioException e) {
+					FrameUtils.showDialogBox("Audio file did not play.");
+				}
+			}
+		}
 		
 		//Remove points for bags of multiple of 10.
 		scoreTemp -= bagsScored * 100;
@@ -236,6 +261,7 @@ public class Player {
 	public String toString() {
 		String str = "";
 				
+		//Cycle through the entire array list.
 		for (int i = 0; i < turn.size(); i += 6) {
 			for (int j = 0; j < 6; j++) {
 				//Get the desired item from the ArrayList.
