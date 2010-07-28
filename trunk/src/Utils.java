@@ -1341,4 +1341,11 @@ public class Utils {
 	public static void parseIni() {
 		// TODO Auto-generated method stub
 	}
+
+	/**
+	 * Create the ini array list so it can be written to a file.
+	 */
+	public static void createIni() {
+		// TODO Auto-generated method stub
+	}
 }
