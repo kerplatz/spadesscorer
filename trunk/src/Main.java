@@ -1,5 +1,5 @@
 /**FINISHED
- * Scorer.java
+ * Main.java
  * 
  * Application to keep score in a Spades Game. This will have the ability to
  * keep the score for 3-handed, 4-handed single, and 4-handed  with 2 teams
@@ -26,19 +26,20 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Main  extends Frame implements ActionListener,
+public class Main extends Frame implements ActionListener,
 											WindowListener, ItemListener {
 	/**
 	 * Declare needed variables.
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public static final boolean DEBUG = false;
 	public static ArrayList names;
+	public static ArrayList ini;
 	
 	public static boolean nilBidTeam1 = false;
 	public static boolean nilBidTeam2 = false;
@@ -67,6 +68,8 @@ public class Main  extends Frame implements ActionListener,
 	public static boolean doubleIsAllowedPlayer4;
 	public static boolean doubleIsAllowedTeam1;
 	public static boolean doubleIsAllowedTeam2;
+	public static boolean sounds = false;
+	public static boolean iniFailed = false;
 	
 	public static String player1;
 	public static String player2;
@@ -96,7 +99,7 @@ public class Main  extends Frame implements ActionListener,
 	public static String winScore;
 	public static String loseScore;
 
-	public static int game = 1;
+	public static int game = 0;
 	public static int round;
 	public static int player1TimesSet;
 	public static int player2TimesSet;
@@ -129,15 +132,15 @@ public class Main  extends Frame implements ActionListener,
 	public static Team teamTwo;
 	public static Team teamPrevious;
 
-	Checkbox optionsCheckbox = new Checkbox("Save", true);
-	Checkbox player1Checkbox = new Checkbox("Save", true);
-	Checkbox player2Checkbox = new Checkbox("Save", true);
-	Checkbox player3Checkbox = new Checkbox("Save", true);
-	Checkbox player4Checkbox = new Checkbox("Save", true);
-	Checkbox playerPreviousCheckbox = new Checkbox("Save", false);
-	Checkbox team1Checkbox = new Checkbox("Save", true);
-	Checkbox team2Checkbox = new Checkbox("Save", true);
-	Checkbox teamPreviousCheckbox = new Checkbox("Save", false);
+	public static Checkbox optionsCheckbox = new Checkbox("Save", true);
+	public static Checkbox player1Checkbox = new Checkbox("Save", true);
+	public static Checkbox player2Checkbox = new Checkbox("Save", true);
+	public static Checkbox player3Checkbox = new Checkbox("Save", true);
+	public static Checkbox player4Checkbox = new Checkbox("Save", true);
+	public static Checkbox playerPreviousCheckbox = new Checkbox("Save", false);
+	public static Checkbox team1Checkbox = new Checkbox("Save", true);
+	public static Checkbox team2Checkbox = new Checkbox("Save", true);
+	public static Checkbox teamPreviousCheckbox = new Checkbox("Save", false);
 
 	Label optionsLabel = new Label("  Options   ");
 	Label player1Label = new Label("  Player 1  ");
@@ -150,7 +153,9 @@ public class Main  extends Frame implements ActionListener,
 	Label teamPreviousLabel = new Label("  Team 3  ");
 	Label message1 = new Label();
 	Label message2 = new Label();
-
+	Label version = new Label("Ver. 2.0.10");
+	Label dummy = new Label(" Intermec ");
+	
 	Panel upperPanel;
 	Panel middlePanel;
 	Panel lowerPanel;
@@ -165,6 +170,13 @@ public class Main  extends Frame implements ActionListener,
 	Button buttonContGame;
 	Button buttonEditGame;
 	Button buttonEndGame;
+	
+	static File iniFile = new File("spades.ini");
+	static File soundBags = new File("ComeOn.wav");
+	static File soundSet = new File("Yes.wav");
+	static File soundWin = new File("Applause.wav");
+	static File soundLose = new File("MaybeNextTime.wav");
+	static File soundGameStart= new File("Startup.wav");
 	
 	static Main frame = new Main();
 
@@ -187,8 +199,9 @@ public class Main  extends Frame implements ActionListener,
         if (event.getActionCommand().equals("newGame")) {
            	game++;
         	
-           	frame.removeAll();
            	Utils.resetGame();
+           	frame.removeAll();
+           	
            	GameSetup setup = new GameSetup(frame);
            	setup.createSetupScreen();
         }
@@ -228,6 +241,10 @@ public class Main  extends Frame implements ActionListener,
             	Main.winScore = Integer.toString(saveWinScore);
             	Main.winScoreNumb = saveWinScore;
             }
+            frame.removeAll();
+            	
+            Main game = new Main();
+    		game.createEndGameScreen();
         }
         
         //Performs this action when the EditGame button is pressed.
@@ -298,21 +315,21 @@ public class Main  extends Frame implements ActionListener,
 
         //Performs this action when the Save button is pressed.
         if (event.getActionCommand().equals("save")) {
-        	saveStats();
+        	Utils.saveStats();
         	
         	//Display the files saved message.
         	FrameUtils.showDialogBox("All selected files were saved.");
-        }  
-
-        //Performs this action when the MainMenu button is pressed.
-        if (event.getActionCommand().equals("mainMenu")) {
-        	frame.removeAll();
         	
         	//Reset some of the variables.
         	isGameStarted = false;
         	isSetupDone = false;
         	isGameWon = false;
         	isGameLost = false;
+        }  
+
+        //Performs this action when the MainMenu button is pressed.
+        if (event.getActionCommand().equals("mainMenu")) {
+        	frame.removeAll();
         	
     		Main game = new Main();
     		game.createMainMenuScreen();
@@ -334,9 +351,6 @@ public class Main  extends Frame implements ActionListener,
 	 * Creates the MainMenu screen.
 	 */
 	public void createMainMenuScreen() {
-		//Set the default screen skin.
-		Utils.setSkinSelected();
-		
 		//Create the 3 panel components of the screen.
 		upperPanel = FrameUtils.makeUpperPanel("main menu");
 		middlePanel = FrameUtils.makeMiddlePanel();
@@ -358,9 +372,15 @@ public class Main  extends Frame implements ActionListener,
 		buttonExitMain = FrameUtils.makeButton("   Exit  ", "exitMain", false);
 		buttonExitMain.addActionListener(this);
 
-		//Add the buttons to the proper panels.
-		lowerPanel.add(buttonExitMain);
+		//Add the buttons and version label to the proper panels.
+		lowerPanel.setLayout(new GridBagLayout());
+		version.setFont(new Font("arial", Font.BOLD, 9));
+		lowerPanel.add(version, FrameUtils.gbLayoutNormal(0, 1));
+		lowerPanel.add(buttonExitMain, FrameUtils.gbLayoutNormal(1, 1));
+		dummy.setFont(new Font("arial", Font.BOLD, 9));
+		lowerPanel.add(dummy, FrameUtils.gbLayoutNormal(2, 1));
 
+		//Add items to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(buttonNewGame, FrameUtils.gbLayoutNormal(0, 0));
 		middlePanel.add(buttonEndGame, FrameUtils.gbLayoutNormal(0, 0));
@@ -400,9 +420,9 @@ public class Main  extends Frame implements ActionListener,
 	}
 
 	/**
-	 * Creates an exit screen.
+	 * Creates an end game screen.
 	 */
-	public void createExitScreen() {
+	public void createEndGameScreen() {
 		//Create the 3 panel components of the screen.
 		upperPanel = FrameUtils.makeUpperPanel("save menu");
 		middlePanel = FrameUtils.makeMiddlePanel();
@@ -411,13 +431,10 @@ public class Main  extends Frame implements ActionListener,
 		//Makes all the needed buttons.
 		buttonSave = FrameUtils.makeButton(" Save ", "save", false);
 		buttonSave.addActionListener(this);
-		buttonExit = FrameUtils.makeButton(" Exit ", "exit", false);
-		buttonExit.addActionListener(this);
 		buttonReturn = FrameUtils.makeButton("Main Menu", "mainMenu", false);
 		buttonReturn.addActionListener(this);
 		
 		//Add buttons to the screen.
-		lowerPanel.add(buttonExit);
 		lowerPanel.add(buttonReturn);
 		
 		//Add the content to be saved.
@@ -430,7 +447,7 @@ public class Main  extends Frame implements ActionListener,
 			message1.setFont(new Font("arial", Font.BOLD, 12));
 			middlePanel.add(message1, FrameUtils.gbLayoutNormal(0, 0));
 
-			message2.setText("Press the Exit or Return button.");
+			message2.setText("Press the Main Menu button.");
 			message2.setForeground(Main.labelColor);
 			message2.setFont(new Font("arial", Font.BOLD, 12));
 			middlePanel.add(message2, FrameUtils.gbLayoutNormal(0, 1));
@@ -443,7 +460,7 @@ public class Main  extends Frame implements ActionListener,
 			message1.setFont(new Font("arial", Font.BOLD, 12));
 			middlePanel.add(message1, FrameUtils.gbLayoutTightDouble(0, 0));
 
-			message2.setText("to save to separate files.");
+			message2.setText("to save in separate files.");
 			message2.setForeground(Main.labelColor);
 			message2.setFont(new Font("arial", Font.BOLD, 12));
 			middlePanel.add(message2, FrameUtils.gbLayoutTightDouble(0, 1));
@@ -460,6 +477,7 @@ public class Main  extends Frame implements ActionListener,
 				Label team1 = new Label(Main.team1);
 				Label team2 = new Label(Main.team2);
 
+				//Add items to the middle panel.
 				middlePanel.add(team1Label, FrameUtils.gbLayoutTight(0, 3));
 				middlePanel.add(team1, FrameUtils.gbLayoutTight(1, 3));
 				middlePanel.add(team1Checkbox, FrameUtils.gbLayoutTight(2, 3));
@@ -474,6 +492,7 @@ public class Main  extends Frame implements ActionListener,
 				if(teamPrevious != null) {
 					Label teamPrevious = new Label(Main.teamPrevious.name);
 
+					//Add items to the middle panel.
 					middlePanel.add(teamPreviousLabel, FrameUtils.gbLayoutTight(0, 5));
 					middlePanel.add(teamPrevious, FrameUtils.gbLayoutTight(1, 5));
 					middlePanel.add(teamPreviousCheckbox, FrameUtils.gbLayoutTight(2, 5));
@@ -484,6 +503,7 @@ public class Main  extends Frame implements ActionListener,
 				Label player2 = new Label(Main.player2);
 				Label player3 = new Label(Main.player3);
 
+				//Add items to the middle panel.
 				middlePanel.add(player1Label, FrameUtils.gbLayoutTight(0, 3));
 				middlePanel.add(player1, FrameUtils.gbLayoutTight(1, 3));
 				middlePanel.add(player1Checkbox, FrameUtils.gbLayoutTight(2, 3));
@@ -503,6 +523,7 @@ public class Main  extends Frame implements ActionListener,
 				if(isFourHandedSingle) {
 					Label player4 = new Label(Main.player4);
 
+					//Add items to the middle panel.
 					middlePanel.add(player4Label, FrameUtils.gbLayoutTight(0, 6));
 					middlePanel.add(player4, FrameUtils.gbLayoutTight(1, 6));
 					middlePanel.add(player4Checkbox, FrameUtils.gbLayoutTight(2, 6));
@@ -513,6 +534,7 @@ public class Main  extends Frame implements ActionListener,
 				if(playerPrevious != null) {
 					Label playerPrevious = new Label(Main.playerPrevious.player);
 
+					//Add items to the middle panel.
 					middlePanel.add(playerPreviousLabel, FrameUtils.gbLayoutTight(0, 7));
 					middlePanel.add(playerPrevious, FrameUtils.gbLayoutTight(1, 7));
 					middlePanel.add(playerPreviousCheckbox, FrameUtils.gbLayoutTight(2, 7));
@@ -528,7 +550,40 @@ public class Main  extends Frame implements ActionListener,
 		
 		frame.setVisible(true);
 	}
-	
+
+	/**
+	 * Creates an exit screen.
+	 */
+	public void createExitScreen() {
+		//Create the 3 panel components of the screen.
+		upperPanel = FrameUtils.makeUpperPanel("exit menu");
+		middlePanel = FrameUtils.makeMiddlePanel();
+		lowerPanel = FrameUtils.makeLowerPanel();
+		
+		//Makes all the needed buttons.
+		buttonReturn = FrameUtils.makeButton("  No  ", "mainMenu", false);
+		buttonReturn.addActionListener(this);
+		buttonExit = FrameUtils.makeButton(" Yes ", "exit", false);
+		buttonExit.addActionListener(this);
+		
+		//Add buttons to the screen.
+		lowerPanel.add(buttonExit);
+		lowerPanel.add(buttonReturn);
+
+		//Display exit message.
+		message1.setText("Are you sure you want to exit?");
+		message1.setForeground(Main.textColor);
+		message1.setFont(new Font("arial", Font.BOLD, 12));
+		middlePanel.add(message1, FrameUtils.gbLayoutNormal(0, 0));
+
+		//This adds all the panels to the frame.
+		frame.add(upperPanel, BorderLayout.NORTH);
+		frame.add(middlePanel, BorderLayout.CENTER);
+		frame.add(lowerPanel, BorderLayout.SOUTH);
+		
+		frame.setVisible(true);
+	}
+
 	/**
 	 * Exits the application.
 	 */
@@ -537,11 +592,6 @@ public class Main  extends Frame implements ActionListener,
 	    System.exit(0);
 	}
 
-	/**
-	 * This method is not implemented in this version.
-	 * 
-	 * @param event The triggering event.
-	 */
 	public void itemStateChanged(ItemEvent event) {
 		//This is blank by design.
 	}
@@ -585,62 +635,40 @@ public class Main  extends Frame implements ActionListener,
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) throws IOException {
-		//Load player names from a file.
-		loadNames();
+		//Set the default screen skin.
+		Utils.setSkinSelected();
+		
+		//Determine if a game ini has been created.
+		if (!iniFile.exists()) {
+			//Create an ini setup screen.
+			IniSetup setup = new IniSetup(frame);
+			setup.createSetupScreen();
+		}
+
+		//Load the ini file.
+		FileUtils.loadIniFile();
+			
+		//Exit if ini fails to load.
+		if (iniFailed) {
+			Main exit = new Main();
+			exit.createExitScreen();
+		}
+			
+		//Extract all the information in the ini ArrayList.
+		Utils.parseIni();
 
 		Main game = new Main();
 		game.createMainMenuScreen();
-	}
-
-	/**
-	 * Reads the names of available players from the file names.txt.
-	 * @throws IOException 
-	 */
-	private static void loadNames() throws IOException {
-		BufferedReader in = new BufferedReader(new FileReader("names.txt"));
-		String line;
-		names = new ArrayList();
-
-	    try {    
-	    	if (!in.ready());
-
-	        while ((line = in.readLine()) != null) {
-	        	names.add(line);
-	        }
-	    }
-        catch (IOException e) {
-	            System.out.println(e);
-	    }
-        
-    	in.close();
-	}
-
-	/**
-	 * This method saves the players or team statistics to a file on the
-	 * device.
-	 */
-	private void saveStats() {
-		if(optionsCheckbox.getState()) Utils.exportGameOptions();
 		
-		if(isFourHandedTeams) {
-			if(team1Checkbox.getState()) Utils.exportTeamFile(teamOne);
-			if(team2Checkbox.getState()) Utils.exportTeamFile(teamTwo);
-			if(teamPreviousCheckbox.getState()) Utils.exportTeamFile(teamPrevious);
-		}
-		
-		if(isFourHandedSingle) {
-			if(player1Checkbox.getState()) Utils.exportPlayerFile(playerOne);
-			if(player2Checkbox.getState()) Utils.exportPlayerFile(playerTwo);
-			if(player3Checkbox.getState()) Utils.exportPlayerFile(playerThree);
-			if(player4Checkbox.getState()) Utils.exportPlayerFile(playerFour);
-			if(playerPreviousCheckbox.getState()) Utils.exportPlayerFile(playerPrevious);
-		}
-		
-		if(isThreeHanded) {
-			if(player1Checkbox.getState()) Utils.exportPlayerFile(playerOne);
-			if(player2Checkbox.getState()) Utils.exportPlayerFile(playerTwo);
-			if(player3Checkbox.getState()) Utils.exportPlayerFile(playerThree);
-			if(playerPreviousCheckbox.getState()) Utils.exportPlayerFile(playerPrevious);
+		//Don't play the sound if debug mode.
+		if (!DEBUG && sounds) {
+			//Play the startup sound.
+			AudioPlayer ap = new AudioPlayer();
+			try {
+				ap.playAudio(Main.soundGameStart);
+			} catch (AudioException e) {
+				FrameUtils.showDialogBox("Sound file could not play.");
+			}
 		}
 	}
 }
