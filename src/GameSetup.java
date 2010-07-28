@@ -151,25 +151,33 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
         if (event.getActionCommand().equals("returnPlayers")) {
         	if (Utils.isPlayersSetupDone()) {
             	if (hasPlayerChanged) {
-            		//Determine which player was changed.
+            		//Determine which player was selected to change.
             		if (player1Checkbox.getState()) {
+            			//Create a new temp player.
             			Player temp = new Player(Main.player1,
             					Main.playerOne.score, Main.playerOne.bags);
+            			//Change the player.
             			Utils.changePlayer(Main.playerOne, temp, 1);
             		}
             		if (player2Checkbox.getState()) {
+            			//Create a new temp player.
             			Player temp = new Player(Main.player2,
             					Main.playerTwo.score, Main.playerTwo.bags);
+            			//Change the player.
             			Utils.changePlayer(Main.playerTwo, temp, 2);
             		}
             		if (player3Checkbox.getState()) {
+            			//Create a new temp player.
             			Player temp = new Player(Main.player3,
             					Main.playerThree.score, Main.playerThree.bags);
+            			//Change the player.
             			Utils.changePlayer(Main.playerThree, temp, 3);
             		}
             		if (player4Checkbox.getState()) {
+            			//Create a new temp player.
             			Player temp = new Player(Main.player4,
             					Main.playerFour.score, Main.playerFour.bags);
+            			//Change the player.
             			Utils.changePlayer(Main.playerFour, temp, 4);
             		}
             	}
@@ -225,6 +233,8 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 	 * @param event The triggering event.
 	 */
     public void itemStateChanged(ItemEvent event) {
+    	//Sets only player1 as changable when check box is checked, and
+    	//makes them all selectable when it is not selected.
     	if (event.getItemSelectable().equals(player1Checkbox)) {
 			if (player1Checkbox.getState()) {
 				player2Checkbox.setEnabled(false);
@@ -244,6 +254,8 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 				hasPlayerChanged = false;
 			}
     	}
+    	//Sets only player2 as changable when check box is checked, and
+    	//makes them all selectable when it is not selected.
     	if (event.getItemSelectable().equals(player2Checkbox)) {
 			if (player2Checkbox.getState()) {
 				player1Checkbox.setEnabled(false);
@@ -263,6 +275,8 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 				hasPlayerChanged = false;
 			}
     	}
+    	//Sets only player3 as changable when check box is checked, and
+    	//makes them all selectable when it is not selected.
     	if (event.getItemSelectable().equals(player3Checkbox)) {
 			if (player3Checkbox.getState()) {
 				player1Checkbox.setEnabled(false);
@@ -282,6 +296,8 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 				hasPlayerChanged = false;
 			}
     	}
+    	//Sets only player4 as changable when check box is checked, and
+    	//makes them all selectable when it is not selected.
     	if (event.getItemSelectable().equals(player4Checkbox)) {
 			if (player4Checkbox.getState()) {
 				player1Checkbox.setEnabled(false);
@@ -337,6 +353,7 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 		//Add the buttons to the proper panels.
 		lowerPanel.add(buttonReturnMain);
 		
+		//Add items to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(buttonSelectGameType, FrameUtils.gbLayoutNormal(0, 0));
 		middlePanel.add(buttonSetupPlayers, FrameUtils.gbLayoutNormal(0, 1));
@@ -374,6 +391,7 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 			lowerPanel.add(buttonContinueSetup1);
 		}
 
+		//Adds items to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(threeHanded, FrameUtils.gbLayoutWest(0, 0));
 		middlePanel.add(fourHandedSingle, FrameUtils.gbLayoutWest(0, 1));
@@ -438,7 +456,7 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 			lowerPanel.add(buttonContinueSetup2);
 		}
 
-		//Add player labels and text fields.
+		//Add items to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(player1Label, FrameUtils.gbLayoutNormal(0, 0));
 		middlePanel.add(choiceBoxPlayer1, FrameUtils.gbLayoutNormal(1, 0));
@@ -479,7 +497,7 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 			}
 		}
 		
-		//Don't show fourth player if playing 3 handed game.
+		//Don't show fourth player if playing three handed game.
 		if (!Main.isThreeHanded) {
 			middlePanel.add(player4Label, FrameUtils.gbLayoutNormal(0, 3));
 			middlePanel.add(choiceBoxPlayer4, FrameUtils.gbLayoutNormal(1, 3));
@@ -524,6 +542,7 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
 		//Adds the buttons to the proper panels.
 		lowerPanel.add(buttonReturnDealer);
 
+		//Add items to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(player1IsDealer, FrameUtils.gbLayoutWest(0, 0));
 		middlePanel.add(player2IsDealer, FrameUtils.gbLayoutWest(0, 1));
