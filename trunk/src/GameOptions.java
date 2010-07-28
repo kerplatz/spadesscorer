@@ -16,7 +16,7 @@
  * Allows the game to be configured for different values for bags, win and lose
  * scores, nil and double nil values, and where to allow nil or double nil.
  *
- * @author kerplatz
+ * @author David Hoffman
  */
 
 import java.awt.BorderLayout;
@@ -34,6 +34,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.IOException;
 
 public class GameOptions extends Frame implements ActionListener, ItemListener {
 
@@ -67,6 +68,7 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 	Panel middlePanel;
 	Panel lowerPanel;
 	
+	Button buttonIniSetup;
 	Button buttonGameOptions;
 	Button buttonDefaultOptions;
 	Button buttonReturnOptions;
@@ -118,6 +120,31 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
         	createChooseSkinScreen();
         }  
 
+        //Performs this action when the Ini Setup button is pressed.
+        if (event.getActionCommand().equals("iniSetup")) {
+        	frame.removeAll();
+
+			IniSetup setup = new IniSetup(frame);
+			setup.createSetupScreen();
+        }  
+
+        //Performs this action when the IniReturn button is pressed.
+        if (event.getActionCommand().equals("iniReturn")) {
+        	Utils.createIni();
+			
+        	try {
+				FileUtils.writeIniFile();
+			} catch (IOException e) {
+				FrameUtils.showDialogBox("File could not be created.");
+			}
+        	Utils.parseIni();
+        	
+        	frame.removeAll();
+
+        	GameSetup setup = new GameSetup(frame);
+        	setup.createSetupScreen();
+        }  
+
         //Performs this action when the ReturnSkin button is pressed.
         if (event.getActionCommand().equals("returnSkin")) {
         	if (Utils.isChooseSkinDone()) {
@@ -142,20 +169,25 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 	 * @param event The action that was triggered by the state change.
 	 */
 	public void itemStateChanged(ItemEvent event) {
+		//Determine if nilAllowed check box is checked.
 		if (event.getItemSelectable().equals(nilAllowed)) {
+			//If checked, allow text field to be edited.
 			if (nilAllowed.getState()) {
 				Main.isNilAllowed = true;
 				nilValueTextField.setEditable(true);
+			//If not checked, don't allow text field to be edited.
 			} else {
 				Main.isNilAllowed = false;
 				nilValueTextField.setEditable(false);
 			}
 		}
-
+		//Determine if doubleNilAllowed check box is checked.
 		if (event.getItemSelectable().equals(doubleNilAllowed)) {
+			//If checked, allow text field to be edited.
 			if (doubleNilAllowed.getState()) {
 				Main.isDoubleNilAllowed = true;
 				doubleNilValueTextField.setEditable(true);
+			//If not checked, don't allow text field to be edited.
 			} else {
 				Main.isDoubleNilAllowed = false;
 				doubleNilValueTextField.setEditable(false);
@@ -177,15 +209,19 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 		buttonGameOptions.addActionListener(this);
 		buttonSelectSkin = FrameUtils.makeButton(" Select Skin ", "selectSkin", true);
 		buttonSelectSkin.addActionListener(this);
+		buttonIniSetup = FrameUtils.makeButton(" INI Setup ", "iniSetup", true);
+		buttonIniSetup.addActionListener(this);
 		buttonReturnSetup = FrameUtils.makeButton("    Return   ", "returnSetup", false);
 		buttonReturnSetup.addActionListener(this);
 		
 		//Add the buttons to the proper panels.
 		lowerPanel.add(buttonReturnSetup);
 		
+		//Add item to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(buttonGameOptions, FrameUtils.gbLayoutNormal(0, 0));
 		middlePanel.add(buttonSelectSkin, FrameUtils.gbLayoutNormal(0, 1));
+		middlePanel.add(buttonIniSetup, FrameUtils.gbLayoutNormal(0, 2));
 
 		//This adds all the panels to the frame.
 		frame.add(upperPanel, BorderLayout.NORTH);
@@ -211,6 +247,7 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 		//Adds the buttons to the proper panels.
 		lowerPanel.add(buttonReturnSkin);
 
+		//Add items to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(iowaState, FrameUtils.gbLayoutWest(0, 0));
 		middlePanel.add(iowa, FrameUtils.gbLayoutWest(0, 1));
@@ -246,6 +283,7 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 		lowerPanel.add(buttonDefaultOptions);
 		lowerPanel.add(buttonReturnOptions);
 
+		//Add items to the middle panel.
 		middlePanel.setLayout(new GridBagLayout());
 		middlePanel.add(bagValueLabel, FrameUtils.gbLayoutNormal(0, 0));
 	    middlePanel.add(nilValueLabel, FrameUtils.gbLayoutNormal(0, 1));
@@ -253,13 +291,13 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 	    middlePanel.add(winScoreLabel, FrameUtils.gbLayoutNormal(0, 3));
 		middlePanel.add(loseScoreLabel, FrameUtils.gbLayoutNormal(0, 4));
 		middlePanel.add(nilAllowed, FrameUtils.gbLayoutNormal(0, 5));
-		nilAllowed.addItemListener(this);
 		middlePanel.add(bagValue, FrameUtils.gbLayoutNormal(1, 0));
 		middlePanel.add(nilValueTextField, FrameUtils.gbLayoutNormal(1, 1));
 		middlePanel.add(doubleNilValueTextField, FrameUtils.gbLayoutNormal(1, 2));
 		middlePanel.add(winScoreTextField, FrameUtils.gbLayoutNormal(1, 3));
 		middlePanel.add(loseScoreTextField, FrameUtils.gbLayoutNormal(1, 4));
 		middlePanel.add(doubleNilAllowed, FrameUtils.gbLayoutNormal(1, 5));
+		nilAllowed.addItemListener(this);
 		doubleNilAllowed.addItemListener(this);
 		
 	    //Set text field not editable and change check box if nil is not allowed.
