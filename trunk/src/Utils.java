@@ -8,10 +8,6 @@
  * @author David Hoffman
  */
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-
 public class Utils {
 
 	/**
@@ -91,6 +87,11 @@ public class Utils {
 		GameSetup.choiceBoxPlayer3.setEnabled(true);
 		GameSetup.choiceBoxPlayer4.setEnabled(true);
 		GameSetup.hasPlayerChanged = false;
+		
+		EditGame.playerChanged = false;
+		EditGame.scoreChanged = false;
+		EditGame.roundToEdit = 0;
+		EditGame.editedRound = 0;
 	}
 
 	/**
@@ -234,6 +235,7 @@ public class Utils {
 		Main.player2Bid = "";
 		Main.player3Bid = "";
 		
+		//Only clear the fourth player bid if playing 3 handed game.
 		if (!Main.isThreeHanded) {
 			FrameUtils.player4Bid.select("");
 			Main.player4Bid = "";
@@ -252,6 +254,7 @@ public class Utils {
 		Main.player2TricksTaken = "";
 		Main.player3TricksTaken = "";
 		
+		//Only clear the fourth player tricks taken if playing 3 handed game.
 		if (!Main.isThreeHanded) {
 			FrameUtils.player4TricksTaken.select("");
 			Main.player4TricksTaken = "";
@@ -283,6 +286,7 @@ public class Utils {
 			Main.nilValue = "100";
 			Main.isNilAllowed = true;
 			Main.isDoubleNilAllowed = true;
+		//Use the appropriate value for bagValue when four handed single.
 		} else if (Main.isFourHandedSingle){
 			GameOptions.bagValue.select("1");
 			GameOptions.nilValueTextField.setText("50");
@@ -295,6 +299,7 @@ public class Utils {
 			Main.nilValue = "50";
 			Main.isNilAllowed = true;
 			Main.isDoubleNilAllowed = false;
+		//Use the appropriate value for bagValue when four handed teams.
 		} else {
 			GameOptions.bagValue.select("1");
 			GameOptions.nilValueTextField.setText("50");
@@ -495,6 +500,7 @@ public class Utils {
 	public static boolean isGameWon() {
 		boolean gameWon = false;
 		
+		//Game won for three handed game.
 		if (Main.isThreeHanded){
 			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb ||
 					Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb ||
@@ -502,6 +508,7 @@ public class Utils {
 				gameWon = true;
 			}
 		}
+		//Game won for four handed single player game.
 		if (Main.isFourHandedSingle){
 			if (Utils.stringToInt(Main.player1Score) >= Main.winScoreNumb ||
 					Utils.stringToInt(Main.player2Score) >= Main.winScoreNumb ||
@@ -510,6 +517,7 @@ public class Utils {
 				gameWon = true;
 			}
 		}
+		//Game won for four handed team game.
 		if (Main.isFourHandedTeams){
 			if (Utils.stringToInt(Main.team1Score) >= Main.winScoreNumb ||
 					Utils.stringToInt(Main.team2Score) >= Main.winScoreNumb) {
@@ -531,6 +539,7 @@ public class Utils {
 	public static boolean isGameLost() {
 		boolean gameLost = false;
 		
+		//Game lost for three handed game.
 		if (Main.isThreeHanded){
 			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb ||
 					Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb ||
@@ -538,6 +547,7 @@ public class Utils {
 				gameLost = true;
 			}
 		}
+		//Game lost for four handed single player game.
 		if (Main.isFourHandedSingle){
 			if (Utils.stringToInt(Main.player1Score) <= Main.loseScoreNumb ||
 					Utils.stringToInt(Main.player2Score) <= Main.loseScoreNumb ||
@@ -546,6 +556,7 @@ public class Utils {
 				gameLost = true;
 			}
 		}
+		//Game lost for four handed team game.
 		if (Main.isFourHandedTeams){
 			if (Utils.stringToInt(Main.team1Score) <= Main.loseScoreNumb ||
 					Utils.stringToInt(Main.team2Score) <= Main.loseScoreNumb) {
@@ -557,27 +568,6 @@ public class Utils {
 		Main.isGameLost = gameLost;
 
 		return gameLost;
-	}
-
-	/**
-	 * This method is used to determine if the choice box selection is good.
-	 * 
-	 * @return True if a valid round has been selected, otherwise false.
-	 */
-	public static boolean isRoundReady() {
-		boolean ready = true;
-		
-		if (Main.round < Integer.parseInt(EditGame.choiceBox1.getSelectedItem())) {
-			ready = false;
-		} else if (Integer.parseInt(EditGame.choiceBox1.getSelectedItem()) < 0) {
-			ready = false;
-		}
-		
-		if (!ready) FrameUtils.showDialogBox("The number you selected is wrong.");
-		
-		EditGame.roundToEdit = Integer.parseInt(EditGame.choiceBox1.getSelectedItem());
-		
-		return ready;
 	}
 	
 	/**
@@ -637,10 +627,12 @@ public class Utils {
 		int highest = Main.winScoreNumb;
 		Team winner = null;
 		
+		//Winner is team one.
 		if (Utils.stringToInt(Main.team1Score) >= highest) {
 			highest = Utils.stringToInt(Main.team1Score);
 			winner = Main.teamOne;
 		}
+		//Winner is team two.
 		if (Utils.stringToInt(Main.team2Score) >= highest) {
 			highest = Utils.stringToInt(Main.team2Score);
 			winner = Main.teamTwo;
@@ -707,10 +699,12 @@ public class Utils {
 		int lowest = Main.loseScoreNumb;
 		Team loser = null;
 		
+		//Team one is the looser.
 		if (Utils.stringToInt(Main.team1Score) >= lowest) {
 			lowest = Utils.stringToInt(Main.team1Score);
 			loser = Main.teamOne;
 		}
+		//Team two is the loser.
 		if (Utils.stringToInt(Main.team2Score) >= lowest) {
 			lowest = Utils.stringToInt(Main.team2Score);
 			loser = Main.teamTwo;
@@ -777,7 +771,7 @@ public class Utils {
 			Main.startDealer = Main.player3;
 		}
 		
-		//Don't show fourth player if playing 3 handed game.
+		//Don't save fourth dealer if playing three handed game.
 		if (!Main.isThreeHanded) {
 			if (GameSetup.player4IsDealer.getState()) {
 				Main.dealerIsPlayer4 = true;
@@ -824,7 +818,7 @@ public class Utils {
 		Main.player2Bid = FrameUtils.player2Bid.getSelectedItem();
 		Main.player3Bid = FrameUtils.player3Bid.getSelectedItem();
 		
-		//Saves the bid data if playing with 4 players.
+		//Saves the bid data if playing with four players.
 		if (!Main.isThreeHanded) {
 			Main.player4Bid = FrameUtils.player4Bid.getSelectedItem();
 		}
@@ -838,7 +832,7 @@ public class Utils {
 		Main.player2TricksTaken = FrameUtils.player2TricksTaken.getSelectedItem();
 		Main.player3TricksTaken = FrameUtils.player3TricksTaken.getSelectedItem();
 		
-		//Saves the tricks taken if playing with 4 players.
+		//Saves the tricks taken if playing with four players.
 		if (!Main.isThreeHanded) {
 			Main.player4TricksTaken = FrameUtils.player4TricksTaken.getSelectedItem();
 		}
@@ -862,32 +856,41 @@ public class Utils {
 	/**
 	 * This method records the game data into Player Class and
 	 * increments the round.
+	 * 
+	 * @throws AudioException 
 	 */
-	public static void recordGameData() {
+	public static void recordGameData() throws AudioException {
 		//Increment round.
 		Main.round ++;
 
-		//Record the game data to the player class.
+		//Record the four handed team game data to the player class.
 		if (Main.isFourHandedTeams) {
+			//Record four handed team play when nil bid in team one.
 			if (Main.nilBidTeam1) {
 				Main.teamOne.inputRound(Main.player1Bid, Main.player3Bid,
 						Main.player1TricksTaken, Main.player3TricksTaken);
+			//Record four handed team play when no nil bid in team one.
 			} else {
 				Main.teamOne.inputRound(Main.player1Bid, Main.player3Bid,
 						Main.player1TricksTaken);
 			}
+			//Record four handed team play when nil bid in team two.
 			if (Main.nilBidTeam2) {
 				Main.teamTwo.inputRound(Main.player2Bid, Main.player4Bid,
 						Main.player2TricksTaken, Main.player4TricksTaken);
+			//Record four handed team play when no nil bid in team one.
 			} else {
 				Main.teamTwo.inputRound(Main.player2Bid, Main.player4Bid,
 						Main.player2TricksTaken);
 			}
+		//Record the three handed game data to the player class.
 		} else {
 			Main.playerOne.inputRound(Main.player1Bid, Main.player1TricksTaken);
 			Main.playerTwo.inputRound(Main.player2Bid, Main.player2TricksTaken);
 			Main.playerThree.inputRound(Main.player3Bid, Main.player3TricksTaken);
 
+			//Don't record the game data of fourth player when playing a
+			//three handed game.
 			if (!Main.isThreeHanded) {
 				Main.playerFour.inputRound(Main.player4Bid, Main.player4TricksTaken);
 			}
@@ -895,17 +898,20 @@ public class Utils {
 	}
 
 	/**
-	 * This method posts the scores from each player.
+	 * This method posts the scores for each player.
 	 */
 	public static void postScores() {
+		//Copies the scores for four handed team based play.
 		if (Main.isFourHandedTeams) {
 			Main.team1Score = Main.teamOne.score;
 			Main.team2Score = Main.teamTwo.score;
+		//Copies the scores for non four handed team based play.
 		} else {
 			Main.player1Score = Main.playerOne.score;
 			Main.player2Score = Main.playerTwo.score;
 			Main.player3Score = Main.playerThree.score;
 
+			//Copies the scores for four handed single player game.
 			if (!Main.isThreeHanded) {
 				Main.player4Score = Main.playerFour.score;
 			}
@@ -924,11 +930,12 @@ public class Utils {
 		int player3Tricks = 0;
 		int player4Tricks = 0;
 		
+		//Gets the data for three players.
 		player1Tricks = FrameUtils.player1TricksTaken.getSelectedIndex();
 		player2Tricks = FrameUtils.player2TricksTaken.getSelectedIndex();
 		player3Tricks = FrameUtils.player3TricksTaken.getSelectedIndex();
 
-		//Gets the tricks taken if playing with 4 players.
+		//Gets the tricks taken if playing with four players.
 		if (!Main.isThreeHanded) {
 			player4Tricks = FrameUtils.player4TricksTaken.getSelectedIndex();
 		}
@@ -944,18 +951,19 @@ public class Utils {
 			done = false;
 		}
 		
-		//Don't check fourth player if playing 3 handed game.
+		//Don't check fourth player if playing three handed game.
 		if (!Main.isThreeHanded) {
 			if (player4Tricks == -1 || player4Tricks == 0) {
 				done = false;
 			}
 		}
 
-		//Get the value of all the players tricks taken.
+		//Get the value of three players tricks taken.
 		player1Tricks = stringToInt(FrameUtils.player1TricksTaken.getSelectedItem());
 		player2Tricks = stringToInt(FrameUtils.player2TricksTaken.getSelectedItem());
 		player3Tricks = stringToInt(FrameUtils.player3TricksTaken.getSelectedItem());
 		
+		//Get the value of the fourth player in a four handed game.
 		if (!Main.isThreeHanded) {
 			player4Tricks = stringToInt(FrameUtils.player4TricksTaken.getSelectedItem());
 		}
@@ -995,6 +1003,7 @@ public class Utils {
 		int player3Tricks = 0;
 		int player4Tricks = 0;
 		
+		//Get the value of all the players tricks taken.
 		player1Tricks = FrameUtils.player1TricksTaken.getSelectedIndex();
 		player2Tricks = FrameUtils.player2TricksTaken.getSelectedIndex();
 		player3Tricks = FrameUtils.player3TricksTaken.getSelectedIndex();
@@ -1009,6 +1018,9 @@ public class Utils {
 		}
 		if (player3Tricks == -1 || player3Tricks == 0) {
 			done = false;
+			//Needed because the player bid was not a nil and the index for
+			//the tricks taken is never read, by design. This only happens on
+			//bids that are nils.
 			if (FrameUtils.player3Bid.getSelectedItem() != "nil" ||
 					FrameUtils.player3Bid.getSelectedItem() != "dbl") {
 				done = true;
@@ -1016,6 +1028,9 @@ public class Utils {
 		}
 		if (player4Tricks == -1 || player4Tricks == 0) {
 			done = false;
+			//Needed because the player bid was not a nil and the index for
+			//the tricks taken is never read, by design. This only happens on
+			//bids that are nils.
 			if (FrameUtils.player4Bid.getSelectedItem() != "nil" ||
 					FrameUtils.player4Bid.getSelectedItem() != "dbl") {
 				done = true;
@@ -1064,7 +1079,7 @@ public class Utils {
 			done = false;
 		}
 		
-		//Don't check fourth player if playing 3 handed game.
+		//Don't check fourth player if playing three handed game.
 		if (!Main.isThreeHanded) {
 			if (FrameUtils.player4Bid.getSelectedIndex() == -1
 					|| FrameUtils.player4Bid.getSelectedIndex() == 0) {
@@ -1104,32 +1119,37 @@ public class Utils {
 	 * Advances the dealer to the next player in rotation.
 	 */
 	public static void advanceDealer() {
+		//Advances when current dealer is player1.
 		if (Main.curDealer.equals(Main.player1)) {
 			Main.curDealer = Main.player2;
 			Main.dealerIsPlayer1 = false;
 			Main.dealerIsPlayer2 = true;
 			return;
 		}
+		//Advances when current dealer is player2.
 		if (Main.curDealer.equals(Main.player2)) {
 			Main.curDealer = Main.player3;
 			Main.dealerIsPlayer2 = false;
 			Main.dealerIsPlayer3 = true;
 			return;
 		}
-		if (Main.isThreeHanded) {
-			if (Main.curDealer.equals(Main.player3)) {
-				Main.curDealer = Main.player1;
-				Main.dealerIsPlayer3 = false;
-				Main.dealerIsPlayer1 = true;
-				return;
-			}
-		} else {
-			if (Main.curDealer.equals(Main.player3)) {
+		//Advances when current dealer is player3.
+		if (Main.curDealer.equals(Main.player3)) {
+			Main.curDealer = Main.player1;
+			Main.dealerIsPlayer3 = false;
+			Main.dealerIsPlayer1 = true;
+			return;
+		}
+		//For advancing the dealer when playing a four handed game.
+		if (!Main.isThreeHanded) {
+			//Advances when current dealer is player3.
+ 			if (Main.curDealer.equals(Main.player3)) {
 				Main.curDealer = Main.player4;
 				Main.dealerIsPlayer3 = false;
 				Main.dealerIsPlayer4 = true;
 				return;
 			}
+ 			//Advances when current dealer is player4.
 			if (Main.curDealer.equals(Main.player4)) {
 				Main.curDealer = Main.player1;
 				Main.dealerIsPlayer4 = false;
@@ -1142,7 +1162,7 @@ public class Utils {
 	/**
 	 * Converts the options that are strings to ints so they can be used in
 	 * calculations. There is no need for checking that the string is indeed
-	 * a number, since it was already check before the code gets here.
+	 * a number, since it was already checked before the code gets here.
 	 */
 	public static void convertOptionsToNumbers() {
 		//Convert the options to ints.
@@ -1154,98 +1174,35 @@ public class Utils {
 	}
 	
 	/**
-	 * Exports a file that contains all the Player information for each
-	 * round played.
+	 * This method will recalculate a player's score when a change has been
+	 * made to the score or the tricks taken.
 	 * 
-	 * @param player The Player who will have their data exported to a file.
+	 * @param player The player.
+	 * @param roundIn The round in which to recalculate the score.
+	 * @param scoreChanged True if only a change to the score was made, otherwise false.
 	 */
-	public static void exportPlayerFile(Player player) {
-		File file = new File(player.player + "_game" + Main.game + ".csv");
-
-		try {
-			FileWriter fw = new FileWriter(file);
-			fw.write(player.toString());
-			fw.close();
-		} catch (IOException e) {
-			FrameUtils.showDialogBox("File could not be created.");
-		}
-	}
-
-	/**
-	 * Exports a file that contains all the Team information for each
-	 * round played.
-	 * 
-	 * @param player The Team who will have their data exported to a file.
-	 */
-	public static void exportTeamFile(Team team) {
-		File file = new File(team.name + "_game" + Main.game + ".csv");
-
-		try {
-			FileWriter fw = new FileWriter(file);
-			fw.write(team.toString());
-			fw.close();
-		} catch (IOException e) {
-			FrameUtils.showDialogBox("File could not be created.");
-		}
+	public static void reCalculateScore(Player player, int roundIn, boolean scoreChanged) {
+		// TODO Auto-generated block
 	}
 	
 	/**
-	 * Exports a file that contains how the game was configured.
-	 */
-	public static void exportGameOptions() {
-		File file = new File("game" + Main.game + "_options.csv");
-		String str = "";
-		
-		//Say what type of game it is.
-		if (Main.isFourHandedSingle) str += "Four Handed - Single Players\n";
-		if (Main.isFourHandedTeams) str += "Four Handed - Teams\n";
-		if (Main.isThreeHanded) str += "Three Handed\n";
-		
-		//Give the values for all the options.
-		str += "Bag Value - " + Main.bagValue + "\n";
-		str += "Nil Value - " + Main.nilValue + "\n";
-		str += "Double Nil Value - " + Main.doubleNilValueNumb + "\n";
-		str += "Win Score - " + Main.winScore + "\n";
-		str += "Lose Score - " + Main.loseScore + "\n";
-		str += "Start Dealer - " + Main.startDealer + "\n";
-		
-		try {
-			FileWriter fw = new FileWriter(file);
-			fw.write(str);
-			fw.close();
-		} catch (IOException e) {
-			FrameUtils.showDialogBox("File could not be created.");
-		}
-	}
-	
-	/**
+	 * This method will recalculate a player's score when a change has been
+	 * made to the score or the tricks taken and is a four handed team game.
 	 * 
-	 * @param player
-	 * @param roundIn
-	 * @param scoreIn
+	 * @param player The player.
+	 * @param team The team to which the changes will be made.
+	 * @param roundIn The round in which to recalculate the score.
+	 * @param scoreChanged True if only a change to the score was made, otherwise false.
 	 */
-	public static void reCalculateScore(Player player, String roundIn, String scoreIn) {
-
-	
-	}
-
-	/**
-	 * 
-	 * @param player
-	 * @param roundIn
-	 * @param bidIn
-	 * @param tricksIn
-	 */
-	public static void reCalculateScore(Player player, String roundIn, String bidIn,
-			String tricksIn) {
-
-		
+	public static void reCalculateScore(Player player, Team team, int roundIn,
+			boolean scoreChanged) {
+		// TODO Auto-generated block
 	}
 	
 	/**
-	 * This method saves the player being changed and creates
-	 * the new player to take his place. Also transfers bags and score from
-	 * the previous player to the new player.
+	 * This method saves the player being changed and creates the new player to
+	 * take his place. Also transfers bags and score from the previous player to
+	 * the new player.
 	 * 
 	 * @param old The player to be changed.
 	 * @param addNew The new player to be added.
@@ -1271,33 +1228,17 @@ public class Utils {
 	}
 	
 	/**
-	 * This method saves the player being changed and creates
-	 * the new player to take his place. Also transfers bags and score from
-	 * the previous player to the new player.
+	 * This method saves the player being changed and creates the new player
+	 * to take his place. Also transfers bags and score from the previous
+	 * player to the new player.
 	 * 
 	 * @param old The player to be changed.
 	 * @param addNew The new player to be added.
-	 * @param team
+	 * @param team The team to which the changes will be made.
 	 * @param place The player number to be changed.
 	 */
-	public static void changePlayerTeam(Player old, Player addNew,
-			Team team, int place) {
-		/*Main.playerPrevious = new Player(old.player);
-		Main.playerPrevious.equals(old);
-		
-		//Copy the players from temp to the correct player.
-		if (place == 1) {
-			Main.playerOne.equals(addNew);
-		}
-		if (place == 2) {
-			Main.playerTwo.equals(addNew);
-		}
-		if (place == 3) {
-			Main.playerThree.equals(addNew);
-		}
-		if (place == 4) {
-			Main.playerFour.equals(addNew);
-		}*/
+	public static void changePlayerTeam(Player old, Player addNew, Team team, int place) {
+		// TODO Auto-generated block
 	}
 	
 	/**
