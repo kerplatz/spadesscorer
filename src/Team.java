@@ -1,7 +1,13 @@
-/**
+/**FINISHED
+ * Team.java
  * 
+ * This class describes a Team which is composed of two Player(s). Its
+ * main function is to record in an ArrayList all the data associated
+ * with a Team. It also has a calculate and recalculate score methods.
+ * It also includes a toString() method to facilitate the creation a CSV
+ * file when the game has ended.
  * 
- * @author dhoffman
+ * @author David Hoffman
  */
 
 import java.util.ArrayList;
@@ -11,6 +17,8 @@ public class Team {
 	/**
 	 * Declare needed variables.
 	 */
+	private static final boolean DEBUG = Main.DEBUG;
+
 	public String name = "";
 	public String score = "";
 	public String bags = "";
@@ -42,7 +50,7 @@ public class Team {
 		//Create the team name.
 		nameTeam();
 
-		//Creates the first round which is just column headers.
+		//Creates the first round which are just column headers.
 		beginRound();
 	}
 	
@@ -78,9 +86,10 @@ public class Team {
 	 * @param bidIn2 The bid of Player two.
 	 * @param tricksIn1 The tricks taken by Player one.
 	 * @param tricksIn2 The tricks taken by Player two.
+	 * @throws AudioException 
 	 */
 	public void inputRound(String bidIn1, String bidIn2, String tricksIn1,
-			String tricksIn2) {
+			String tricksIn2) throws AudioException {
 		
 		round_no++;
 		one.inputRound(bidIn1, tricksIn1);
@@ -98,9 +107,9 @@ public class Team {
 	 * @param bidIn1 The bid of Player one.
 	 * @param bidIn2 The bid of Player two.
 	 * @param tricksIn1 The tricks taken by Player one.
-	 * @param tricksIn2 The tricks taken by Player two.
+	 * @throws AudioException 
 	 */
-	public void inputRound(String bidIn1, String bidIn2, String tricksIn1) {
+	public void inputRound(String bidIn1, String bidIn2, String tricksIn1) throws AudioException {
 
 		round_no++;
 		one.inputRound(bidIn1, tricksIn1);
@@ -123,7 +132,6 @@ public class Team {
 		int bagsTemp = Utils.stringToInt(bags);
 		int bagsRecvd = 0;
 		int bagsTotal = 0;
-		int bagsMultiTemp = 0;
 		int bagsTotalTemp = 0;
 		int bagsScored = 0;
 
@@ -300,17 +308,38 @@ public class Team {
 			}
 		}
 
-		bagsMultiTemp = bagsMultiplier;
 		bagsTotalTemp = bagsTotal;
 		
 		//Reduce the number of bags.
-		for(int i = 0; i < bagsMultiTemp; i++) {
+		for(int i = 0; i < bagsMultiplier; i++) {
 			bagsTotalTemp -=10;
 		}
 
-		//Calculate if the bags hav =e reached 10 or more.
-		bagsScored = (Main.bagValueNumb * bagsTotal / 10);
+		//Calculate if the bags have reached 10 or more.
+		bagsScored = (Main.bagValueNumb * bagsTotalTemp / 10);
 		bagsMultiplier += bagsScored;
+		
+		//Don't play any sound files if debug mode.
+		if (!DEBUG) {
+			//Play sound file if 10 or more bags has been reached.
+			AudioPlayer ap = new AudioPlayer();
+			if (bagsScored > 0) {
+				try {
+					ap.playAudio(Main.soundBags);
+				} catch (AudioException e) {
+					FrameUtils.showDialogBox("Audio file did not play.");
+				}
+			}
+
+			//Play sound file if player was set.
+			if (set) {
+				try {
+					ap.playAudio(Main.soundSet);
+				} catch (AudioException e) {
+					FrameUtils.showDialogBox("Audio file did not play.");
+				}
+			}
+		}
 		
 		//Remove points for bags of multiple of 10.
 		scoreTemp -= bagsScored * 100;
@@ -361,6 +390,7 @@ public class Team {
 	public String toString() {
 		String str = "";
 				
+		//Loop through all the array list.
 		for (int i = 0; i < turn.size(); i += 8) {
 			for (int j = 0; j < 8; j++) {
 				//Get the desired item from the ArrayList.
