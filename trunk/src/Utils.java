@@ -1333,4 +1333,12 @@ public class Utils {
 			if(Main.playerPreviousCheckbox.getState()) FileUtils.exportPlayerFile(Main.playerPrevious);
 		}
 	}
+
+	/**
+	 * Parse the ini array list and extract all the information. Assign the
+	 * information to the correct variables.
+	 */
+	public static void parseIni() {
+		// TODO Auto-generated method stub
+	}
 }
