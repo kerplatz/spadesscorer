@@ -32,6 +32,7 @@ public class TwoTeams extends Frame implements ActionListener {
 	 * Declare needed variables.
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final boolean DEBUG = Main.DEBUG;
 	
 	Label winner = new Label("WINNER");
 	Label winners = new Label("WINNERS");
@@ -49,6 +50,8 @@ public class TwoTeams extends Frame implements ActionListener {
 	Button buttonBidding;
 	Button buttonBack;
 	Button buttonPlay;
+	
+	AudioPlayer ap;
 
 	Frame frame = new Frame();
 
@@ -68,16 +71,38 @@ public class TwoTeams extends Frame implements ActionListener {
         //Performs this action when the Bidding button is pressed.
         if (event.getActionCommand().equals("scoring")) {
         	if (Utils.processScoringTeams()) {
-        		Utils.recordGameData();
+        		try {
+					Utils.recordGameData();
+				} catch (AudioException e) {
+					FrameUtils.showDialogBox("Audio file did not play.");
+				}
        			Utils.postScores();
        			
         		//Determines if the game is won > 500 or lost < -200,
         		//otherwise game play continues.
         		if (Utils.isGameWon()) {
+        			//Play sound file when game is won and not debug mode.
+        			if (!DEBUG) {
+        				try {
+        					ap.playAudio(Main.soundWin);
+        				} catch (AudioException e) {
+        					FrameUtils.showDialogBox("Audio file did not play.");
+        				}
+        			}
+        			
  					frame.removeAll();
         			createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
- 					frame.removeAll();
+        			//Play sound file when game is lost and not debug mode.
+        			if (!DEBUG) {
+        				try {
+        					ap.playAudio(Main.soundLose);
+        				} catch (AudioException e) {
+        					FrameUtils.showDialogBox("Audio file did not play.");
+        				}
+        			}
+
+        			frame.removeAll();
         			createEndGameLostScreen();
         		} else {
             		Main.doBidding = true;
@@ -90,7 +115,7 @@ public class TwoTeams extends Frame implements ActionListener {
            			//Reset nil bid.
            			Main.nilBidTeam1 = false;
            			Main.nilBidTeam2 = false;
-           			
+           			           			
             		frame.removeAll();
                 	createPlayGameScreen();
         		}
@@ -105,12 +130,14 @@ public class TwoTeams extends Frame implements ActionListener {
         		Main.nilBidTeam1 = false;
         		Main.nilBidTeam2 = false;
         		
+        		//Determine if one of the bids was nil.
         		if (FrameUtils.player1Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player1Bid.getSelectedItem() == "dbl" ||
         				FrameUtils.player3Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player3Bid.getSelectedItem() == "dbl") {
         			Main.nilBidTeam1 = true;
         		}
+        		//Determine if one of the bids was nil.
         		if (FrameUtils.player2Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player2Bid.getSelectedItem() == "dbl" ||
         				FrameUtils.player4Bid.getSelectedItem() == "nil" ||
@@ -125,8 +152,6 @@ public class TwoTeams extends Frame implements ActionListener {
 
         //Performs this action when the Play button is pressed.
         if (event.getActionCommand().equals("play")) {
-        	//Prints game data for the first time when the game has not yet
-        	//started. and increments the round to 1.
            	Main.isGameStarted = true;
            	Main.doBidding = true;
            	
@@ -142,12 +167,14 @@ public class TwoTeams extends Frame implements ActionListener {
         		Main.nilBidTeam1 = false;
         		Main.nilBidTeam2 = false;
     		
+        		//Determine if one of the bids was nil.
         		if (FrameUtils.player1Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player1Bid.getSelectedItem() == "dbl" ||
         				FrameUtils.player3Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player3Bid.getSelectedItem() == "dbl") {
         			Main.nilBidTeam1 = true;
         		}
+        		//Determine if one of the bids was nil.
         		if (FrameUtils.player2Bid.getSelectedItem() == "nil" ||
         				FrameUtils.player2Bid.getSelectedItem() == "dbl" ||
         				FrameUtils.player4Bid.getSelectedItem() == "nil" ||
@@ -165,13 +192,11 @@ public class TwoTeams extends Frame implements ActionListener {
       		frame.removeAll();
 
         	Main game = new Main();
-        	game.createExitScreen();
+        	game.createEndGameScreen();
         }
  
         //Performs this action when the ReturnMain button is pressed.
         if (event.getActionCommand().equals("returnMain")) {
-       		//Utils.saveBidData();
-       		//Utils.saveTricksTakenData();
        		frame.removeAll();
 
         	Main game = new Main();
@@ -222,6 +247,7 @@ public class TwoTeams extends Frame implements ActionListener {
 		middlePanel.add(round, FrameUtils.gbLayoutTight(1, 0));
 		middlePanel.add(numbRound, FrameUtils.gbLayoutTight(2, 0));
 		
+		//Make all the lines for the players.
 		FrameUtils.makeTeamsLine1(middlePanel);
 		FrameUtils.makeTeamsLine2(middlePanel);
 		FrameUtils.makeTeamsLine3(middlePanel);
@@ -302,7 +328,7 @@ public class TwoTeams extends Frame implements ActionListener {
 		FrameUtils.makeEndGameTeamsLine2(middlePanel, theWinner);
 		FrameUtils.makeEndGameTeamsLine3(middlePanel, losers);
 		
-		//Determine who the two winners are.
+		//Determine who the loser is.
 		if (Main.teamOne.equals(theWinner)){
 			FrameUtils.makeEndGameTeamsLine4(middlePanel, Main.teamTwo);
 		}
