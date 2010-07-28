@@ -1304,4 +1304,33 @@ public class Utils {
 	
 		return allowed;
 	}
+
+	/**
+	 * This method saves the players or team statistics to a file on the
+	 * device.
+	 */
+	public static void saveStats() {
+		if(Main.optionsCheckbox.getState()) FileUtils.exportGameOptions();
+		
+		if(Main.isFourHandedTeams) {
+			if(Main.team1Checkbox.getState()) FileUtils.exportTeamFile(Main.teamOne);
+			if(Main.team2Checkbox.getState()) FileUtils.exportTeamFile(Main.teamTwo);
+			if(Main.teamPreviousCheckbox.getState()) FileUtils.exportTeamFile(Main.teamPrevious);
+		}
+		
+		if(Main.isFourHandedSingle) {
+			if(Main.player1Checkbox.getState()) FileUtils.exportPlayerFile(Main.playerOne);
+			if(Main.player2Checkbox.getState()) FileUtils.exportPlayerFile(Main.playerTwo);
+			if(Main.player3Checkbox.getState()) FileUtils.exportPlayerFile(Main.playerThree);
+			if(Main.player4Checkbox.getState()) FileUtils.exportPlayerFile(Main.playerFour);
+			if(Main.playerPreviousCheckbox.getState()) FileUtils.exportPlayerFile(Main.playerPrevious);
+		}
+		
+		if(Main.isThreeHanded) {
+			if(Main.player1Checkbox.getState()) FileUtils.exportPlayerFile(Main.playerOne);
+			if(Main.player2Checkbox.getState()) FileUtils.exportPlayerFile(Main.playerTwo);
+			if(Main.player3Checkbox.getState()) FileUtils.exportPlayerFile(Main.playerThree);
+			if(Main.playerPreviousCheckbox.getState()) FileUtils.exportPlayerFile(Main.playerPrevious);
+		}
+	}
 }
