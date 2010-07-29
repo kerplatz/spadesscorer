@@ -8,7 +8,16 @@
  * @author David Hoffman
  */
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Utils {
+	
+	//Declare the needed variables.
+	public static ArrayList names;
+	public static ArrayList defaults;
+	public static ArrayList sounds;
 
 	/**
 	 * Resets the game so a new game can be started.
@@ -221,6 +230,17 @@ public class Utils {
 		GameOptions.iowaState.setState(false);
 		GameOptions.iowa.setState(false);
 		GameOptions.northernIowa.setState(false);
+	}
+
+	/**
+	 * Clear the application sound files.
+	 */
+	public static void clearSounds() {
+		Main.soundBags = new File("");
+		Main.soundSet = new File("");
+		Main.soundWin = new File("");
+		Main.soundLose = new File("");
+		Main.soundGameStart= new File("");
 	}
 
 	/**
@@ -1339,13 +1359,175 @@ public class Utils {
 	 * information to the correct variables.
 	 */
 	public static void parseIni() {
-		// TODO Auto-generated method stub
+		//Create the Array Lists that will be used.
+		names = new ArrayList();
+		defaults = new ArrayList();
+		sounds = new ArrayList();
+
+		//Find the indexes of the division headers.
+		int namesIndex = findIndex("[names]");
+		int defaultIndex = findIndex("[default]");
+		int soundIndex = findIndex("[sounds]");
+		
+		//Extract the information from the ini Array List.
+		names = extractSettings(namesIndex);
+		defaults = extractSettings(defaultIndex);
+		sounds = extractSettings(soundIndex);
+		
+		//Sort the names Array List and copy it to the main names Array List.
+		Collections.sort(names);
+		Main.names = names;
+		
+		//Set the sounds to their variables.
+		setSounds();
+		
+		//Set the default game configurations.
+		setDefaults();
 	}
 
 	/**
 	 * Create the ini array list so it can be written to a file.
 	 */
 	public static void createIni() {
-		// TODO Auto-generated method stub
+		//Clear the contents of the ini array list.
+		Main.ini.clear();
+		
+		//Start putting in the data.
+		Main.ini.add("[Names]");
+		
+		//Loop through the entire names array list.
+		for (int i = 0; i < names.size(); i++) {
+			Main.ini.add(names.get(i));
+		}
+		
+		//Start putting in the data.
+		Main.ini.add("");
+		Main.ini.add("[Defaults]");
+		
+		//Loop through the entire defaults array list.
+		for (int i = 0; i < defaults.size(); i++) {
+			Main.ini.add(defaults.get(i));
+		}
+		
+		//Start putting in the data.
+		Main.ini.add("");
+		Main.ini.add("[Sounds]");
+		
+		//Loop through the entire names array list.
+		for (int i = 0; i < sounds.size(); i++) {
+			Main.ini.add(sounds.get(i));
+		}
+	}
+	
+	/**
+	 * Finds the index of the given string in the ini array list.
+	 * 
+	 * @param str The string to look for.
+	 * @return Returns a -1 if not found, otherwise it returns an index.
+	 */
+	public static int findIndex(String str) {
+		int index = -1;
+
+		//Loop through the entire ini array list to find the strings.
+		for (int i = 0; i < Main.ini.size(); i++) {
+			//When found, set the index equal to i.
+			if (((String) Main.ini.get(i)).equalsIgnoreCase(str)) index = i;
+		}
+
+		return index;
+	}
+	
+	/**
+	 * This method will extract the settings from the ini Array List
+	 * and put them in their own Array List for processing.
+	 * 
+	 * @param index The index at which to begin the extraction.
+	 */
+	public static ArrayList extractSettings(int index) {
+		ArrayList al = new ArrayList ();
+		String temp = "";
+		
+		//Extract the information.
+		for (int i = index + 1; i < Main.ini.size(); i++) {
+			temp = (String) Main.ini.get(i);
+			if (!temp.equals("")) {
+				al.add(temp);
+			} else {
+				break;
+			}
+		}
+
+		return al;
+	}
+
+	/**
+	 * Sets the sounds in the ini file to the correct variables.
+	 */
+	public static void setSounds() {
+		String temp = "";
+		String[] sa;
+		String prefix = "";
+		String suffix = "";
+				
+		//Loop through the entire sounds array list to find all the strings.
+		for (int i = 0; i < sounds.size(); i++) {
+			//When found, set the variable in main to that string..
+			temp = (String) sounds.get(i);
+			
+			sa = temp.split("=");
+			
+			prefix = sa[0];
+			suffix = sa[1];
+			
+			clearSounds();
+		
+			if (prefix.equalsIgnoreCase("start")) {
+				Main.soundGameStart = new File(suffix);
+			} else if (prefix.equalsIgnoreCase("set")){
+				Main.soundSet = new File(suffix);
+			} else if (prefix.equalsIgnoreCase("bags")){
+				Main.soundBags = new File(suffix);
+			} else if (prefix.equalsIgnoreCase("win")){
+				Main.soundWin = new File(suffix);
+			} else if (prefix.equalsIgnoreCase("lose")){
+				Main.soundLose = new File(suffix);
+			}
+		}
+	}
+
+	/**
+	 * Sets the default settings in the ini file to the correct variables.
+	 */
+	public static void setDefaults() {
+		String temp = "";
+		String[] sa;
+		String prefix = "";
+		String suffix = "";
+				
+		//Loop through the entire sounds array list to find all the strings.
+		for (int i = 0; i < defaults.size(); i++) {
+			//When found, set the variable in main to that string..
+			temp = (String) defaults.get(i);
+			
+			sa = temp.split("=");
+			
+			prefix = sa[0];
+			suffix = sa[1];
+			
+			clearSkin();
+		
+			if (prefix.equalsIgnoreCase("sounds")) {
+				if (suffix.equalsIgnoreCase("true")) Main.sounds = true;
+				if (suffix.equalsIgnoreCase("false")) Main.sounds = false;
+			} else if (prefix.equalsIgnoreCase("skin")){
+				if (suffix.equalsIgnoreCase("iowa")) Main.skinIsIowa = true;
+				if (suffix.equalsIgnoreCase("isu")) Main.skinIsIowaState = true;
+				if (suffix.equalsIgnoreCase("uni")) Main.skinIsNorthernIowa = true;
+			} else if (prefix.equalsIgnoreCase("winscore")){
+				Main.winScore = suffix;
+			} else if (prefix.equalsIgnoreCase("losescore")){
+				Main.loseScore = suffix;
+			}
+		}
 	}
 }
