@@ -17,8 +17,6 @@ public class Team {
 	/**
 	 * Declare needed variables.
 	 */
-	private static final boolean DEBUG = Main.DEBUG;
-
 	public String name = "";
 	public String score = "";
 	public String bags = "";
@@ -320,7 +318,7 @@ public class Team {
 		bagsMultiplier += bagsScored;
 		
 		//Don't play any sound files if debug mode.
-		if (!DEBUG) {
+		if (Main.sounds) {
 			//Play sound file if 10 or more bags has been reached.
 			AudioPlayer ap = new AudioPlayer();
 			if (bagsScored > 0) {
