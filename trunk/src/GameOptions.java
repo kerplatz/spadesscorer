@@ -34,7 +34,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.IOException;
 
 public class GameOptions extends Frame implements ActionListener, ItemListener {
 
@@ -120,7 +119,7 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
         	createChooseSkinScreen();
         }  
 
-        //Performs this action when the Ini Setup button is pressed.
+        //Performs this action when the IniSetup button is pressed.
         if (event.getActionCommand().equals("iniSetup")) {
         	frame.removeAll();
 
@@ -130,15 +129,7 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 
         //Performs this action when the IniReturn button is pressed.
         if (event.getActionCommand().equals("iniReturn")) {
-        	Utils.createIni();
-			
-        	try {
-				FileUtils.writeIniFile();
-			} catch (IOException e) {
-				FrameUtils.showDialogBox("File could not be created.");
-			}
         	Utils.parseIni();
-        	
         	frame.removeAll();
 
         	GameSetup setup = new GameSetup(frame);
@@ -148,8 +139,9 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
         //Performs this action when the ReturnSkin button is pressed.
         if (event.getActionCommand().equals("returnSkin")) {
         	if (Utils.isChooseSkinDone()) {
-            	frame.removeAll();
             	Utils.setSkinSelected();
+            	
+            	frame.removeAll();
             	createGameOptionsScreen();
         	}
         }  
@@ -253,7 +245,7 @@ public class GameOptions extends Frame implements ActionListener, ItemListener {
 		middlePanel.add(iowa, FrameUtils.gbLayoutWest(0, 1));
 		middlePanel.add(northernIowa, FrameUtils.gbLayoutWest(0, 2));
 		
-		//Makes the previously selected skin show, the default is iowaState.
+		//Makes the previously selected skin show, the default is Iowa State.
 		Utils.showPreviousSelectedSkin();
 		
 		//This adds all the panels to the frame.
