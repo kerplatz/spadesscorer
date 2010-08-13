@@ -78,13 +78,7 @@ public class FrameUtils {
 		//Set the look of the panel.
 		title.setAlignment(Label.CENTER);
 		title.setForeground(Main.labelColor);
-		
-		//Set font size for label.
-		if (!Main.isFourHandedTeams) {
-			title.setFont(new Font("arial", Font.BOLD, 20));
-		} else {
-			title.setFont(new Font("arial", Font.BOLD, 18));
-		}
+		title.setFont(new Font("arial", Font.BOLD, 18));
 		
 		upper.setBackground(Main.backgroundColor);
 		upper.add(title);
@@ -235,6 +229,7 @@ public class FrameUtils {
 		
 		if (Main.round == 0) return null;
 		
+		//Create a list with all the posible rounds in it except zero.
 		for (int i = 1; i <= Main.round; i++) {
 			Integer numb = new Integer(i);
 			lst.add(numb.toString());
@@ -258,6 +253,7 @@ public class FrameUtils {
 		lst.add("");
 		lst.add("Other");
 		
+		//Loop through all the names in the names array list.
 		for (int i = 0; i < Main.names.size(); i++) {
 			lst.add((String) Main.names.get(i));
 		}
@@ -298,6 +294,21 @@ public class FrameUtils {
 		
 		lst.add("1");
 		lst.add("2");
+		
+		return lst;
+	}
+
+	/**
+	 * This method creates a choice box for selecting the skin.
+	 * 
+	 * @return A choice box with all the skins available.
+	 */
+	public static Choice makeSkinList() {
+		Choice lst = new Choice();
+		
+		lst.add("ISU");
+		lst.add("Iowa");
+		lst.add("UNI");
 		
 		return lst;
 	}
@@ -476,6 +487,7 @@ public class FrameUtils {
 		Main.backgroundColor = new Color(255, 255, 0);
 		Main.labelColor = new Color(255, 0 ,0);
 		Main.textColor = new Color(0, 0, 0);
+		Main.whiteColor = new Color(255, 255, 255);
 		Main.fgMiddleButtonColor = new Color(255, 255, 255); 
 		Main.bgMiddleButtonColor = new Color(255, 0, 0);
 		Main.fgLowerButtonColor = new Color(255, 255, 255);
@@ -492,6 +504,7 @@ public class FrameUtils {
 		Main.backgroundColor = new Color(255, 255, 0);
 		Main.labelColor = new Color(0, 0, 0);
 		Main.textColor = new Color(0, 0, 0);
+		Main.whiteColor = new Color(255, 255, 255);
 		Main.fgMiddleButtonColor = new Color(255, 255, 255);
 		Main.bgMiddleButtonColor = new Color(0, 0, 0);
 		Main.fgLowerButtonColor = new Color(255, 255, 255);
@@ -508,6 +521,7 @@ public class FrameUtils {
 		Main.backgroundColor = new Color(255, 255, 0);
 		Main.labelColor = new Color(160, 32, 240);
 		Main.textColor = new Color(0, 0, 0);
+		Main.whiteColor = new Color(255, 255, 255);
 		Main.fgMiddleButtonColor = new Color(255, 255, 255); 
 		Main.bgMiddleButtonColor = new Color(160, 32, 240);
 		Main.fgLowerButtonColor = new Color(255, 255, 255);
@@ -519,7 +533,7 @@ public class FrameUtils {
 
 	/**
 	 * This method creates the first line displayed in the middle panel,
-	 * it contains the Team 1 names and their score.
+	 * it contains the Team One names and their score.
 	 * 
 	 * @param panel The panel that the items are added to.
 	 */
@@ -546,7 +560,7 @@ public class FrameUtils {
 
 	/**
 	 * This method creates the second line displayed in the middle panel.
-	 * it contains the Team 2 names and their score.
+	 * it contains the Team Two names and their score.
 	 *
 	 * @param panel The panel that the items are added to.
 	 */
