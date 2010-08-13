@@ -31,89 +31,90 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main extends Frame implements ActionListener,
-											WindowListener, ItemListener {
+											WindowListener,
+											ItemListener {
 	/**
 	 * Declare needed variables.
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final boolean DEBUG = false;
-	public static ArrayList names;
-	public static ArrayList ini;
-	
+	public static ArrayList names = new ArrayList();
+	public static ArrayList ini = new ArrayList();
+
 	public static boolean nilBidTeam1 = false;
 	public static boolean nilBidTeam2 = false;
 	public static boolean isExitAllowed = false;
 	public static boolean isGameStarted = false;
-	public static boolean isSetupDone;
-	public static boolean isGameWon;
-	public static boolean isGameLost;
-	public static boolean isThreeHanded;
-	public static boolean isFourHandedSingle;
-	public static boolean isFourHandedTeams;
-	public static boolean doBidding;
-	public static boolean doScoring;
-	public static boolean dealerIsPlayer1;
-	public static boolean dealerIsPlayer2;
-	public static boolean dealerIsPlayer3;
-	public static boolean dealerIsPlayer4;
+	public static boolean isSetupDone = false;
+	public static boolean isGameWon = false;
+	public static boolean isGameLost = false;
+	public static boolean isThreeHanded = false;
+	public static boolean isFourHandedSingle = false;
+	public static boolean isFourHandedTeams = false;
+	public static boolean doBidding = false;
+	public static boolean doScoring = false;
+	public static boolean dealerIsPlayer1 = false;
+	public static boolean dealerIsPlayer2 = false;
+	public static boolean dealerIsPlayer3 = false;
+	public static boolean dealerIsPlayer4 = false;
 	public static boolean skinIsIowaState = true;
-	public static boolean skinIsIowa;
-	public static boolean skinIsNorthernIowa;
-	public static boolean isNilAllowed;
-	public static boolean isDoubleNilAllowed;
-	public static boolean doubleIsAllowedPlayer1;
-	public static boolean doubleIsAllowedPlayer2;
-	public static boolean doubleIsAllowedPlayer3;
-	public static boolean doubleIsAllowedPlayer4;
-	public static boolean doubleIsAllowedTeam1;
-	public static boolean doubleIsAllowedTeam2;
+	public static boolean skinIsIowa = false;
+	public static boolean skinIsNorthernIowa = false;
+	public static boolean isNilAllowed = false;
+	public static boolean isDoubleNilAllowed = false;
+	public static boolean doubleIsAllowedPlayer1 = false;
+	public static boolean doubleIsAllowedPlayer2 = false;
+	public static boolean doubleIsAllowedPlayer3 = false;
+	public static boolean doubleIsAllowedPlayer4 = false;
+	public static boolean doubleIsAllowedTeam1 = false;
+	public static boolean doubleIsAllowedTeam2 = false;
 	public static boolean sounds = false;
 	public static boolean iniFailed = false;
 	
-	public static String player1;
-	public static String player2;
-	public static String player3;
-	public static String player4;
-	public static String team1;
-	public static String team2;
-	public static String player1Bid;
-	public static String player2Bid;
-	public static String player3Bid;
-	public static String player4Bid;
-	public static String player1TricksTaken;
-	public static String player2TricksTaken;
-	public static String player3TricksTaken;
-	public static String player4TricksTaken;
-	public static String player1Score;
-	public static String player2Score;
-	public static String player3Score;
-	public static String player4Score;
-	public static String team1Score;
-	public static String team2Score;
-	public static String curDealer;
-	public static String startDealer;
-	public static String bagValue;
-	public static String nilValue;
-	public static String doubleNilValue;
-	public static String winScore;
-	public static String loseScore;
+	public static String player1 = "";
+	public static String player2 = "";
+	public static String player3 = "";
+	public static String player4 = "";
+	public static String team1 = "";
+	public static String team2 = "";
+	public static String player1Bid = "";
+	public static String player2Bid = "";
+	public static String player3Bid = "";
+	public static String player4Bid = "";
+	public static String player1TricksTaken = "";
+	public static String player2TricksTaken = "";
+	public static String player3TricksTaken = "";
+	public static String player4TricksTaken = "";
+	public static String player1Score = "";
+	public static String player2Score = "";
+	public static String player3Score = "";
+	public static String player4Score = "";
+	public static String team1Score = "";
+	public static String team2Score = "";
+	public static String curDealer = "";
+	public static String startDealer = "";
+	public static String bagValue = "0";
+	public static String nilValue = "0";
+	public static String doubleNilValue = "0";
+	public static String winScore = "0";
+	public static String loseScore = "0";
 
 	public static int game = 0;
-	public static int round;
-	public static int player1TimesSet;
-	public static int player2TimesSet;
-	public static int player3TimesSet;
-	public static int player4TimesSet;
-	public static int bagValueNumb;
-	public static int nilValueNumb;
-	public static int doubleNilValueNumb;
-	public static int winScoreNumb;
-	public static int loseScoreNumb;
+	public static int round = 0;
+	public static int player1TimesSet = 0;
+	public static int player2TimesSet = 0;
+	public static int player3TimesSet = 0;
+	public static int player4TimesSet = 0;
+	public static int bagValueNumb = 0;
+	public static int nilValueNumb = 0;
+	public static int doubleNilValueNumb = 0;
+	public static int winScoreNumb = 0;
+	public static int loseScoreNumb = 0;
 
 	public static Color backgroundColor;
 	public static Color labelColor;
 	public static Color textColor;
+	public static Color whiteColor;
 	public static Color goDoubleColor;
 	public static Color fgMiddleButtonColor;
 	public static Color bgMiddleButtonColor;
@@ -171,12 +172,13 @@ public class Main extends Frame implements ActionListener,
 	Button buttonEditGame;
 	Button buttonEndGame;
 	
-	static File iniFile = new File("spades.ini");
-	static File soundBags = new File("ComeOn.wav");
-	static File soundSet = new File("Yes.wav");
-	static File soundWin = new File("Applause.wav");
-	static File soundLose = new File("MaybeNextTime.wav");
-	static File soundGameStart= new File("Startup.wav");
+	static String iniFile = "spades.ini";
+	static String soundBags = "";
+	static String soundSet = "";
+	static String soundWin = "";
+	static String soundLose = "";
+	static String soundGameStart= "";
+	static String soundDir = "\\";
 	
 	static Main frame = new Main();
 
@@ -440,7 +442,7 @@ public class Main extends Frame implements ActionListener,
 		//Add the content to be saved.
 		middlePanel.setLayout(new GridBagLayout());
 		
-		//Add wording
+		//Add wording to the screen.
 		if(!isGameStarted) {
 			message1.setText("There is nothing to save.");
 			message1.setForeground(Main.labelColor);
@@ -639,35 +641,36 @@ public class Main extends Frame implements ActionListener,
 		Utils.setSkinSelected();
 		
 		//Determine if a game ini has been created.
-		if (!iniFile.exists()) {
+		if (!new File (iniFile).exists()) {
 			//Create an ini setup screen.
 			IniSetup setup = new IniSetup(frame);
 			setup.createSetupScreen();
-		}
+		} else {
+			//Load the ini file.
+			FileUtils.loadIniFile();
+				
+			//Exit if ini fails to load.
+			if (iniFailed) {
+				Main exit = new Main();
+				exit.createExitScreen();
+			}
+				
+			//Extract all the information in the ini ArrayList.
+			Utils.parseIni();
+			Utils.setSkinSelected();
 
-		//Load the ini file.
-		FileUtils.loadIniFile();
+			Main game = new Main();
+			game.createMainMenuScreen();
 			
-		//Exit if ini fails to load.
-		if (iniFailed) {
-			Main exit = new Main();
-			exit.createExitScreen();
-		}
-			
-		//Extract all the information in the ini ArrayList.
-		Utils.parseIni();
-
-		Main game = new Main();
-		game.createMainMenuScreen();
-		
-		//Don't play the sound if debug mode.
-		if (!DEBUG && sounds) {
-			//Play the startup sound.
-			AudioPlayer ap = new AudioPlayer();
-			try {
-				ap.playAudio(Main.soundGameStart);
-			} catch (AudioException e) {
-				FrameUtils.showDialogBox("Sound file could not play.");
+			//Don't play the sound if debug mode.
+			if (sounds) {
+				//Play the startup sound.
+				AudioPlayer ap = new AudioPlayer();
+				try {
+					ap.playAudio(Main.soundGameStart);
+				} catch (AudioException e) {
+					FrameUtils.showDialogBox("Sound file could not play.");
+				}
 			}
 		}
 	}
