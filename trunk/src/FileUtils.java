@@ -7,6 +7,7 @@
  * @author David Hoffman
  */
 
+import java.awt.Choice;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -90,7 +91,6 @@ public class FileUtils {
 	public static void loadIniFile() throws IOException {
 		BufferedReader in = new BufferedReader(new FileReader(Main.iniFile));
 		String line;
-		Main.ini = new ArrayList();
 
 	    //Read all the lines into an array list.
 		try {    
@@ -113,15 +113,82 @@ public class FileUtils {
 	 * @throws IOException 
 	 */
 	public static void writeIniFile() throws IOException {
-		File file = new File(Main.iniFile.getName());
+		File file = new File(Main.iniFile);
 
 	    //Writes the lines of an array list to the file..
 		try {
 			FileWriter fw = new FileWriter(file);
-			fw.write(Main.ini.toString());
+			
+			//Write the ini array list.
+			for (int i = 0; i < Main.ini.size(); i++) {
+				fw.write((String) Main.ini.get(i) + "\n");
+			}
+			
 			fw.close();
 		} catch (IOException e) {
 			FrameUtils.showDialogBox("File could not be created.");
 		}
+	}
+
+	/**
+	 * Find and add just WAV files to the list of possible choices.
+	 * 
+	 * @return The list of playable sound files.
+	 */
+	public static Choice makeSoundsList() {
+		ArrayList arrList = new ArrayList();
+		Choice lst = new Choice();
+		File temp;
+		
+		//First item in list is blank.
+		lst.add("");
+		
+		//Get the WAV files.
+		try {
+			arrList = waveFinder(new File(Main.soundDir));
+		} catch (IOException e) {
+			FrameUtils.showDialogBox("File could not be found.");
+		}
+		
+		//Add all the found wave files to the list.
+		for (int i = 0; i < arrList.size(); i++) {
+			temp = (File) arrList.get(i);
+			lst.add(temp.getName());
+		}
+		
+		return lst;
+	}
+	
+	/**
+	 * Finds all the WAV files in given source directory.
+	 * 
+	 * @param name Source directory to be searched.
+	 * @return An string array list of found WAV file objects.
+	 */
+	public static ArrayList waveFinder(File rootNode) throws IOException {
+		ArrayList waves = new ArrayList();
+		File[] files;
+		String str;
+		String ext = "";
+
+		//Get contents of names.
+		files = rootNode.listFiles();
+
+		//Parse through the files ArrayList.
+		for (int i = 0; i < files.length; i++) {
+			//Get path of found file.
+			str = files[i].getName();
+
+			//Get extension of found file.
+			if (str.length() >= 5) ext = str.substring(str.length() - 4, str.length());
+
+			//Add to the waves ArrayList if the extension is .wav.
+			if (ext.equalsIgnoreCase(".wav")) {
+				//Add new wave file to the return waves ArrayList.
+				waves.add(files[i]);
+			}
+		}
+
+		return waves;
 	}
 }
