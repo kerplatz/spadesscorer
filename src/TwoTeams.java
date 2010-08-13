@@ -32,7 +32,6 @@ public class TwoTeams extends Frame implements ActionListener {
 	 * Declare needed variables.
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final boolean DEBUG = Main.DEBUG;
 	
 	Label winner = new Label("WINNER");
 	Label winners = new Label("WINNERS");
@@ -82,7 +81,7 @@ public class TwoTeams extends Frame implements ActionListener {
         		//otherwise game play continues.
         		if (Utils.isGameWon()) {
         			//Play sound file when game is won and not debug mode.
-        			if (!DEBUG) {
+        			if (Main.sounds) {
         				try {
         					ap.playAudio(Main.soundWin);
         				} catch (AudioException e) {
@@ -94,7 +93,7 @@ public class TwoTeams extends Frame implements ActionListener {
         			createEndGameWonScreen();
         		} else if (Utils.isGameLost()) {
         			//Play sound file when game is lost and not debug mode.
-        			if (!DEBUG) {
+        			if (Main.sounds) {
         				try {
         					ap.playAudio(Main.soundLose);
         				} catch (AudioException e) {
