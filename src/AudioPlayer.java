@@ -7,8 +7,6 @@
  * @author David Hoffman
  */
 
-import java.io.File;
-
 public class AudioPlayer {
 
 	/**
@@ -28,8 +26,8 @@ public class AudioPlayer {
 	 * @param file The audio file to be played.
 	 * @throws AudioException 
 	 */
-	public boolean playAudio(File file) throws AudioException {
-		String soundToPlay = file.getPath();
+	public boolean playAudio(String file) throws AudioException {
+		String soundToPlay = Main.soundDir + "\\" + file;
         boolean flag = true;
 
         //Play the audio file if not emulating.
