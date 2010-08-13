@@ -15,9 +15,9 @@ import java.util.Collections;
 public class Utils {
 	
 	//Declare the needed variables.
-	public static ArrayList names;
-	public static ArrayList defaults;
-	public static ArrayList sounds;
+	public static ArrayList names = new ArrayList();
+	public static ArrayList defaults = new ArrayList();
+	public static ArrayList sounds = new ArrayList();
 
 	/**
 	 * Resets the game so a new game can be started.
@@ -37,9 +37,6 @@ public class Utils {
 		Main.dealerIsPlayer2 = false;
 		Main.dealerIsPlayer3 = false;
 		Main.dealerIsPlayer4 = false;
-		Main.skinIsIowaState = true;
-		Main.skinIsIowa = false;
-		Main.skinIsNorthernIowa = false;
 		Main.isNilAllowed = true;
 		Main.isDoubleNilAllowed = true;
 		Main.nilBidTeam1 = false;
@@ -159,6 +156,30 @@ public class Utils {
 		GameOptions.winScoreTextField.setText(Main.winScore);
 		GameOptions.loseScoreTextField.setText(Main.loseScore);
 	}
+
+	/**
+	 * Shows what the values for the sounds are.
+	 */
+	public static void showPreviousSounds() {
+		IniSetup.locStart.select(Main.soundGameStart);
+		IniSetup.locBags.select(Main.soundBags);
+		IniSetup.locSet.select(Main.soundSet);
+		IniSetup.locWin.select(Main.soundWin);
+		IniSetup.locLose.select(Main.soundLose);
+	}
+
+	/**
+	 * Shows what the values for the default options are.
+	 */
+	public static void showPreviousDefaults() {
+		if (Main.skinIsIowa) IniSetup.skin.select("Iowa");
+		if (Main.skinIsIowaState) IniSetup.skin.select("ISU");
+		if (Main.skinIsNorthernIowa) IniSetup.skin.select("UNI");
+
+		IniSetup.winScore.setText(Main.winScore);
+		IniSetup.loseScore.setText(Main.loseScore);
+		IniSetup.enterSoundPath.setText(Main.soundDir);
+	}
 	
 	/**
 	 * Clears the Game Type.
@@ -170,7 +191,7 @@ public class Utils {
 	}
 	
 	/**
-	 * Clears the player names.
+	 * Clear the player names.
 	 */
 	public static void clearPlayerNames() {
 		if (GameSetup.choiceBoxPlayer1.isEnabled()) {
@@ -198,7 +219,7 @@ public class Utils {
 	}
 
 	/**
-	 * Clears the selected dealer.
+	 * Clear the selected dealer.
 	 */
 	public static void clearDealerName() {
 		Main.dealerIsPlayer1 = false;
@@ -220,7 +241,7 @@ public class Utils {
 	}
 
 	/**
-	 * Clears the selected skin.
+	 * Clear the selected skin.
 	 */
 	public static void clearSkin() {
 		Main.skinIsIowaState = false;
@@ -233,14 +254,14 @@ public class Utils {
 	}
 
 	/**
-	 * Clear the application sound files.
+	 * Clear the sound files.
 	 */
 	public static void clearSounds() {
-		Main.soundBags = new File("");
-		Main.soundSet = new File("");
-		Main.soundWin = new File("");
-		Main.soundLose = new File("");
-		Main.soundGameStart= new File("");
+		Main.soundBags = "";
+		Main.soundSet = "";
+		Main.soundWin = "";
+		Main.soundLose = "";
+		Main.soundGameStart= "";
 	}
 
 	/**
@@ -336,7 +357,7 @@ public class Utils {
 	}
 	
 	/**
-	 * The game type has been selected.
+	 * Determines if the game type has been selected.
 	 * 
 	 * @return True if the game type selection is done, false otherwise.
 	 */
@@ -364,7 +385,7 @@ public class Utils {
 	}
 
 	/**
-	 * The players names have been entered.
+	 * Determines if the players names have been entered.
 	 * 
 	 * @return True is the players setup is done, false otherwise.
 	 */
@@ -403,7 +424,7 @@ public class Utils {
 	}
 
 	/**
-	 * The dealer selection has been completed.
+	 * Determines if the dealer selection has been completed.
 	 * 
 	 * @return True when the dealer selection is complete, false otherwise.
 	 */
@@ -438,7 +459,7 @@ public class Utils {
 	}
 
 	/**
-	 * The skin has been chosen. ISU is the default.
+	 * Determines if a skin has been chosen. ISU is the default.
 	 * 
 	 * @return True if the skin has been chosen, false otherwise.
 	 */
@@ -466,7 +487,7 @@ public class Utils {
 	}
 
 	/**
-	 * The game options have been entered.
+	 * Determines if the game options have been entered.
 	 * 
 	 * @return True if the options have been entered, false otherwise.
 	 */
@@ -818,6 +839,56 @@ public class Utils {
 			Main.skinIsNorthernIowa = true;
 		}
 	}
+
+	/**
+	 * Saves the currently entered sound selections.
+	 */
+	public static void saveSoundSelections() {
+		Main.soundGameStart = IniSetup.locStart.getSelectedItem();
+		Main.soundBags = IniSetup.locBags.getSelectedItem();
+		Main.soundSet = IniSetup.locSet.getSelectedItem();
+		Main.soundWin = IniSetup.locWin.getSelectedItem();
+		Main.soundLose = IniSetup.locLose.getSelectedItem();
+	}
+
+	/**
+	 * Saves the currently entered default values.
+	 */
+	public static void saveDefaultOptions() {
+		//Save the skin that was selected.
+		if (IniSetup.skin.getSelectedItem() == "ISU") {
+			Main.skinIsIowaState = true;
+			Main.skinIsIowa = false;
+			Main.skinIsNorthernIowa = false;
+		} else if (IniSetup.skin.getSelectedItem() == "Iowa") {
+			Main.skinIsIowaState = false;
+			Main.skinIsIowa = true;
+			Main.skinIsNorthernIowa = false;
+		} else if (IniSetup.skin.getSelectedItem() == "UNI") {
+			Main.skinIsIowaState = false;
+			Main.skinIsIowa = false;
+			Main.skinIsNorthernIowa = true;
+		}
+		
+		//Save the entered values.
+		Main.winScore = IniSetup.winScore.getText();
+		Main.loseScore = IniSetup.loseScore.getText();
+		
+		//Check if the soundPath is a folder.
+		String str = IniSetup.enterSoundPath.getText();
+		File file = new File(str);
+		if (file.isDirectory()) Main.soundDir = str;
+				
+		//Save the state of sounds being enabled or not.
+		if (IniSetup.soundsEnabled.getState()) {
+			Main.sounds = true;
+		} else {
+			Main.sounds = false;
+		}
+		
+		//Save the options as numbers.
+		convertOptionsToNumbers();
+	}
 	
 	/**
 	 * Saves the current options entered.
@@ -1117,6 +1188,74 @@ public class Utils {
 	}
 
 	/**
+	 * Add names to the players list.
+	 */
+	public static void processInputNames() {
+		if (!IniSetup.enterNames.getText().equals("")) {
+			names.add((String) IniSetup.enterNames.getText());
+		}
+	}
+
+	/**
+	 * Delete names from the players list.
+	 */
+	public static void processDeleteNames() {
+		if (!IniSetup.enterNames.getText().equals("")) {
+			names.remove((String) IniSetup.enterNames.getText());
+		}
+	}
+
+	/**
+	 * Saves the sounds entered and creates the sounds array list. The return true
+	 * always was to keep the logic the same to similar methods.
+	 * 
+	 * @return True.
+	 */
+	public static boolean processSounds() {
+		//Save the sounds selected.
+		saveSoundSelections();
+		
+		//Create the sounds array list.
+		createSoundsArrList();
+
+		return true;
+	}
+
+	/**
+	 * Processes the default settings and checks for errors.
+	 * 
+	 * @return True if inputs are ok, false otherwise.
+	 */
+	public static boolean processDefaults() {
+		boolean done = false;
+		int winScore = stringToInt(IniSetup.winScore.getText());
+		int loseScore = stringToInt(IniSetup.loseScore.getText());
+		File file = new File(Main.soundDir);
+		
+		//Check winning score value.
+		if (winScore >= 100) {
+			//Check loosing score value.
+			if (loseScore < 0) {
+				//Check if the input for sounds is a directory.
+				if (file.isDirectory()) {
+					done = true;
+				}
+			}
+		}
+
+		//Show dialog box reminder.
+		if (!done) FrameUtils.showDialogBox("Check your inputs.");
+		
+		//Save the default options.
+		saveDefaultOptions();
+		
+		//Create the defaults array list.
+		createDefaultsArrList();
+
+		return done;
+	}
+
+	/**
 	 * This method converts the string value of a number to an int.
 	 * 
 	 * @param tricks The string to be converted.
@@ -1125,7 +1264,7 @@ public class Utils {
 	public static int stringToInt(String numb) {
 		int temp = 0;
 		
-		//Convert the string to an int. Set it to a value of '0' if not a number.
+		//Convert the string to an int. Set it to a value of zero if not a number.
 		try {
 			temp = Integer.parseInt(numb);
 		} catch (NumberFormatException e) {
@@ -1359,14 +1498,9 @@ public class Utils {
 	 * information to the correct variables.
 	 */
 	public static void parseIni() {
-		//Create the Array Lists that will be used.
-		names = new ArrayList();
-		defaults = new ArrayList();
-		sounds = new ArrayList();
-
 		//Find the indexes of the division headers.
 		int namesIndex = findIndex("[names]");
-		int defaultIndex = findIndex("[default]");
+		int defaultIndex = findIndex("[defaults]");
 		int soundIndex = findIndex("[sounds]");
 		
 		//Extract the information from the ini Array List.
@@ -1389,8 +1523,8 @@ public class Utils {
 	 * Create the ini array list so it can be written to a file.
 	 */
 	public static void createIni() {
-		//Clear the contents of the ini array list.
-		Main.ini.clear();
+		//Clear the contents of the ini array list if not null.
+		if (Main.ini != null) Main.ini.clear();
 		
 		//Start putting in the data.
 		Main.ini.add("[Names]");
@@ -1428,7 +1562,7 @@ public class Utils {
 	public static int findIndex(String str) {
 		int index = -1;
 
-		//Loop through the entire ini array list to find the strings.
+		//Loop through the entire ini array list to find the setting headings.
 		for (int i = 0; i < Main.ini.size(); i++) {
 			//When found, set the index equal to i.
 			if (((String) Main.ini.get(i)).equalsIgnoreCase(str)) index = i;
@@ -1439,7 +1573,7 @@ public class Utils {
 	
 	/**
 	 * This method will extract the settings from the ini Array List
-	 * and put them in their own Array List for processing.
+	 * using an index and return them as an array list.
 	 * 
 	 * @param index The index at which to begin the extraction.
 	 */
@@ -1447,7 +1581,7 @@ public class Utils {
 		ArrayList al = new ArrayList ();
 		String temp = "";
 		
-		//Extract the information.
+		//Extract the settings from the Main ini file.
 		for (int i = index + 1; i < Main.ini.size(); i++) {
 			temp = (String) Main.ini.get(i);
 			if (!temp.equals("")) {
@@ -1469,28 +1603,45 @@ public class Utils {
 		String prefix = "";
 		String suffix = "";
 				
-		//Loop through the entire sounds array list to find all the strings.
+		//Loop through the entire sounds array list to find all the settings.
 		for (int i = 0; i < sounds.size(); i++) {
 			//When found, set the variable in main to that string..
 			temp = (String) sounds.get(i);
-			
 			sa = temp.split("=");
+
+			//Set the variables to empty if the setting is empty.
+			if (temp.endsWith("=")) {
+				prefix = sa[0];
+
+				if (prefix.equalsIgnoreCase("start")) {
+					Main.soundGameStart = "";
+				} else if (prefix.equalsIgnoreCase("bags")){
+					Main.soundBags = "";
+				} else if (prefix.equalsIgnoreCase("set")){
+					Main.soundSet = "";
+				} else if (prefix.equalsIgnoreCase("win")){
+					Main.soundWin = "";
+				} else if (prefix.equalsIgnoreCase("lose")){
+					Main.soundLose = "";
+				}
+			//Find the properties and set them to the desired values.
+			} else {
+				prefix = sa[0];
+				suffix = sa[1];
 			
-			prefix = sa[0];
-			suffix = sa[1];
-			
-			clearSounds();
+				clearSounds();
 		
-			if (prefix.equalsIgnoreCase("start")) {
-				Main.soundGameStart = new File(suffix);
-			} else if (prefix.equalsIgnoreCase("set")){
-				Main.soundSet = new File(suffix);
-			} else if (prefix.equalsIgnoreCase("bags")){
-				Main.soundBags = new File(suffix);
-			} else if (prefix.equalsIgnoreCase("win")){
-				Main.soundWin = new File(suffix);
-			} else if (prefix.equalsIgnoreCase("lose")){
-				Main.soundLose = new File(suffix);
+				if (prefix.equalsIgnoreCase("start")) {
+					Main.soundGameStart = suffix;
+				} else if (prefix.equalsIgnoreCase("bags")){
+					Main.soundBags = suffix;
+				} else if (prefix.equalsIgnoreCase("set")){
+					Main.soundSet = suffix;
+				} else if (prefix.equalsIgnoreCase("win")){
+					Main.soundWin = suffix;
+				} else if (prefix.equalsIgnoreCase("lose")){
+					Main.soundLose = suffix;
+				}
 			}
 		}
 	}
@@ -1503,8 +1654,11 @@ public class Utils {
 		String[] sa;
 		String prefix = "";
 		String suffix = "";
+
+		//Reset the skins so no more than one is selected when processed.
+		clearSkin();
 				
-		//Loop through the entire sounds array list to find all the strings.
+		//Loop through the entire sounds array list to find all the settings.
 		for (int i = 0; i < defaults.size(); i++) {
 			//When found, set the variable in main to that string..
 			temp = (String) defaults.get(i);
@@ -1513,9 +1667,8 @@ public class Utils {
 			
 			prefix = sa[0];
 			suffix = sa[1];
-			
-			clearSkin();
-		
+
+			//Find the properties and set them to the desired values.
 			if (prefix.equalsIgnoreCase("sounds")) {
 				if (suffix.equalsIgnoreCase("true")) Main.sounds = true;
 				if (suffix.equalsIgnoreCase("false")) Main.sounds = false;
@@ -1527,7 +1680,72 @@ public class Utils {
 				Main.winScore = suffix;
 			} else if (prefix.equalsIgnoreCase("losescore")){
 				Main.loseScore = suffix;
+			} else if (prefix.equalsIgnoreCase("sounddir")){
+				Main.soundDir = suffix;
 			}
 		}
+	}
+	
+	/**
+	 * Puts the names array list in a string of my choosing.
+	 * 
+	 * @return The string of the names array list.
+	 */
+	public static String namesToString() {
+		String temp = "";
+		
+		//Loop through the names array list and create a string.
+		for (int i = 0; i < names.size(); i++) {
+			temp += ((String) names.get(i));
+			temp += "\n";
+		}
+
+		return temp;
+	}
+	
+	/**
+	 * This method will get the values of the variables and then create
+	 * the sounds array list from them.
+	 */
+	public static void createSoundsArrList() {
+		//Clears the sounds array list.
+		sounds.clear();
+		
+		//Adds all the sound files to the sounds array list.
+		sounds.add("Start=" + Main.soundGameStart);
+		sounds.add("Bags=" + Main.soundBags);
+		sounds.add("Set=" + Main.soundSet);
+		sounds.add("Win=" + Main.soundWin);
+		sounds.add("Lose=" + Main.soundLose);
+	}
+	
+	/**
+	 * This method will get the values of the variables and then create
+	 * the defaults array list from them.
+	 */
+	public static void createDefaultsArrList() {
+		//Clear the defaults array list.
+		defaults.clear();
+		
+		//Determine if sounds are enabled.
+		if (Main.sounds) {
+			defaults.add("Sounds=true");
+		} else {
+			defaults.add("Sounds=false");
+		}
+		
+		//Find which skin is the default.
+		if (Main.skinIsIowa) {
+			defaults.add("Skin=Iowa");
+		} else if (Main.skinIsIowaState) {
+			defaults.add("Skin=ISU");
+		} else if (Main.skinIsNorthernIowa) {
+			defaults.add("Skin=UNI");
+		}
+		
+		//Add the values set to the array list.
+		defaults.add("WinScore=" + Main.winScore);
+		defaults.add("LoseScore=" + Main.loseScore);
+		defaults.add("SoundDir=" + Main.soundDir);
 	}
 }
