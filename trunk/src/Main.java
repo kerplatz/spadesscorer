@@ -38,6 +38,8 @@ public class Main extends Frame implements ActionListener,
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	public static final boolean DEBUG_PC = true;
+	
 	public static ArrayList names = new ArrayList();
 	public static ArrayList ini = new ArrayList();
 
@@ -172,7 +174,7 @@ public class Main extends Frame implements ActionListener,
 	Button buttonEditGame;
 	Button buttonEndGame;
 	
-	static String iniFile = "spades.ini";
+	static String iniFile = "\\spades.ini";
 	static String soundBags = "";
 	static String soundSet = "";
 	static String soundWin = "";
@@ -270,7 +272,7 @@ public class Main extends Frame implements ActionListener,
         			playerTwo = new Player(player2);
         			playerThree = new Player(player3);
         		}
-        		
+
         		ThreeHanded three = new ThreeHanded(frame);
            		three.createPlayGameScreen();
         	}
@@ -666,11 +668,7 @@ public class Main extends Frame implements ActionListener,
 			if (sounds) {
 				//Play the startup sound.
 				AudioPlayer ap = new AudioPlayer();
-				try {
-					ap.playAudio(Main.soundGameStart);
-				} catch (AudioException e) {
-					FrameUtils.showDialogBox("Sound file could not play.");
-				}
+				ap.playAudio(Main.soundGameStart);
 			}
 		}
 	}
