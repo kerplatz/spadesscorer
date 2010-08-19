@@ -70,23 +70,15 @@ public class ThreeHanded extends Frame implements ActionListener {
         //Performs this action when the Scoring button is pressed.
         if (event.getActionCommand().equals("scoring")) {
         	if (Utils.processScoring()) {
-        		try {
-					Utils.recordGameData();
-				} catch (AudioException e) {
-					FrameUtils.showDialogBox("Audio file did not play.");
-				}
-       			Utils.postScores();
+        		Utils.recordGameData();
+				Utils.postScores();
 
         		//Determines if the game is won  or lost, otherwise game play
        			//continues.
         		if (Utils.isGameWon()) {
         			//Play sound file when game is won and not debug mode.
         			if (Main.sounds) {
-        				try {
-        					ap.playAudio(Main.soundWin);
-        				} catch (AudioException e) {
-        					FrameUtils.showDialogBox("Audio file did not play.");
-        				}
+        				ap.playAudio(Main.soundWin);
         			}
 
 					frame.removeAll();
@@ -94,11 +86,7 @@ public class ThreeHanded extends Frame implements ActionListener {
         		} else if (Utils.isGameLost()) {
         			//Play sound file when game is lost and not debug mode.
         			if (Main.sounds) {
-        				try {
-        					ap.playAudio(Main.soundLose);
-        				} catch (AudioException e) {
-        					FrameUtils.showDialogBox("Audio file did not play.");
-        				}
+        				ap.playAudio(Main.soundLose);
         			}
 
         			frame.removeAll();
