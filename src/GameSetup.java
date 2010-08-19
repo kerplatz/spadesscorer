@@ -116,9 +116,6 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
         	if (Utils.isSelectGameTypeDone()) {
             	frame.removeAll();
             	createSetupScreen();
-            	
-            	//Change the default values for game options.
-            	Utils.defaultGameOptions();
         	}
         }  
 
@@ -127,9 +124,6 @@ public class GameSetup extends Frame implements ActionListener, ItemListener {
         	if(Utils.isSelectGameTypeDone()) {
             	frame.removeAll();
             	createSetupPlayersScreen();
-            	
-            	//Change the default values for game options.
-            	Utils.defaultGameOptions();
             	
             	//Show dialog box reminder for determining player rotation.
     			FrameUtils.showDialogBox("Start with yourself, then go CW.");
