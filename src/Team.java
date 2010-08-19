@@ -87,7 +87,7 @@ public class Team {
 	 * @throws AudioException 
 	 */
 	public void inputRound(String bidIn1, String bidIn2, String tricksIn1,
-			String tricksIn2) throws AudioException {
+			String tricksIn2) {
 		
 		round_no++;
 		one.inputRound(bidIn1, tricksIn1);
@@ -107,7 +107,7 @@ public class Team {
 	 * @param tricksIn1 The tricks taken by Player one.
 	 * @throws AudioException 
 	 */
-	public void inputRound(String bidIn1, String bidIn2, String tricksIn1) throws AudioException {
+	public void inputRound(String bidIn1, String bidIn2, String tricksIn1) {
 
 		round_no++;
 		one.inputRound(bidIn1, tricksIn1);
@@ -322,20 +322,12 @@ public class Team {
 			//Play sound file if 10 or more bags has been reached.
 			AudioPlayer ap = new AudioPlayer();
 			if (bagsScored > 0) {
-				try {
-					ap.playAudio(Main.soundBags);
-				} catch (AudioException e) {
-					FrameUtils.showDialogBox("Audio file did not play.");
-				}
+				ap.playAudio(Main.soundBags);
 			}
 
 			//Play sound file if player was set.
 			if (set) {
-				try {
-					ap.playAudio(Main.soundSet);
-				} catch (AudioException e) {
-					FrameUtils.showDialogBox("Audio file did not play.");
-				}
+				ap.playAudio(Main.soundSet);
 			}
 		}
 		
