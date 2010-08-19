@@ -1,1 +1,1 @@
-255#"\J9\PPRO11\bin\j9.exe" "-jcl:ppro11" -Djava.library.path=\Windows "-classpath" "\Program Files\Intermec\SpadesScorer.jar" "Main"
+255#"\J9\PPRO11\bin\j9.exe" "-jcl:ppro11" -Djava.library.path=\Windows "-classpath" "\Program Files\Intermec\JavaLib\Device.jar;\Program Files\Intermec\SpadesScorer.jar" "Main"
