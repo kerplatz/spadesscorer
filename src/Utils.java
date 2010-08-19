@@ -68,8 +68,6 @@ public class Utils {
 		Main.bagValue = "1";
 		Main.nilValue = "50";
 		Main.doubleNilValue = "200";
-		Main.winScore = "500";
-		Main.loseScore = "-200";
 		
 		Main.round = 0;
 		Main.player1TimesSet = 0;
@@ -950,7 +948,7 @@ public class Utils {
 	 * 
 	 * @throws AudioException 
 	 */
-	public static void recordGameData() throws AudioException {
+	public static void recordGameData() {
 		//Increment round.
 		Main.round ++;
 
@@ -1507,7 +1505,7 @@ public class Utils {
 		names = extractSettings(namesIndex);
 		defaults = extractSettings(defaultIndex);
 		sounds = extractSettings(soundIndex);
-		
+
 		//Sort the names Array List and copy it to the main names Array List.
 		Collections.sort(names);
 		Main.names = names;
@@ -1517,6 +1515,7 @@ public class Utils {
 		
 		//Set the default game configurations.
 		setDefaults();
+
 	}
 
 	/**
@@ -1602,12 +1601,14 @@ public class Utils {
 		String[] sa;
 		String prefix = "";
 		String suffix = "";
+		
+		clearSounds();
 				
 		//Loop through the entire sounds array list to find all the settings.
 		for (int i = 0; i < sounds.size(); i++) {
 			//When found, set the variable in main to that string..
 			temp = (String) sounds.get(i);
-			sa = temp.split("=");
+			sa = splitString('=', temp);
 
 			//Set the variables to empty if the setting is empty.
 			if (temp.endsWith("=")) {
@@ -1629,8 +1630,6 @@ public class Utils {
 				prefix = sa[0];
 				suffix = sa[1];
 			
-				clearSounds();
-		
 				if (prefix.equalsIgnoreCase("start")) {
 					Main.soundGameStart = suffix;
 				} else if (prefix.equalsIgnoreCase("bags")){
@@ -1663,7 +1662,7 @@ public class Utils {
 			//When found, set the variable in main to that string..
 			temp = (String) defaults.get(i);
 			
-			sa = temp.split("=");
+			sa = splitString('=', temp);
 			
 			prefix = sa[0];
 			suffix = sa[1];
@@ -1747,5 +1746,27 @@ public class Utils {
 		defaults.add("WinScore=" + Main.winScore);
 		defaults.add("LoseScore=" + Main.loseScore);
 		defaults.add("SoundDir=" + Main.soundDir);
+	}
+	
+	public static String[] splitString(char chr, String str2) {
+		String[] temp = {"", ""};
+		boolean found = false;
+		boolean skip = true;
+		
+		//Change string into char array.
+		char[] ca = str2.toCharArray();
+	
+		//Loop through the second string and find the first string,
+		//splitting the second at that point.
+		for (int i = 0; i < str2.length(); i++) {
+			if (ca[i] == chr) found = true;
+			if (!found && skip) temp[0] += ca[i];
+			if (found && !skip) {
+				temp[1] += ca[i];
+			}
+			if (found && skip) skip = false;
+		}
+
+		return temp;
 	}
 }
