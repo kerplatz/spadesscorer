@@ -83,7 +83,7 @@ public class Player {
 	 * @param tricksIn The amount of tricks taken by the player.
 	 * @throws AudioException 
 	 */
-	public void inputRound(String bidIn, String tricksIn) throws AudioException {
+	public void inputRound(String bidIn, String tricksIn) {
 		round_no++;
 		bid = bidIn;
 		tricksTaken = tricksIn;
@@ -212,20 +212,12 @@ public class Player {
 			//Play sound file if 10 or more bags has been reached.
 			AudioPlayer ap = new AudioPlayer();
 			if (bagsScored > 0) {
-				try {
-					ap.playAudio(Main.soundBags);
-				} catch (AudioException e) {
-					FrameUtils.showDialogBox("Audio file did not play.");
-				}
+				ap.playAudio(Main.soundBags);
 			}
 
 			//Play sound file if player was set.
 			if (set) {
-				try {
-					ap.playAudio(Main.soundSet);
-				} catch (AudioException e) {
-					FrameUtils.showDialogBox("Audio file did not play.");
-				}
+				ap.playAudio(Main.soundSet);
 			}
 		}
 		
