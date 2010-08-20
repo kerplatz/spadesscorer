@@ -38,7 +38,7 @@ public class Main extends Frame implements ActionListener,
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public static final boolean DEBUG_PC = true;
+	public static final boolean DEBUG_PC = false;
 	
 	public static ArrayList names = new ArrayList();
 	public static ArrayList ini = new ArrayList();
